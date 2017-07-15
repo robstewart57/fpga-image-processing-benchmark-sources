@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Design name="image2">
+    <Task name="getCoeffValue">
+        <Resource MaxGateDepth="190" MaxLatency="1" MinGoSpacing="1" MinLatency="1"/>
+    </Task>
+    <Task name="doneCountX">
+        <Resource MaxGateDepth="0" MaxLatency="1" MinGoSpacing="1" MinLatency="1"/>
+    </Task>
+    <Task name="doneCountY">
+        <Resource MaxGateDepth="0" MaxLatency="1" MinGoSpacing="1" MinLatency="1"/>
+    </Task>
+    <Task name="sendCoeffValue">
+        <Resource MaxGateDepth="190" MaxLatency="1" MinGoSpacing="1" MinLatency="1"/>
+    </Task>
+    <Task name="scheduler">
+        <Resource MaxGateDepth="7" MaxLatency="unknown"
+            MinGoSpacing="indeterminate" MinLatency="2"/>
+    </Task>
+</Design>

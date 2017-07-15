@@ -1,0 +1,129 @@
+//
+// Design Resource Utilization Report
+// Generated on: Sat 15 Jul 2017 12:59:05 +0100
+//
+
+histogram Total: 
+29   Ands : 29x1 
+269  Registers : 1x16 268x1 
+2    Memorys : 2x16 
+7    Ors : 7x1 
+8    Adds : 1x64 4x32 2x17 1x16 
+2    Less Thans : 1x32 1x16 
+5    Nots : 5x1 
+1    Mux : 1x16 
+1    Less Than Or Equal To : 1x16 
+3    Equal Tos : 2x32 1x16 
+
+Design: histogram
+-----------------
+Entry: histogram_fold_instance
+------------------------------
+    Method: histogram_fold
+    ----------------------
+    4    Adds : 1x64 2x32 1x17 
+    2    Ands : 2x1 
+    2    Registers : 2x1 
+    1    Memory : 1x16 
+    1    Or : 1x1 
+
+    Method Total:
+    4    Adds : 1x64 2x32 1x17 
+    2    Ands : 2x1 
+    2    Registers : 2x1 
+    1    Memory : 1x16 
+    1    Or : 1x1 
+    -------------
+-------------------------------------
+Entry: histogram_fold_instance Total: 
+4    Adds : 1x64 2x32 1x17 
+2    Ands : 2x1 
+2    Registers : 2x1 
+1    Memory : 1x16 
+1    Or : 1x1 
+-------------------------------------
+
+Entry: histogram_outputState_instance
+-------------------------------------
+    Method: histogram_outputState
+    -----------------------------
+    2    Adds : 1x32 1x17 
+    1    And : 1x1 
+    1    Register : 1x1 
+    1    Memory : 1x16 
+
+    Method Total:
+    2    Adds : 1x32 1x17 
+    1    And : 1x1 
+    1    Register : 1x1 
+    1    Memory : 1x16 
+    -------------
+--------------------------------------------
+Entry: histogram_outputState_instance Total: 
+2    Adds : 1x32 1x17 
+1    And : 1x1 
+1    Register : 1x1 
+1    Memory : 1x16 
+--------------------------------------------
+
+Entry: histogram_outputDone_instance
+------------------------------------
+    Method: histogram_outputDone
+    ----------------------------
+    2    Adds : 1x32 1x16 
+    5    Ands : 5x1 
+    4    Registers : 1x16 3x1 
+    1    Not : 1x1 
+    2    Ors : 2x1 
+    1    Mux : 1x16 
+    1    Less Than Or Equal To : 1x16 
+
+    Method Total:
+    2    Adds : 1x32 1x16 
+    5    Ands : 5x1 
+    4    Registers : 1x16 3x1 
+    1    Not : 1x1 
+    2    Ors : 2x1 
+    1    Mux : 1x16 
+    1    Less Than Or Equal To : 1x16 
+    -------------
+-------------------------------------------
+Entry: histogram_outputDone_instance Total: 
+2    Adds : 1x32 1x16 
+5    Ands : 5x1 
+4    Registers : 1x16 3x1 
+1    Not : 1x1 
+2    Ors : 2x1 
+1    Mux : 1x16 
+1    Less Than Or Equal To : 1x16 
+-------------------------------------------
+
+Entry: histogram_scheduler_instance
+-----------------------------------
+    Method: histogram_scheduler
+    ---------------------------
+    21   Ands : 21x1 
+    262  Registers : 262x1 
+    2    Less Thans : 1x32 1x16 
+    4    Nots : 4x1 
+    4    Ors : 4x1 
+    3    Equal Tos : 2x32 1x16 
+
+    Method Total:
+    21   Ands : 21x1 
+    262  Registers : 262x1 
+    2    Less Thans : 1x32 1x16 
+    4    Nots : 4x1 
+    4    Ors : 4x1 
+    3    Equal Tos : 2x32 1x16 
+    -------------
+------------------------------------------
+Entry: histogram_scheduler_instance Total: 
+21   Ands : 21x1 
+262  Registers : 262x1 
+2    Less Thans : 1x32 1x16 
+4    Nots : 4x1 
+4    Ors : 4x1 
+3    Equal Tos : 2x32 1x16 
+------------------------------------------
+

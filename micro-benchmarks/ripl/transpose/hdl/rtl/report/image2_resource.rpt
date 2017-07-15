@@ -1,0 +1,141 @@
+//
+// Design Resource Utilization Report
+// Generated on: Sat 15 Jul 2017 13:06:20 +0100
+//
+
+image2 Total: 
+8    Adds : 4x32 4x17 
+35   Ands : 35x1 
+18   Registers : 18x1 
+1    Memory : 1x16 
+8    Nots : 8x1 
+7    Ors : 7x1 
+8    Muxs : 4x16 4x1 
+4    Equal Tos : 4x16 
+
+Design: image2
+--------------
+Entry: image2_getCoeffValue_instance
+------------------------------------
+    Method: image2_getCoeffValue
+    ----------------------------
+    4    Adds : 2x32 2x17 
+    5    Ands : 5x1 
+    2    Registers : 2x1 
+    1    Not : 1x1 
+    1    Or : 1x1 
+    2    Muxs : 2x16 
+    1    Equal To : 1x16 
+
+    Method Total:
+    4    Adds : 2x32 2x17 
+    5    Ands : 5x1 
+    2    Registers : 2x1 
+    1    Not : 1x1 
+    1    Or : 1x1 
+    2    Muxs : 2x16 
+    1    Equal To : 1x16 
+    -------------
+-------------------------------------------
+Entry: image2_getCoeffValue_instance Total: 
+4    Adds : 2x32 2x17 
+5    Ands : 5x1 
+2    Registers : 2x1 
+1    Not : 1x1 
+1    Or : 1x1 
+2    Muxs : 2x16 
+1    Equal To : 1x16 
+-------------------------------------------
+
+Entry: image2_doneCountX_instance
+---------------------------------
+    Method: image2_doneCountX
+    -------------------------
+    1    Register : 1x1 
+
+    Method Total:
+    1    Register : 1x1 
+    -------------
+----------------------------------------
+Entry: image2_doneCountX_instance Total: 
+1    Register : 1x1 
+----------------------------------------
+
+Entry: image2_doneCountY_instance
+---------------------------------
+    Method: image2_doneCountY
+    -------------------------
+    1    Register : 1x1 
+
+    Method Total:
+    1    Register : 1x1 
+    -------------
+----------------------------------------
+Entry: image2_doneCountY_instance Total: 
+1    Register : 1x1 
+----------------------------------------
+
+Entry: image2_sendCoeffValue_instance
+-------------------------------------
+    Method: image2_sendCoeffValue
+    -----------------------------
+    4    Adds : 2x32 2x17 
+    5    Ands : 5x1 
+    2    Registers : 2x1 
+    1    Memory : 1x16 
+    1    Not : 1x1 
+    1    Or : 1x1 
+    2    Muxs : 2x16 
+    1    Equal To : 1x16 
+
+    Method Total:
+    4    Adds : 2x32 2x17 
+    5    Ands : 5x1 
+    2    Registers : 2x1 
+    1    Memory : 1x16 
+    1    Not : 1x1 
+    1    Or : 1x1 
+    2    Muxs : 2x16 
+    1    Equal To : 1x16 
+    -------------
+--------------------------------------------
+Entry: image2_sendCoeffValue_instance Total: 
+4    Adds : 2x32 2x17 
+5    Ands : 5x1 
+2    Registers : 2x1 
+1    Memory : 1x16 
+1    Not : 1x1 
+1    Or : 1x1 
+2    Muxs : 2x16 
+1    Equal To : 1x16 
+--------------------------------------------
+
+Entry: image2_scheduler_instance
+--------------------------------
+    Method: image2_scheduler
+    ------------------------
+    25   Ands : 25x1 
+    12   Registers : 12x1 
+    6    Nots : 6x1 
+    5    Ors : 5x1 
+    4    Muxs : 4x1 
+    2    Equal Tos : 2x16 
+
+    Method Total:
+    25   Ands : 25x1 
+    12   Registers : 12x1 
+    6    Nots : 6x1 
+    5    Ors : 5x1 
+    4    Muxs : 4x1 
+    2    Equal Tos : 2x16 
+    -------------
+---------------------------------------
+Entry: image2_scheduler_instance Total: 
+25   Ands : 25x1 
+12   Registers : 12x1 
+6    Nots : 6x1 
+5    Ors : 5x1 
+4    Muxs : 4x1 
+2    Equal Tos : 2x16 
+---------------------------------------
+

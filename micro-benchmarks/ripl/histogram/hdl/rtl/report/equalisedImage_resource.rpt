@@ -1,0 +1,110 @@
+//
+// Design Resource Utilization Report
+// Generated on: Sat 15 Jul 2017 12:59:02 +0100
+//
+
+equalisedImage Total: 
+34   Ands : 34x1 
+7    Registers : 7x1 
+1    Memory : 1x16 
+6    Ors : 6x1 
+4    Adds : 2x64 2x32 
+2    Less Thans : 2x32 
+8    Nots : 8x1 
+4    Muxs : 4x1 
+2    Equal Tos : 2x32 
+
+Design: equalisedImage
+----------------------
+Entry: equalisedImage_receiveVector_instance
+--------------------------------------------
+    Method: equalisedImage_receiveVector
+    ------------------------------------
+    2    Adds : 1x64 1x32 
+    1    And : 1x1 
+    2    Registers : 2x1 
+    1    Or : 1x1 
+
+    Method Total:
+    2    Adds : 1x64 1x32 
+    1    And : 1x1 
+    2    Registers : 2x1 
+    1    Or : 1x1 
+    -------------
+---------------------------------------------------
+Entry: equalisedImage_receiveVector_instance Total: 
+2    Adds : 1x64 1x32 
+1    And : 1x1 
+2    Registers : 2x1 
+1    Or : 1x1 
+---------------------------------------------------
+
+Entry: equalisedImage_zipStream_instance
+----------------------------------------
+    Method: equalisedImage_zipStream
+    --------------------------------
+    2    Adds : 1x64 1x32 
+    1    And : 1x1 
+    1    Register : 1x1 
+    1    Memory : 1x16 
+
+    Method Total:
+    2    Adds : 1x64 1x32 
+    1    And : 1x1 
+    1    Register : 1x1 
+    1    Memory : 1x16 
+    -------------
+-----------------------------------------------
+Entry: equalisedImage_zipStream_instance Total: 
+2    Adds : 1x64 1x32 
+1    And : 1x1 
+1    Register : 1x1 
+1    Memory : 1x16 
+-----------------------------------------------
+
+Entry: equalisedImage_done_instance
+-----------------------------------
+    Method: equalisedImage_done
+    ---------------------------
+    1    Register : 1x1 
+
+    Method Total:
+    1    Register : 1x1 
+    -------------
+------------------------------------------
+Entry: equalisedImage_done_instance Total: 
+1    Register : 1x1 
+------------------------------------------
+
+Entry: equalisedImage_scheduler_instance
+----------------------------------------
+    Method: equalisedImage_scheduler
+    --------------------------------
+    32   Ands : 32x1 
+    3    Registers : 3x1 
+    2    Less Thans : 2x32 
+    8    Nots : 8x1 
+    5    Ors : 5x1 
+    4    Muxs : 4x1 
+    2    Equal Tos : 2x32 
+
+    Method Total:
+    32   Ands : 32x1 
+    3    Registers : 3x1 
+    2    Less Thans : 2x32 
+    8    Nots : 8x1 
+    5    Ors : 5x1 
+    4    Muxs : 4x1 
+    2    Equal Tos : 2x32 
+    -------------
+-----------------------------------------------
+Entry: equalisedImage_scheduler_instance Total: 
+32   Ands : 32x1 
+3    Registers : 3x1 
+2    Less Thans : 2x32 
+8    Nots : 8x1 
+5    Ors : 5x1 
+4    Muxs : 4x1 
+2    Equal Tos : 2x32 
+-----------------------------------------------
+

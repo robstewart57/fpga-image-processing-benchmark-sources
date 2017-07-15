@@ -1,0 +1,76 @@
+//
+// Design Resource Utilization Report
+// Generated on: Sat 15 Jul 2017 12:59:07 +0100
+//
+
+scanSums Total: 
+2    Adds : 2x64 
+13   Ands : 13x1 
+3    Registers : 3x1 
+1    Less Than : 1x32 
+3    Nots : 3x1 
+1    Or : 1x1 
+1    Equal To : 1x32 
+
+Design: scanSums
+----------------
+Entry: scanSums_scan_instance
+-----------------------------
+    Method: scanSums_scan
+    ---------------------
+    2    Adds : 2x64 
+    1    Register : 1x1 
+
+    Method Total:
+    2    Adds : 2x64 
+    1    Register : 1x1 
+    -------------
+------------------------------------
+Entry: scanSums_scan_instance Total: 
+2    Adds : 2x64 
+1    Register : 1x1 
+------------------------------------
+
+Entry: scanSums_outputState_instance
+------------------------------------
+    Method: scanSums_outputState
+    ----------------------------
+    1    Register : 1x1 
+
+    Method Total:
+    1    Register : 1x1 
+    -------------
+-------------------------------------------
+Entry: scanSums_outputState_instance Total: 
+1    Register : 1x1 
+-------------------------------------------
+
+Entry: scanSums_scheduler_instance
+----------------------------------
+    Method: scanSums_scheduler
+    --------------------------
+    13   Ands : 13x1 
+    1    Register : 1x1 
+    1    Less Than : 1x32 
+    3    Nots : 3x1 
+    1    Or : 1x1 
+    1    Equal To : 1x32 
+
+    Method Total:
+    13   Ands : 13x1 
+    1    Register : 1x1 
+    1    Less Than : 1x32 
+    3    Nots : 3x1 
+    1    Or : 1x1 
+    1    Equal To : 1x32 
+    -------------
+-----------------------------------------
+Entry: scanSums_scheduler_instance Total: 
+13   Ands : 13x1 
+1    Register : 1x1 
+1    Less Than : 1x32 
+3    Nots : 3x1 
+1    Or : 1x1 
+1    Equal To : 1x32 
+-----------------------------------------
+

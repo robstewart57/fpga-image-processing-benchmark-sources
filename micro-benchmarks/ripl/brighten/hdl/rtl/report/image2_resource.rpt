@@ -1,0 +1,61 @@
+//
+// Design Resource Utilization Report
+// Generated on: Sat 15 Jul 2017 12:55:07 +0100
+//
+
+image2 Total: 
+2    Adds : 2x9 
+11   Ands : 11x1 
+1    Register : 1x1 
+1    Less Than : 1x9 
+3    Nots : 3x1 
+1    Or : 1x1 
+
+Design: image2
+--------------
+Entry: image2_the_action_instance
+---------------------------------
+    Method: image2_the_action
+    -------------------------
+    2    Adds : 2x9 
+    4    Ands : 4x1 
+    1    Less Than : 1x9 
+    1    Not : 1x1 
+
+    Method Total:
+    2    Adds : 2x9 
+    4    Ands : 4x1 
+    1    Less Than : 1x9 
+    1    Not : 1x1 
+    -------------
+----------------------------------------
+Entry: image2_the_action_instance Total: 
+2    Adds : 2x9 
+4    Ands : 4x1 
+1    Less Than : 1x9 
+1    Not : 1x1 
+----------------------------------------
+
+Entry: image2_scheduler_instance
+--------------------------------
+    Method: image2_scheduler
+    ------------------------
+    7    Ands : 7x1 
+    1    Register : 1x1 
+    2    Nots : 2x1 
+    1    Or : 1x1 
+
+    Method Total:
+    7    Ands : 7x1 
+    1    Register : 1x1 
+    2    Nots : 2x1 
+    1    Or : 1x1 
+    -------------
+---------------------------------------
+Entry: image2_scheduler_instance Total: 
+7    Ands : 7x1 
+1    Register : 1x1 
+2    Nots : 2x1 
+1    Or : 1x1 
+---------------------------------------
+

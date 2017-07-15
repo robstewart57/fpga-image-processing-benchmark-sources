@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Design name="histogram">
+    <Task name="fold">
+        <Resource MaxGateDepth="191" MaxLatency="1" MinGoSpacing="1" MinLatency="1"/>
+    </Task>
+    <Task name="outputState">
+        <Resource MaxGateDepth="145" MaxLatency="1" MinGoSpacing="1" MinLatency="1"/>
+    </Task>
+    <Task name="outputDone">
+        <Resource MaxGateDepth="95" MaxLatency="257" MinGoSpacing="257" MinLatency="257"/>
+    </Task>
+    <Task name="scheduler">
+        <Resource MaxGateDepth="42" MaxLatency="unknown"
+            MinGoSpacing="indeterminate" MinLatency="0"/>
+    </Task>
+</Design>

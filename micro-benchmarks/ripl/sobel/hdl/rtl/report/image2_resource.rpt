@@ -1,0 +1,619 @@
+//
+// Design Resource Utilization Report
+// Generated on: Sat 15 Jul 2017 13:01:23 +0100
+//
+
+image2 Total: 
+1303 Ands : 1303x1 
+544  Registers : 78x32 72x20 36x19 78x16 280x1 
+96   Memorys : 96x16 
+190  Ors : 190x1 
+864  Adds : 7x64 103x32 36x21 288x20 288x19 33x18 109x17 
+48   Minuss : 12x21 36x20 
+11   Less Thans : 3x32 8x16 
+328  Subtracts : 144x20 92x19 92x17 
+303  Nots : 303x1 
+218  Greater Thans : 2x32 216x16 
+48   Greater Than Or Equal Tos : 12x21 36x20 
+282  Muxs : 24x32 36x20 184x19 24x16 14x1 
+15   Equal Tos : 6x32 9x16 
+
+Design: image2
+--------------
+Entry: image2_populateBuffer_instance
+-------------------------------------
+    Method: image2_populateBuffer
+    -----------------------------
+    3    Adds : 1x64 1x32 1x17 
+    1    And : 1x1 
+    2    Registers : 2x1 
+    1    Or : 1x1 
+
+    Method Total:
+    3    Adds : 1x64 1x32 1x17 
+    1    And : 1x1 
+    2    Registers : 2x1 
+    1    Or : 1x1 
+    -------------
+--------------------------------------------
+Entry: image2_populateBuffer_instance Total: 
+3    Adds : 1x64 1x32 1x17 
+1    And : 1x1 
+2    Registers : 2x1 
+1    Or : 1x1 
+--------------------------------------------
+
+Entry: image2_donePopulateBuffer_instance
+-----------------------------------------
+    Method: image2_donePopulateBuffer
+    ---------------------------------
+    1    Register : 1x1 
+
+    Method Total:
+    1    Register : 1x1 
+    -------------
+------------------------------------------------
+Entry: image2_donePopulateBuffer_instance Total: 
+1    Register : 1x1 
+------------------------------------------------
+
+Entry: image2_topLeft_instance
+------------------------------
+    Method: image2_topLeft
+    ----------------------
+    77   Ands : 77x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    68   Adds : 1x64 9x32 3x21 24x20 24x19 7x17 
+    4    Minuss : 1x21 3x20 
+    24   Subtracts : 12x20 6x19 6x17 
+    17   Nots : 17x1 
+    13   Greater Thans : 13x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    19   Muxs : 2x32 3x20 12x19 2x16 
+
+    Method Total:
+    77   Ands : 77x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    68   Adds : 1x64 9x32 3x21 24x20 24x19 7x17 
+    4    Minuss : 1x21 3x20 
+    24   Subtracts : 12x20 6x19 6x17 
+    17   Nots : 17x1 
+    13   Greater Thans : 13x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    19   Muxs : 2x32 3x20 12x19 2x16 
+    -------------
+-------------------------------------
+Entry: image2_topLeft_instance Total: 
+77   Ands : 77x1 
+37   Registers : 7x32 6x20 3x19 7x16 14x1 
+8    Memorys : 8x16 
+11   Ors : 11x1 
+68   Adds : 1x64 9x32 3x21 24x20 24x19 7x17 
+4    Minuss : 1x21 3x20 
+24   Subtracts : 12x20 6x19 6x17 
+17   Nots : 17x1 
+13   Greater Thans : 13x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+19   Muxs : 2x32 3x20 12x19 2x16 
+-------------------------------------
+
+Entry: image2_topRow_instance
+-----------------------------
+    Method: image2_topRow
+    ---------------------
+    98   Ands : 98x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    72   Adds : 1x64 9x32 3x21 24x20 24x19 1x18 10x17 
+    4    Minuss : 1x21 3x20 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+
+    Method Total:
+    98   Ands : 98x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    72   Adds : 1x64 9x32 3x21 24x20 24x19 1x18 10x17 
+    4    Minuss : 1x21 3x20 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+    -------------
+------------------------------------
+Entry: image2_topRow_instance Total: 
+98   Ands : 98x1 
+37   Registers : 7x32 6x20 3x19 7x16 14x1 
+8    Memorys : 8x16 
+11   Ors : 11x1 
+72   Adds : 1x64 9x32 3x21 24x20 24x19 1x18 10x17 
+4    Minuss : 1x21 3x20 
+28   Subtracts : 12x20 8x19 8x17 
+23   Nots : 23x1 
+19   Greater Thans : 19x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+23   Muxs : 2x32 3x20 16x19 2x16 
+------------------------------------
+
+Entry: image2_topRight_instance
+-------------------------------
+    Method: image2_topRight
+    -----------------------
+    98   Ands : 98x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    70   Adds : 1x64 9x32 3x21 24x20 24x19 1x18 8x17 
+    4    Minuss : 1x21 3x20 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+
+    Method Total:
+    98   Ands : 98x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    70   Adds : 1x64 9x32 3x21 24x20 24x19 1x18 8x17 
+    4    Minuss : 1x21 3x20 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+    -------------
+--------------------------------------
+Entry: image2_topRight_instance Total: 
+98   Ands : 98x1 
+37   Registers : 7x32 6x20 3x19 7x16 14x1 
+8    Memorys : 8x16 
+11   Ors : 11x1 
+70   Adds : 1x64 9x32 3x21 24x20 24x19 1x18 8x17 
+4    Minuss : 1x21 3x20 
+28   Subtracts : 12x20 8x19 8x17 
+23   Nots : 23x1 
+19   Greater Thans : 19x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+23   Muxs : 2x32 3x20 16x19 2x16 
+--------------------------------------
+
+Entry: image2_midLeft_instance
+------------------------------
+    Method: image2_midLeft
+    ----------------------
+    98   Ands : 98x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    72   Adds : 1x64 9x32 3x21 24x20 24x19 2x18 9x17 
+    4    Minuss : 1x21 3x20 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+
+    Method Total:
+    98   Ands : 98x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    72   Adds : 1x64 9x32 3x21 24x20 24x19 2x18 9x17 
+    4    Minuss : 1x21 3x20 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+    -------------
+-------------------------------------
+Entry: image2_midLeft_instance Total: 
+98   Ands : 98x1 
+37   Registers : 7x32 6x20 3x19 7x16 14x1 
+8    Memorys : 8x16 
+11   Ors : 11x1 
+72   Adds : 1x64 9x32 3x21 24x20 24x19 2x18 9x17 
+4    Minuss : 1x21 3x20 
+28   Subtracts : 12x20 8x19 8x17 
+23   Nots : 23x1 
+19   Greater Thans : 19x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+23   Muxs : 2x32 3x20 16x19 2x16 
+-------------------------------------
+
+Entry: image2_midLeftNoConsume_instance
+---------------------------------------
+    Method: image2_midLeftNoConsume
+    -------------------------------
+    68   Adds : 8x32 3x21 24x20 24x19 1x18 8x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 2x32 15x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+
+    Method Total:
+    68   Adds : 8x32 3x21 24x20 24x19 1x18 8x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 2x32 15x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+    -------------
+----------------------------------------------
+Entry: image2_midLeftNoConsume_instance Total: 
+68   Adds : 8x32 3x21 24x20 24x19 1x18 8x17 
+89   Ands : 89x1 
+33   Registers : 6x32 6x20 3x19 6x16 12x1 
+4    Minuss : 1x21 3x20 
+8    Memorys : 8x16 
+26   Subtracts : 12x20 7x19 7x17 
+21   Nots : 21x1 
+17   Greater Thans : 2x32 15x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+10   Ors : 10x1 
+21   Muxs : 2x32 3x20 14x19 2x16 
+----------------------------------------------
+
+Entry: image2_mid_instance
+--------------------------
+    Method: image2_mid
+    ------------------
+    106  Ands : 106x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    76   Adds : 1x64 9x32 3x21 24x20 24x19 5x18 10x17 
+    4    Minuss : 1x21 3x20 
+    30   Subtracts : 12x20 9x19 9x17 
+    25   Nots : 25x1 
+    21   Greater Thans : 21x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    25   Muxs : 2x32 3x20 18x19 2x16 
+
+    Method Total:
+    106  Ands : 106x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    76   Adds : 1x64 9x32 3x21 24x20 24x19 5x18 10x17 
+    4    Minuss : 1x21 3x20 
+    30   Subtracts : 12x20 9x19 9x17 
+    25   Nots : 25x1 
+    21   Greater Thans : 21x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    25   Muxs : 2x32 3x20 18x19 2x16 
+    -------------
+---------------------------------
+Entry: image2_mid_instance Total: 
+106  Ands : 106x1 
+37   Registers : 7x32 6x20 3x19 7x16 14x1 
+8    Memorys : 8x16 
+11   Ors : 11x1 
+76   Adds : 1x64 9x32 3x21 24x20 24x19 5x18 10x17 
+4    Minuss : 1x21 3x20 
+30   Subtracts : 12x20 9x19 9x17 
+25   Nots : 25x1 
+21   Greater Thans : 21x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+25   Muxs : 2x32 3x20 18x19 2x16 
+---------------------------------
+
+Entry: image2_midNoConsume_instance
+-----------------------------------
+    Method: image2_midNoConsume
+    ---------------------------
+    73   Adds : 8x32 3x21 24x20 24x19 4x18 10x17 
+    97   Ands : 97x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+
+    Method Total:
+    73   Adds : 8x32 3x21 24x20 24x19 4x18 10x17 
+    97   Ands : 97x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+    -------------
+------------------------------------------
+Entry: image2_midNoConsume_instance Total: 
+73   Adds : 8x32 3x21 24x20 24x19 4x18 10x17 
+97   Ands : 97x1 
+33   Registers : 6x32 6x20 3x19 6x16 12x1 
+4    Minuss : 1x21 3x20 
+8    Memorys : 8x16 
+28   Subtracts : 12x20 8x19 8x17 
+23   Nots : 23x1 
+19   Greater Thans : 19x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+10   Ors : 10x1 
+23   Muxs : 2x32 3x20 16x19 2x16 
+------------------------------------------
+
+Entry: image2_midRight_instance
+-------------------------------
+    Method: image2_midRight
+    -----------------------
+    106  Ands : 106x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    76   Adds : 1x64 9x32 3x21 24x20 24x19 5x18 10x17 
+    4    Minuss : 1x21 3x20 
+    30   Subtracts : 12x20 9x19 9x17 
+    25   Nots : 25x1 
+    21   Greater Thans : 21x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    25   Muxs : 2x32 3x20 18x19 2x16 
+
+    Method Total:
+    106  Ands : 106x1 
+    37   Registers : 7x32 6x20 3x19 7x16 14x1 
+    8    Memorys : 8x16 
+    11   Ors : 11x1 
+    76   Adds : 1x64 9x32 3x21 24x20 24x19 5x18 10x17 
+    4    Minuss : 1x21 3x20 
+    30   Subtracts : 12x20 9x19 9x17 
+    25   Nots : 25x1 
+    21   Greater Thans : 21x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    25   Muxs : 2x32 3x20 18x19 2x16 
+    -------------
+--------------------------------------
+Entry: image2_midRight_instance Total: 
+106  Ands : 106x1 
+37   Registers : 7x32 6x20 3x19 7x16 14x1 
+8    Memorys : 8x16 
+11   Ors : 11x1 
+76   Adds : 1x64 9x32 3x21 24x20 24x19 5x18 10x17 
+4    Minuss : 1x21 3x20 
+30   Subtracts : 12x20 9x19 9x17 
+25   Nots : 25x1 
+21   Greater Thans : 21x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+25   Muxs : 2x32 3x20 18x19 2x16 
+--------------------------------------
+
+Entry: image2_midRightNoConsume_instance
+----------------------------------------
+    Method: image2_midRightNoConsume
+    --------------------------------
+    72   Adds : 8x32 3x21 24x20 24x19 4x18 9x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 17x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+
+    Method Total:
+    72   Adds : 8x32 3x21 24x20 24x19 4x18 9x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 17x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+    -------------
+-----------------------------------------------
+Entry: image2_midRightNoConsume_instance Total: 
+72   Adds : 8x32 3x21 24x20 24x19 4x18 9x17 
+89   Ands : 89x1 
+33   Registers : 6x32 6x20 3x19 6x16 12x1 
+4    Minuss : 1x21 3x20 
+8    Memorys : 8x16 
+26   Subtracts : 12x20 7x19 7x17 
+21   Nots : 21x1 
+17   Greater Thans : 17x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+10   Ors : 10x1 
+21   Muxs : 2x32 3x20 14x19 2x16 
+-----------------------------------------------
+
+Entry: image2_bottomLeftNoConsume_instance
+------------------------------------------
+    Method: image2_bottomLeftNoConsume
+    ----------------------------------
+    70   Adds : 8x32 3x21 24x20 24x19 2x18 9x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 17x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+
+    Method Total:
+    70   Adds : 8x32 3x21 24x20 24x19 2x18 9x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 17x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+    -------------
+-------------------------------------------------
+Entry: image2_bottomLeftNoConsume_instance Total: 
+70   Adds : 8x32 3x21 24x20 24x19 2x18 9x17 
+89   Ands : 89x1 
+33   Registers : 6x32 6x20 3x19 6x16 12x1 
+4    Minuss : 1x21 3x20 
+8    Memorys : 8x16 
+26   Subtracts : 12x20 7x19 7x17 
+21   Nots : 21x1 
+17   Greater Thans : 17x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+10   Ors : 10x1 
+21   Muxs : 2x32 3x20 14x19 2x16 
+-------------------------------------------------
+
+Entry: image2_bottomRowNoConsume_instance
+-----------------------------------------
+    Method: image2_bottomRowNoConsume
+    ---------------------------------
+    73   Adds : 8x32 3x21 24x20 24x19 4x18 10x17 
+    97   Ands : 97x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+
+    Method Total:
+    73   Adds : 8x32 3x21 24x20 24x19 4x18 10x17 
+    97   Ands : 97x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    28   Subtracts : 12x20 8x19 8x17 
+    23   Nots : 23x1 
+    19   Greater Thans : 19x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    23   Muxs : 2x32 3x20 16x19 2x16 
+    -------------
+------------------------------------------------
+Entry: image2_bottomRowNoConsume_instance Total: 
+73   Adds : 8x32 3x21 24x20 24x19 4x18 10x17 
+97   Ands : 97x1 
+33   Registers : 6x32 6x20 3x19 6x16 12x1 
+4    Minuss : 1x21 3x20 
+8    Memorys : 8x16 
+28   Subtracts : 12x20 8x19 8x17 
+23   Nots : 23x1 
+19   Greater Thans : 19x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+10   Ors : 10x1 
+23   Muxs : 2x32 3x20 16x19 2x16 
+------------------------------------------------
+
+Entry: image2_bottomRightNoConsume_instance
+-------------------------------------------
+    Method: image2_bottomRightNoConsume
+    -----------------------------------
+    71   Adds : 8x32 3x21 24x20 24x19 4x18 8x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 17x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+
+    Method Total:
+    71   Adds : 8x32 3x21 24x20 24x19 4x18 8x17 
+    89   Ands : 89x1 
+    33   Registers : 6x32 6x20 3x19 6x16 12x1 
+    4    Minuss : 1x21 3x20 
+    8    Memorys : 8x16 
+    26   Subtracts : 12x20 7x19 7x17 
+    21   Nots : 21x1 
+    17   Greater Thans : 17x16 
+    4    Greater Than Or Equal Tos : 1x21 3x20 
+    10   Ors : 10x1 
+    21   Muxs : 2x32 3x20 14x19 2x16 
+    -------------
+--------------------------------------------------
+Entry: image2_bottomRightNoConsume_instance Total: 
+71   Adds : 8x32 3x21 24x20 24x19 4x18 8x17 
+89   Ands : 89x1 
+33   Registers : 6x32 6x20 3x19 6x16 12x1 
+4    Minuss : 1x21 3x20 
+8    Memorys : 8x16 
+26   Subtracts : 12x20 7x19 7x17 
+21   Nots : 21x1 
+17   Greater Thans : 17x16 
+4    Greater Than Or Equal Tos : 1x21 3x20 
+10   Ors : 10x1 
+21   Muxs : 2x32 3x20 14x19 2x16 
+--------------------------------------------------
+
+Entry: image2_scheduler_instance
+--------------------------------
+    Method: image2_scheduler
+    ------------------------
+    169  Ands : 169x1 
+    121  Registers : 121x1 
+    11   Less Thans : 3x32 8x16 
+    37   Nots : 37x1 
+    63   Ors : 63x1 
+    14   Muxs : 14x1 
+    15   Equal Tos : 6x32 9x16 
+
+    Method Total:
+    169  Ands : 169x1 
+    121  Registers : 121x1 
+    11   Less Thans : 3x32 8x16 
+    37   Nots : 37x1 
+    63   Ors : 63x1 
+    14   Muxs : 14x1 
+    15   Equal Tos : 6x32 9x16 
+    -------------
+---------------------------------------
+Entry: image2_scheduler_instance Total: 
+169  Ands : 169x1 
+121  Registers : 121x1 
+11   Less Thans : 3x32 8x16 
+37   Nots : 37x1 
+63   Ors : 63x1 
+14   Muxs : 14x1 
+15   Equal Tos : 6x32 9x16 
+---------------------------------------
+

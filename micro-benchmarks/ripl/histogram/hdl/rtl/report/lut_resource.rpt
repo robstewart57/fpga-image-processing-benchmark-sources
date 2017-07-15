@@ -1,0 +1,69 @@
+//
+// Design Resource Utilization Report
+// Generated on: Sat 15 Jul 2017 12:59:07 +0100
+//
+
+lut Total: 
+11   Ands : 11x1 
+2    Minuss : 2x64 
+1    Register : 1x1 
+1    Subtract : 1x64 
+3    Nots : 3x1 
+1    Greater Than Or Equal To : 1x64 
+1    Or : 1x1 
+1    Mux : 1x64 
+
+Design: lut
+-----------
+Entry: lut_the_action_instance
+------------------------------
+    Method: lut_the_action
+    ----------------------
+    4    Ands : 4x1 
+    2    Minuss : 2x64 
+    1    Subtract : 1x64 
+    1    Not : 1x1 
+    1    Greater Than Or Equal To : 1x64 
+    1    Mux : 1x64 
+
+    Method Total:
+    4    Ands : 4x1 
+    2    Minuss : 2x64 
+    1    Subtract : 1x64 
+    1    Not : 1x1 
+    1    Greater Than Or Equal To : 1x64 
+    1    Mux : 1x64 
+    -------------
+-------------------------------------
+Entry: lut_the_action_instance Total: 
+4    Ands : 4x1 
+2    Minuss : 2x64 
+1    Subtract : 1x64 
+1    Not : 1x1 
+1    Greater Than Or Equal To : 1x64 
+1    Mux : 1x64 
+-------------------------------------
+
+Entry: lut_scheduler_instance
+-----------------------------
+    Method: lut_scheduler
+    ---------------------
+    7    Ands : 7x1 
+    1    Register : 1x1 
+    2    Nots : 2x1 
+    1    Or : 1x1 
+
+    Method Total:
+    7    Ands : 7x1 
+    1    Register : 1x1 
+    2    Nots : 2x1 
+    1    Or : 1x1 
+    -------------
+------------------------------------
+Entry: lut_scheduler_instance Total: 
+7    Ands : 7x1 
+1    Register : 1x1 
+2    Nots : 2x1 
+1    Or : 1x1 
+------------------------------------
+
