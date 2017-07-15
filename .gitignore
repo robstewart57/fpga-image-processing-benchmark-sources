@@ -1,0 +1,5 @@
+*.xdfdiag
+bin/
+*.zip
+*.tar.gz
+*.tar
