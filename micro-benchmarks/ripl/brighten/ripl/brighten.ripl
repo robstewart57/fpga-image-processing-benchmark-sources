@@ -1,0 +1,3 @@
+image1 = imread 512 512;
+image2 = map image1 (\[p] -> [min 255 (p + 50)]);
+out image2;
