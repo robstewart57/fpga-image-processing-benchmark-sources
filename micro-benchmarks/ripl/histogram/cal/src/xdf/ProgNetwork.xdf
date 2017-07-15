@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="ProgNetwork">
+    <Port kind="Input" name="In">
+        <Type name="uint">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Out">
+        <Type name="uint">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="16"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="equalisedImage">
+        <Class name="cal.equalisedImage"/>
+    </Instance>
+    <Instance id="histogram">
+        <Class name="cal.histogram"/>
+    </Instance>
+    <Instance id="image1">
+        <Class name="cal.image1"/>
+    </Instance>
+    <Instance id="lut">
+        <Class name="cal.lut"/>
+    </Instance>
+    <Instance id="scanSums">
+        <Class name="cal.scanSums"/>
+    </Instance>
+    <Connection dst="equalisedImage" dst-port="In1" src="image1" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="equalisedImage" dst-port="In2" src="lut" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="histogram" dst-port="In1" src="image1" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="image1" dst-port="In1" src="" src-port="In">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="lut" dst-port="In1" src="scanSums" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Out" src="equalisedImage" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="scanSums" dst-port="In1" src="histogram" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+</XDF>

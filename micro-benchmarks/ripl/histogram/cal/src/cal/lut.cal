@@ -1,0 +1,9 @@
+package cal ;
+actor lut () uint (size = 32)In1 ==> uint (size = 16)Out1 :
+ 
+ the_action : action In1 : [sumHere]==> Out1 : [((sumHere * (255)))/ (262144)] 
+ do end
+ 
+ 
+
+end

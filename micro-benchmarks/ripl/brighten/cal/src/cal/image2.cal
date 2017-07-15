@@ -1,0 +1,9 @@
+package cal ;
+actor image2 () uint (size = 8)In1 ==> uint (size = 8)Out1 :
+ 
+ the_action : action In1 : [p]==> Out1 : [if (255)< ((p + (50)))then 255 else (p + (50)) end]
+ do end
+ 
+ 
+
+end

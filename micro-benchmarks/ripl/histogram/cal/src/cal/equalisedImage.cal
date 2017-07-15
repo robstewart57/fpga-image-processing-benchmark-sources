@@ -1,0 +1,25 @@
+package cal ;
+actor equalisedImage () uint (size = 8)In1, uint (size = 16)In2 ==> uint (size = 16)Out1 : int (size = 16)vect [256]:= [0 : for uint (size = 16)i in (0).. (255)] ;
+int (size = 32)count := 0 ;
+int (size = 32)vectorCount := 0 ;
+int (size = 32)vectorLength := 256 ;
+receiveVector : action In2 : [pixel]==> 
+ guard (vectorCount < vectorLength)
+ do vect [vectorCount]:= pixel ;
+vectorCount := vectorCount + (1);
+end
+ zipStream : action In1 : [pixel]==> Out1 : [vect [pixel]] 
+ guard count < (262144), vectorCount = vectorLength 
+ do count := count + (1);
+end
+ done : action ==> 
+ guard count = (262144)
+ do vectorCount := 0 ;
+count := 0 ;
+end
+ schedule fsm s0 :
+ s0 (receiveVector)--> s0 ;
+s0 (zipStream)--> s1 ;
+s1 (zipStream)--> s1 ;
+s1 (done)--> s0 ;
+end end

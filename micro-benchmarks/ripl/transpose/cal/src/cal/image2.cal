@@ -1,0 +1,35 @@
+package cal ;
+actor image2 () uint (size = 8)In1 ==> uint (size = 8)Out1 : int (size = 16)countX := 0 ;
+int (size = 16)countY := 0 ;
+int (size = 16)coeffBuffer [512][512];
+getCoeffValue : action In1 : [x]==> 
+ do coeffBuffer [countX][countY]:= x ;
+countX := countX + (1);
+if countX = (512)then countY := countY + (1);
+countX := 0 ;
+end end
+ doneCountX : action ==> 
+ guard countX = (512)
+ do countX := 0 ;
+countY := 0 ;
+end
+ doneCountY : action ==> 
+ guard countY = (512)
+ do countX := 0 ;
+countY := 0 ;
+end
+ sendCoeffValue : action ==> Out1 : [outVal]var int (size = 16)outVal 
+ do outVal := coeffBuffer [countX][countY];
+countY := countY + (1);
+if countY = (512)then countX := countX + (1);
+countY := 0 ;
+end end
+ schedule fsm s0 :
+ s0 (getCoeffValue)--> s0 ;
+s0 (doneCountY)--> s1 ;
+s1 (sendCoeffValue)--> s1 ;
+s1 (doneCountX)--> s0 ;
+end priority
+ doneCountY > getCoeffValue ;
+doneCountX > sendCoeffValue ;
+end end

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="ProgNetwork">
+    <Port kind="Input" name="In">
+        <Type name="uint">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Out">
+        <Type name="uint">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="image1">
+        <Class name="cal.image1"/>
+    </Instance>
+    <Instance id="maxPixel">
+        <Class name="cal.maxPixel"/>
+    </Instance>
+    <Instance id="normalisedImage">
+        <Class name="cal.normalisedImage"/>
+    </Instance>
+    <Connection dst="image1" dst-port="In1" src="" src-port="In">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="maxPixel" dst-port="In1" src="image1" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="normalisedImage" dst-port="In1" src="image1" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="normalisedImage" dst-port="In2" src="maxPixel" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Out" src="normalisedImage" src-port="Out1">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="2"/>
+        </Attribute>
+    </Connection>
+</XDF>

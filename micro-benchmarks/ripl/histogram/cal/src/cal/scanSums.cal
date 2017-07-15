@@ -1,0 +1,24 @@
+package cal ;
+actor scanSums () uint (size = 16)In1 ==> uint (size = 32)Out1 :
+ uint (size = 32)streamSize = 256 ;
+int (size = 16)initValue = 0 ;
+uint (size = 32)state := initValue ;
+uint (size = 32)tokenCount := 0 ;
+scan : action In1 : [elem]==> Out1 : [state]
+ guard (tokenCount < streamSize)
+ do state := state + elem ;
+tokenCount := tokenCount + (1);
+end
+ outputState : action ==> 
+ guard (tokenCount = streamSize)
+ var int (size = 16)outVar := 0 
+ do tokenCount := 0 ;
+outVar := state ;
+state := initValue ;
+end
+ 
+ priority
+ scan > outputState ;
+end 
+
+end

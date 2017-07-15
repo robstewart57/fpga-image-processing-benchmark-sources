@@ -1,0 +1,9 @@
+package cal ;
+actor image1 () uint (size = 8)In1 ==> uint (size = 8)Out1 :
+ 
+ the_action : action In1 : [x]==> Out1 : [x]
+ do end
+ 
+ 
+
+end

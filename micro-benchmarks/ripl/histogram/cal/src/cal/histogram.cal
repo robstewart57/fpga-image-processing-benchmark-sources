@@ -1,0 +1,30 @@
+package cal ;
+actor histogram () uint (size = 8)In1 ==> uint (size = 16)Out1 :
+ uint (size = 32)streamSize = 262144 ;
+int (size = 16)initValue = 0 ;
+int (size = 16)vectorLength = 256 ;
+uint (size = 16)hist [256]:= [initValue : for uint (size = 16)i in (0).. (255)] ;
+uint (size = 32)tokenCount := 0 ;
+uint (size = 16)tokensSent := 0 ;
+fold : action In1 : [p]==> 
+ guard (tokenCount < streamSize)
+ do hist [p]:= (hist [p]) + (1);
+tokenCount := tokenCount + (1);
+end
+ outputState : action ==> Out1 : [hist [tokensSent]] 
+ guard (tokenCount = streamSize), (tokensSent < vectorLength)
+ do tokensSent := tokensSent + (1);
+end
+ outputDone : action ==> 
+ guard (tokenCount = streamSize), (tokensSent = vectorLength)
+ do tokensSent := 0 ;
+tokenCount := 0 ;
+hist := [initValue : for uint (size = 16)i in (0).. (255)] ;
+end
+ 
+ priority
+ fold > outputState ;
+fold > outputDone ;
+end 
+
+end
