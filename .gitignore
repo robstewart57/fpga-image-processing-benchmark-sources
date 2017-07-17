@@ -7,3 +7,10 @@ bin/
 solution*/
 syn/
 .autopilot/
+
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+*.png
+VisualSaliency
