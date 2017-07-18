@@ -23,43 +23,43 @@ void saveImage(string const &fname, uchar** image, int w, int h) {
 }
 
 /* forward wavelet transform */
-void blurFilter (uchar **image, int w, int h) {
+void blurFilter (int **image, int w, int h) {
   for (int j=0;j<h;++j) {
     for (int i=0;i<w;++i) {
       int left  = i == 0 ? 0 : i - 1;
       int right = i == w-1 ? i : i + 1;
       int above = j == 0 ? 0 : j - 1;
       int below = j == h-1 ? j : j + 1;
-      // image[j][i] =
-      //   ( image[above][left] + image[above][i] + image[above][right]
-      //     + image[j][left] + image[j][i] + image[j][right]
-      //     + image[below][left] + image[below][i] +
-      //     image[below][right]) / 9;
+      image[j][i] =
+        ( image[above][left] + image[above][i] + image[above][right]
+          + image[j][left] + image[j][i] + image[j][right]
+          + image[below][left] + image[below][i] +
+          image[below][right]) / 9;
     }
   }
 }
 
 struct fwt_t {
-  uchar **ll;
-  uchar **lh;
-  uchar **hl;
-  uchar **hh;
+  int **ll;
+  int **lh;
+  int **hl;
+  int **hh;
 } fwt_bands ;
 
 /* forward wavelet transform */
-fwt_t fwt(uchar **image, int w, int h) {
+fwt_t fwt(int **image, int w, int h) {
   /* step 1: row wise */
-  uchar **lBand = new uchar*[h];
-  uchar **hBand = new uchar*[h];
-  uchar **llBand = new uchar*[h/2];
-  uchar **lhBand = new uchar*[h/2];
-  uchar **hlBand = new uchar*[h/2];
-  uchar **hhBand = new uchar*[h/2];
+  int **lBand = new int*[h];
+  int **hBand = new int*[h];
+  int **llBand = new int*[h/2];
+  int **lhBand = new int*[h/2];
+  int **hlBand = new int*[h/2];
+  int **hhBand = new int*[h/2];
 
   for (int i=0; i<h; ++i)
-    hBand[i] = new uchar[w/2];
+    hBand[i] = new int[w/2];
   for (int i=0; i<h; ++i)
-    lBand[i] = new uchar[w/2];
+    lBand[i] = new int[w/2];
 
   for (int row=0;row<h;row++) {
     for (int col=0;col<w;++col) {
@@ -83,9 +83,9 @@ fwt_t fwt(uchar **image, int w, int h) {
 
   /* step 2: column wise low */
   for (int i=0; i<h/2; ++i)
-    lhBand[i] = new uchar[w/2];
+    lhBand[i] = new int[w/2];
   for (int i=0; i<h/2; ++i)
-    llBand[i] = new uchar[w/2];
+    llBand[i] = new int[w/2];
 
   for (int row=0;row<h;row++) {
     for (int col=0;col<w/2;++col) {
@@ -94,24 +94,26 @@ fwt_t fwt(uchar **image, int w, int h) {
 
       if (row % 2 == 0) { // low
         llBand[(int)row/2][col] =
+          max(0,
           lBand[row][col]
           + ((lBand[above][col]
-              + lBand[below][col])>>2);
+              + lBand[below][col])>>2));
       }
       else { // high
         lhBand[(int)row/2][col] =
+          max(0,
           lBand[row][col]
           - ((lBand[above][col]
-              + lBand[below][col])>>1);
+              + lBand[below][col])>>1));
       }
     }
   }
 
   /* step 3: column wise high */
   for (int i=0; i<h/2; ++i)
-    hlBand[i] = new uchar[w/2];
+    hlBand[i] = new int[w/2];
   for (int i=0; i<h/2; ++i)
-    hhBand[i] = new uchar[w/2];
+    hhBand[i] = new int[w/2];
 
   for (int row=0;row<h;row++) {
     for (int col=0;col<w/2;++col) {
@@ -120,15 +122,17 @@ fwt_t fwt(uchar **image, int w, int h) {
 
       if (row % 2 == 0) { // low
         hlBand[(int)row/2][col] =
+          max(0,
           hBand[row][col]
           + ((hBand[above][col]
-              + hBand[below][col])>>2);
+              + hBand[below][col])>>2));
       }
       else { // high
         hhBand[(int)row/2][col] =
+          max(0,
           hBand[row][col]
           - ((hBand[above][col]
-              + hBand[below][col])>>1);
+              + hBand[below][col])>>1));
       }
     }
   }
@@ -136,41 +140,41 @@ fwt_t fwt(uchar **image, int w, int h) {
   return bands;
 }
 
-uchar** mapForm(uchar **l1,uchar **l2,uchar **l3,uchar **l4,uchar
+int** mapForm(int **l1,int **l2,int **l3,int **l4,int
                 **l5, int w, int h) {
-  uchar **newImage = new uchar*[h];
+  int **newImage = new int*[h];
   for (int i=0; i<h; ++i) {
-    newImage[i] = new uchar[w];
+    newImage[i] = new int[w];
   }
   for (int i=0;i<w;++i) {
     for (int j=0;j<h;++j) {
       newImage[j][i] =
-        l1[j][i];// + l2[j][i]*6;// + l3[j][i]*2 + l4[j][i] + l5[j][i];
+        l1[j][i]*0.5 + l2[j][i]*0.8 + l3[j][i]*0.3 + l4[j][i]*0.2 + l5[j][i]*0.1;
     }
   }
   return newImage;
 }
 
-uchar** orientForm(uchar **image1,uchar **image2,uchar **image3, int
+int** orientForm(int **image1,int **image2,int **image3, int
   w, int h) {
-  uchar **newImage = new uchar*[h];
+  int **newImage = new int*[h];
   for (int i=0; i<h; ++i) {
-    newImage[i] = new uchar[w];
+    newImage[i] = new int[w];
   }
   for (int i=0;i<w;++i) {
     for (int j=0;j<h;++j) {
       newImage[j][i] =
-        // (value*255)/(2<<20)
-        image1[j][i]*2 + image2[j][i]*2 + image3[j][i]*2;
+        image1[j][i]*0.2 + image2[j][i]*0.2 + image3[j][i]*0.2;
+      newImage[j][i] = min (255,newImage[j][i]);
     }
   }
   return newImage;
 }
 
-uchar** resize(uchar **image, int w, int h, int scale) {
-  uchar **scaledImage = new uchar*[h*scale];
+int** resize(int **image, int w, int h, int scale) {
+  int **scaledImage = new int*[h*scale];
   for (int i=0; i<h*scale; ++i) {
-    scaledImage[i] = new uchar[w*scale];
+    scaledImage[i] = new int[w*scale];
   }
   for (int i=0; i<w*scale; ++i) {
     for (int j=0;j<h*scale; ++j) {
@@ -180,7 +184,7 @@ uchar** resize(uchar **image, int w, int h, int scale) {
   return scaledImage;
 }
 
-uchar** visualSaliency(uchar **image) {
+int** visualSaliency(int **image) {
   fwt_t l1 = fwt(image, 512, 512);
   fwt_t l2 = fwt(l1.ll, 256, 256);
   fwt_t l3 = fwt(l2.ll, 128, 128);
@@ -205,32 +209,32 @@ uchar** visualSaliency(uchar **image) {
   blurFilter(l4.hh,32,32);
   blurFilter(l5.hh,16,16);
 
-  uchar** lh1_resized = resize(l1.lh,256,256,2);
-  uchar** lh2_resized = resize(l2.lh,128,128,4);
-  uchar** lh3_resized = resize(l3.lh,64,64,8);
-  uchar** lh4_resized = resize(l4.lh,32,32,16);
-  uchar** lh5_resized = resize(l5.lh,16,16,32);
+  int** lh1_resized = resize(l1.lh,256,256,2);
+  int** lh2_resized = resize(l2.lh,128,128,4);
+  int** lh3_resized = resize(l3.lh,64,64,8);
+  int** lh4_resized = resize(l4.lh,32,32,16);
+  int** lh5_resized = resize(l5.lh,16,16,32);
 
-  uchar** hl1_resized = resize(l1.hl,256,256,2);
-  uchar** hl2_resized = resize(l2.hl,128,128,4);
-  uchar** hl3_resized = resize(l3.hl,64,64,8);
-  uchar** hl4_resized = resize(l4.hl,32,32,16);
-  uchar** hl5_resized = resize(l5.hl,16,16,32);
+  int** hl1_resized = resize(l1.hl,256,256,2);
+  int** hl2_resized = resize(l2.hl,128,128,4);
+  int** hl3_resized = resize(l3.hl,64,64,8);
+  int** hl4_resized = resize(l4.hl,32,32,16);
+  int** hl5_resized = resize(l5.hl,16,16,32);
 
-  uchar** hh1_resized = resize(l1.hh,256,256,2);
-  uchar** hh2_resized = resize(l2.hh,128,128,4);
-  uchar** hh3_resized = resize(l3.hh,64,64,8);
-  uchar** hh4_resized = resize(l4.hh,32,32,16);
-  uchar** hh5_resized = resize(l5.hh,16,16,32);
+  int** hh1_resized = resize(l1.hh,256,256,2);
+  int** hh2_resized = resize(l2.hh,128,128,4);
+  int** hh3_resized = resize(l3.hh,64,64,8);
+  int** hh4_resized = resize(l4.hh,32,32,16);
+  int** hh5_resized = resize(l5.hh,16,16,32);
 
-  uchar** mapVer =
+  int** mapVer =
   mapForm(lh1_resized,lh2_resized,lh3_resized,lh4_resized,lh5_resized,512,512);
-  uchar** mapHor =
+  int** mapHor =
   mapForm(hl1_resized,hl2_resized,hl3_resized,hl4_resized,hl5_resized,512,512);
-  uchar** mapDia =
+  int** mapDia =
   mapForm(hh1_resized,hh2_resized,hh3_resized,hh4_resized,hh5_resized,512,512);
 
-  uchar** mapOrient = orientForm(mapVer,mapHor,mapDia,512,512);
+  int** mapOrient = orientForm(mapVer,mapHor,mapDia,512,512);
 
   return mapOrient;
 }
@@ -266,29 +270,31 @@ int main( int argc, char** argv )
   for (int i=0; i<height; ++i)
     array[i] = y.ptr<uchar>(i);
 
+  int **img = new int*[height];
+  for (int i=0; i<height; ++i)
+    img[i] = new int[width];
+
+  for (int j=0;j<width;j++) {
+    for (int i=0;i<height;i++) {
+      img[j][i] = array[j][i];
+    }
+  }
+
   /* do stuff on Y channel */
 
-  uchar** result = visualSaliency(array);
+  int** result = visualSaliency(img);
 
-  saveImage("out.png",result,512,512);
+  uchar **castedImg = new uchar*[height];
+  for (int i=0; i<height; ++i)
+    castedImg[i] = new uchar[width];
 
-  /* convert array of pointers to consecutive memory */
-  // uchar *data = new uchar[height*width];
-  // for (int i=0; i<height; ++i) {
-  //   for (int j=0; j<width; ++j) {
-  //     data[i*height+j] = result[i][j];
-  //   }
-  // }
+  for (int i=0;i<512;i++) {
+    for (int j=0;j<512;j++) {
+      castedImg[j][i] = result[j][i];
+    }
+  }
 
-  // Mat newY = Mat(Size(512,512), CV_8UC1, data);
-
-  // Mat new_channels[3] = { newY , yuvChan[1], yuvChan[2] };
-  // Mat new_channels[3] = { newY , newY , newY };
-  // Mat new_ycrcb;
-  // merge( new_channels, 3,  new_ycrcb );
-  // cvtColor(new_ycrcb, new_ycrcb, CV_YCrCb2BGR);
-
-  // imwrite( argv[2] , new_ycrcb );
+  saveImage("out.png",castedImg,512,512);
 
   return 0;
 }
