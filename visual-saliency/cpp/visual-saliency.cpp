@@ -1,3 +1,9 @@
+/* Visual saliency in C++ without 3rd party library support
+ *
+ * Rob Stewart <R.Stewart@hw.ac.uk>, Heriot-Watt University
+ * Date: 18.07.2017
+ */
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -10,19 +16,7 @@ using namespace std;
 #define width 512
 #define height 512
 
-void saveImage(string const &fname, uchar** image, int w, int h) {
-  /* convert array of pointers to consecutive memory */
-  uchar *data = new uchar[w*h];
-  for (int j=0; j<h; j++) {
-    for (int i=0; i<w; i++) {
-      data[w*j+i] = image[j][i];
-    }
-  }
-  Mat newY = Mat(Size(w,h), CV_8UC1, data);
-  imwrite(fname,newY);
-}
-
-/* forward wavelet transform */
+/* lower level: blur 2D filter */
 void blurFilter (int **image, int w, int h) {
   for (int j=0;j<h;++j) {
     for (int i=0;i<w;++i) {
@@ -39,6 +33,7 @@ void blurFilter (int **image, int w, int h) {
   }
 }
 
+/* four wavelet subbands */
 struct fwt_t {
   int **ll;
   int **lh;
@@ -46,7 +41,7 @@ struct fwt_t {
   int **hh;
 } fwt_bands ;
 
-/* forward wavelet transform */
+/* medium level: forward wavelet transform */
 fwt_t fwt(int **image, int w, int h) {
   /* step 1: row wise */
   int **lBand = new int*[h];
@@ -184,59 +179,72 @@ int** resize(int **image, int w, int h, int scale) {
   return scaledImage;
 }
 
+/* higher level: visual saliency */
 int** visualSaliency(int **image) {
-  fwt_t l1 = fwt(image, 512, 512);
-  fwt_t l2 = fwt(l1.ll, 256, 256);
-  fwt_t l3 = fwt(l2.ll, 128, 128);
-  fwt_t l4 = fwt(l3.ll, 64, 64);
-  fwt_t l5 = fwt(l4.ll, 32, 32);
+  fwt_t l1 = fwt(image, width, height);
+  fwt_t l2 = fwt(l1.ll, width/2, height/2);
+  fwt_t l3 = fwt(l2.ll, width/4, height/4);
+  fwt_t l4 = fwt(l3.ll, width/8, height/8);
+  fwt_t l5 = fwt(l4.ll, width/16, height/16);
 
-  blurFilter(l1.lh,256,256);
-  blurFilter(l2.lh,128,128);
-  blurFilter(l3.lh,64,64);
-  blurFilter(l4.lh,32,32);
-  blurFilter(l5.lh,16,16);
+  blurFilter(l1.lh,width/2, height/2);
+  blurFilter(l2.lh,width/4, height/4);
+  blurFilter(l3.lh,width/8, height/8);
+  blurFilter(l4.lh,width/16, height/16);
+  blurFilter(l5.lh,width/32, height/32);
 
-  blurFilter(l1.hl,256,256);
-  blurFilter(l2.hl,128,128);
-  blurFilter(l3.hl,64,64);
-  blurFilter(l4.hl,32,32);
-  blurFilter(l5.hl,16,16);
+  blurFilter(l1.hl,width/2, height/2);
+  blurFilter(l2.hl,width/4, height/4);
+  blurFilter(l3.hl,width/8, height/8);
+  blurFilter(l4.hl,width/16, height/16);
+  blurFilter(l5.hl,width/32, height/32);
 
-  blurFilter(l1.hh,256,256);
-  blurFilter(l2.hh,128,128);
-  blurFilter(l3.hh,64,64);
-  blurFilter(l4.hh,32,32);
-  blurFilter(l5.hh,16,16);
+  blurFilter(l1.hh,width/2, height/2);
+  blurFilter(l2.hh,width/4, height/4);
+  blurFilter(l3.hh,width/8, height/8);
+  blurFilter(l4.hh,width/16, height/16);
+  blurFilter(l5.hh,width/32, height/32);
 
-  int** lh1_resized = resize(l1.lh,256,256,2);
-  int** lh2_resized = resize(l2.lh,128,128,4);
-  int** lh3_resized = resize(l3.lh,64,64,8);
-  int** lh4_resized = resize(l4.lh,32,32,16);
-  int** lh5_resized = resize(l5.lh,16,16,32);
+  int** lh1_resized = resize(l1.lh,width/2, height/2,2);
+  int** lh2_resized = resize(l2.lh,width/4, height/4,4);
+  int** lh3_resized = resize(l3.lh,width/8, height/8,8);
+  int** lh4_resized = resize(l4.lh,width/16, height/16,16);
+  int** lh5_resized = resize(l5.lh,width/32, height/32,32);
 
-  int** hl1_resized = resize(l1.hl,256,256,2);
-  int** hl2_resized = resize(l2.hl,128,128,4);
-  int** hl3_resized = resize(l3.hl,64,64,8);
-  int** hl4_resized = resize(l4.hl,32,32,16);
-  int** hl5_resized = resize(l5.hl,16,16,32);
+  int** hl1_resized = resize(l1.hl,width/2, height/2,2);
+  int** hl2_resized = resize(l2.hl,width/4, height/4,4);
+  int** hl3_resized = resize(l3.hl,width/8, height/8,8);
+  int** hl4_resized = resize(l4.hl,width/16, height/16,16);
+  int** hl5_resized = resize(l5.hl,width/32, height/32,32);
 
-  int** hh1_resized = resize(l1.hh,256,256,2);
-  int** hh2_resized = resize(l2.hh,128,128,4);
-  int** hh3_resized = resize(l3.hh,64,64,8);
-  int** hh4_resized = resize(l4.hh,32,32,16);
-  int** hh5_resized = resize(l5.hh,16,16,32);
+  int** hh1_resized = resize(l1.hh,width/2, height/2,2);
+  int** hh2_resized = resize(l2.hh,width/4, height/4,4);
+  int** hh3_resized = resize(l3.hh,width/8, height/8,8);
+  int** hh4_resized = resize(l4.hh,width/16, height/16,16);
+  int** hh5_resized = resize(l5.hh,width/32, height/32,32);
 
   int** mapVer =
-  mapForm(lh1_resized,lh2_resized,lh3_resized,lh4_resized,lh5_resized,512,512);
+    mapForm(lh1_resized,lh2_resized,lh3_resized,lh4_resized,lh5_resized,width,height);
   int** mapHor =
-  mapForm(hl1_resized,hl2_resized,hl3_resized,hl4_resized,hl5_resized,512,512);
+  mapForm(hl1_resized,hl2_resized,hl3_resized,hl4_resized,hl5_resized,width,height);
   int** mapDia =
-  mapForm(hh1_resized,hh2_resized,hh3_resized,hh4_resized,hh5_resized,512,512);
+  mapForm(hh1_resized,hh2_resized,hh3_resized,hh4_resized,hh5_resized,width,height);
 
-  int** mapOrient = orientForm(mapVer,mapHor,mapDia,512,512);
+  int** mapOrient = orientForm(mapVer,mapHor,mapDia,width,height);
 
   return mapOrient;
+}
+
+void saveImage(string const &fname, uchar** image, int w, int h) {
+  /* convert array of pointers to consecutive memory */
+  uchar *data = new uchar[w*h];
+  for (int j=0; j<h; j++) {
+    for (int i=0; i<w; i++) {
+      data[w*j+i] = image[j][i];
+    }
+  }
+  Mat newY = Mat(Size(w,h), CV_8UC1, data);
+  imwrite(fname,newY);
 }
 
 
@@ -248,6 +256,7 @@ int main( int argc, char** argv )
       return -1;
     }
 
+  /* parse the image file */
   Mat image;
   image = imread(argv[1], CV_LOAD_IMAGE_COLOR);
   if(! image.data )
@@ -259,6 +268,7 @@ int main( int argc, char** argv )
   Mat yuvImage = image.clone();
   cvtColor(image, yuvImage, CV_BGR2YCrCb);
 
+  /* extract the Y channel from YUV colour space */
   Mat yuvChan[3];
   split(yuvImage, yuvChan);
   Mat y = yuvChan[0];
@@ -280,21 +290,21 @@ int main( int argc, char** argv )
     }
   }
 
-  /* do stuff on Y channel */
-
+  /* computation on the Y channel */
   int** result = visualSaliency(img);
 
+  /* write the Y channel as an image to file */
   uchar **castedImg = new uchar*[height];
   for (int i=0; i<height; ++i)
     castedImg[i] = new uchar[width];
 
-  for (int i=0;i<512;i++) {
-    for (int j=0;j<512;j++) {
+  for (int i=0;i<width;i++) {
+    for (int j=0;j<height;j++) {
       castedImg[j][i] = result[j][i];
     }
   }
 
-  saveImage("out.png",castedImg,512,512);
+  saveImage(argv[1],castedImg,width,height);
 
   return 0;
 }
