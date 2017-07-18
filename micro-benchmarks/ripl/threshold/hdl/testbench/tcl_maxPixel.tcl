@@ -6,7 +6,7 @@
 ## ############################################################################
 ## Xronos synthesizer
 ## Testbench TCL Script file for Actor: maxPixel 
-## Date: 2017/07/15 13:04:00
+## Date: 2017/07/18 13:16:27
 ## ############################################################################
 
 ## Set paths
@@ -37,7 +37,7 @@ vlog -work work_maxPixel ../lib/simulation/glbl.v
 # Compile sim package
 vcom -93 -reportprogress 30 -work work_maxPixel $LibSim/sim_package.vhd
 ## Compile network instances and add them to work library	
-vlog -work work_maxPixel $Rtl/maxPixel.v
+vlog -work work_maxPixel $RtlGoDone/maxPixel.v
 
 
 ## Compile the Testbench VHD
@@ -66,3 +66,9 @@ add wave -label Out1_SEND sim:/maxPixel_tb/i_maxPixel/Out1_ACK
 add wave -label Out1_SEND sim:/maxPixel_tb/i_maxPixel/Out1_SEND
 add wave -label Out1_RDY sim:/maxPixel_tb/i_maxPixel/Out1_RDY
 add wave -noupdate -divider -height 20 "Go & Done" 
+add wave -noupdate -divider -height 20 "Action: fold" 
+add wave -label Go sim:/maxPixel_tb/i_maxPixel/fold_go
+add wave -label Done sim:/maxPixel_tb/i_maxPixel/fold_done
+add wave -noupdate -divider -height 20 "Action: outputState" 
+add wave -label Go sim:/maxPixel_tb/i_maxPixel/outputState_go
+add wave -label Done sim:/maxPixel_tb/i_maxPixel/outputState_done

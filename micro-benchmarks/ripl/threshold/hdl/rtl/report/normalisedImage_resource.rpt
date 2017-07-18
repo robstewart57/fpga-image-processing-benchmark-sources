@@ -1,19 +1,19 @@
 //
 // Design Resource Utilization Report
-// Generated on: Sat 15 Jul 2017 13:04:00 +0100
+// Generated on: Tue 18 Jul 2017 13:16:27 +0100
 //
 
 normalisedImage Total: 
 27   Ands : 27x1 
-6    Registers : 6x1 
-5    Ors : 5x1 
-1    Add : 1x64 
-1    Less Than : 1x32 
-1    Subtract : 1x16 
-7    Nots : 7x1 
 1    Greater Than : 1x16 
+1    Less Than : 1x32 
+7    Nots : 7x1 
 4    Muxs : 4x1 
 1    Equal To : 1x32 
+1    Add : 1x64 
+5    Ors : 5x1 
+1    Subtract : 1x16 
+6    Registers : 6x1 
 
 Design: normalisedImage
 -----------------------
@@ -35,29 +35,29 @@ Entry: normalisedImage_zipStream_instance
 -----------------------------------------
     Method: normalisedImage_zipStream
     ---------------------------------
-    1    Add : 1x64 
     4    Ands : 4x1 
-    1    Register : 1x1 
+    1    Greater Than : 1x16 
+    1    Add : 1x64 
     1    Subtract : 1x16 
     1    Not : 1x1 
-    1    Greater Than : 1x16 
+    1    Register : 1x1 
 
     Method Total:
-    1    Add : 1x64 
     4    Ands : 4x1 
-    1    Register : 1x1 
+    1    Greater Than : 1x16 
+    1    Add : 1x64 
     1    Subtract : 1x16 
     1    Not : 1x1 
-    1    Greater Than : 1x16 
+    1    Register : 1x1 
     -------------
 ------------------------------------------------
 Entry: normalisedImage_zipStream_instance Total: 
-1    Add : 1x64 
 4    Ands : 4x1 
-1    Register : 1x1 
+1    Greater Than : 1x16 
+1    Add : 1x64 
 1    Subtract : 1x16 
 1    Not : 1x1 
-1    Greater Than : 1x16 
+1    Register : 1x1 
 ------------------------------------------------
 
 Entry: normalisedImage_done_instance
@@ -79,30 +79,30 @@ Entry: normalisedImage_scheduler_instance
     Method: normalisedImage_scheduler
     ---------------------------------
     23   Ands : 23x1 
-    3    Registers : 3x1 
+    1    Equal To : 1x32 
+    5    Ors : 5x1 
     1    Less Than : 1x32 
     6    Nots : 6x1 
-    5    Ors : 5x1 
     4    Muxs : 4x1 
-    1    Equal To : 1x32 
+    3    Registers : 3x1 
 
     Method Total:
     23   Ands : 23x1 
-    3    Registers : 3x1 
+    1    Equal To : 1x32 
+    5    Ors : 5x1 
     1    Less Than : 1x32 
     6    Nots : 6x1 
-    5    Ors : 5x1 
     4    Muxs : 4x1 
-    1    Equal To : 1x32 
+    3    Registers : 3x1 
     -------------
 ------------------------------------------------
 Entry: normalisedImage_scheduler_instance Total: 
 23   Ands : 23x1 
-3    Registers : 3x1 
+1    Equal To : 1x32 
+5    Ors : 5x1 
 1    Less Than : 1x32 
 6    Nots : 6x1 
-5    Ors : 5x1 
 4    Muxs : 4x1 
-1    Equal To : 1x32 
+3    Registers : 3x1 
 ------------------------------------------------
 

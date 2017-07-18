@@ -1,24 +1,12 @@
-package cal ;
-actor maxPixel () uint (size = 8)In1 ==> uint (size = 8)Out1 :
- uint (size = 32)streamSize = 262144 ;
-int (size = 16)initValue = 0 ;
-int (size = 16)i := initValue ;
-uint (size = 32)tokenCount := 0 ;
-fold : action In1 : [p]==> 
- guard (tokenCount < streamSize)
- do i := if p > i then p else i end ;
-tokenCount := tokenCount + (1);
-end
- outputState : action ==> Out1 : [outVar]
- guard (tokenCount = streamSize)
- var int (size = 16)outVar := 0 
- do tokenCount := 0 ;
-outVar := i ;
-i := initValue ;
-end
- 
- priority
- fold > outputState ;
-end 
-
-end
+package cal;
+actor maxPixel () int (size = 16) In1 ==> int (size = 16) Out1 : uint (size = 32) streamSize = 262144 ;
+ int (size = 16) initValue = 0 ;
+ int (size = 16) i := initValue ;
+ uint (size = 32) tokenCount := 0 ;
+ fold : action In1 : [p] ==> guard (tokenCount < streamSize) do i := if p > i then p else i end;
+tokenCount := tokenCount + 1;
+end outputState : action ==> Out1 : [outVar] guard (tokenCount = streamSize) var int (size = 16) outVar := 0 do tokenCount := 0;
+outVar := i;
+i := initValue;
+end priority fold > outputState ;
+ end end

@@ -7,7 +7,13 @@
 // Run date: Tue 18 Jul 2017 13:16:27 +0100
 // 
 
-module normalisedImage(CLK, In1_ACK, In1_COUNT, Out1_COUNT, Out1_DATA, In1_DATA, Out1_RDY, Out1_SEND, In1_SEND, In2_SEND, In2_COUNT, Out1_ACK, In2_DATA, In2_ACK, RESET);
+module normalisedImage(CLK, In1_ACK, In1_COUNT, Out1_COUNT, Out1_DATA, In1_DATA, Out1_RDY, Out1_SEND, In1_SEND, In2_SEND, In2_COUNT, Out1_ACK, In2_DATA, In2_ACK, RESET, receiveScalar_go, receiveScalar_done, zipStream_go, zipStream_done, done_go, done_done);
+output		receiveScalar_go;
+output		receiveScalar_done;
+output		zipStream_go;
+output		zipStream_done;
+output		done_go;
+output		done_done;
 input		CLK;
 wire		done_go;
 output		In1_ACK;
@@ -61,15 +67,21 @@ wire	[31:0]	done_u0;
 wire		normalisedImage_done_instance_DONE;
 wire		done;
 assign done_go=scheduler_u4;
+assign done_go=scheduler_u4;
 assign In1_ACK=zipStream_u1;
+assign zipStream_go=scheduler_u5;
 assign zipStream_go=scheduler_u5;
 assign Out1_COUNT=zipStream_u3;
 assign Out1_DATA=zipStream_u4;
 assign zipStream_done=bus_1461bb1f_;
+assign zipStream_done=bus_1461bb1f_;
 assign Out1_SEND=zipStream_u2;
+assign receiveScalar_go=scheduler_u6;
 assign receiveScalar_go=scheduler_u6;
 assign In2_ACK=receiveScalar_u1;
 assign done_done=bus_3245690d_;
+assign done_done=bus_3245690d_;
+assign receiveScalar_done=bus_1baa7be1_;
 assign receiveScalar_done=bus_1baa7be1_;
 normalisedImage_receiveScalar normalisedImage_receiveScalar_instance(.CLK(CLK), 
   .RESET(bus_07bbcf95_), .GO(receiveScalar_go), .port_76f4f871_(In2_DATA), .DONE(normalisedImage_receiveScalar_instance_DONE), 

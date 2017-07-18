@@ -33,12 +33,12 @@ vlog -work work ../lib/simulation/glbl.v
 
 
 ## Compile network instances and add them to work library	
-vlog -work work $Rtl/image1.v
-vlog -work work $Rtl/maxPixel.v
-vlog -work work $Rtl/normalisedImage.v
+vlog -work work $RtlGoDone/image1.v
+vlog -work work $RtlGoDone/maxPixel.v
+vlog -work work $RtlGoDone/normalisedImage.v
 
 ## Compile the Top Network
-vcom -93 -check_synthesis -quiet -work work $Rtl/ProgNetwork.vhd
+vcom -93 -check_synthesis -quiet -work work $RtlGoDone/ProgNetwork.vhd
 
 
 ## Start VSIM
@@ -75,6 +75,8 @@ add wave sim:/ProgNetwork/i_image1/Out1_DATA
 add wave sim:/ProgNetwork/i_image1/Out1_ACK
 add wave sim:/ProgNetwork/i_image1/Out1_SEND
 add wave sim:/ProgNetwork/i_image1/Out1_RDY
+add wave -label the_action_go sim:/ProgNetwork/i_image1/the_action_go
+add wave -label the_action_done sim:/ProgNetwork/i_image1/the_action_done
 
 add wave -noupdate -divider -height 20 i_maxPixel
 add wave sim:/ProgNetwork/i_maxPixel/CLK
@@ -85,6 +87,10 @@ add wave sim:/ProgNetwork/i_maxPixel/Out1_DATA
 add wave sim:/ProgNetwork/i_maxPixel/Out1_ACK
 add wave sim:/ProgNetwork/i_maxPixel/Out1_SEND
 add wave sim:/ProgNetwork/i_maxPixel/Out1_RDY
+add wave -label fold_go sim:/ProgNetwork/i_maxPixel/fold_go
+add wave -label fold_done sim:/ProgNetwork/i_maxPixel/fold_done
+add wave -label outputState_go sim:/ProgNetwork/i_maxPixel/outputState_go
+add wave -label outputState_done sim:/ProgNetwork/i_maxPixel/outputState_done
 
 add wave -noupdate -divider -height 20 i_normalisedImage
 add wave sim:/ProgNetwork/i_normalisedImage/CLK
@@ -99,6 +105,12 @@ add wave sim:/ProgNetwork/i_normalisedImage/Out1_DATA
 add wave sim:/ProgNetwork/i_normalisedImage/Out1_ACK
 add wave sim:/ProgNetwork/i_normalisedImage/Out1_SEND
 add wave sim:/ProgNetwork/i_normalisedImage/Out1_RDY
+add wave -label receiveScalar_go sim:/ProgNetwork/i_normalisedImage/receiveScalar_go
+add wave -label receiveScalar_done sim:/ProgNetwork/i_normalisedImage/receiveScalar_done
+add wave -label zipStream_go sim:/ProgNetwork/i_normalisedImage/zipStream_go
+add wave -label zipStream_done sim:/ProgNetwork/i_normalisedImage/zipStream_done
+add wave -label done_go sim:/ProgNetwork/i_normalisedImage/done_go
+add wave -label done_done sim:/ProgNetwork/i_normalisedImage/done_done
 
 ## FIFO FULL
 add wave -noupdate -divider -height 20 "FIFO FULL"

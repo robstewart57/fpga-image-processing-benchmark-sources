@@ -7,7 +7,11 @@
 // Run date: Tue 18 Jul 2017 13:16:26 +0100
 // 
 
-module maxPixel(In1_COUNT, Out1_SEND, CLK, Out1_DATA, In1_SEND, In1_DATA, In1_ACK, RESET, Out1_RDY, Out1_ACK, Out1_COUNT);
+module maxPixel(In1_COUNT, Out1_SEND, CLK, Out1_DATA, In1_SEND, In1_DATA, In1_ACK, RESET, Out1_RDY, Out1_ACK, Out1_COUNT, fold_go, fold_done, outputState_go, outputState_done);
+output		fold_go;
+output		fold_done;
+output		outputState_go;
+output		outputState_done;
 input	[15:0]	In1_COUNT;
 wire		fold_go;
 output		Out1_SEND;
@@ -47,12 +51,16 @@ wire		maxPixel_scheduler_instance_DONE;
 wire		scheduler_u0;
 wire		scheduler;
 assign fold_go=scheduler;
+assign fold_go=scheduler;
 assign Out1_SEND=outputState_u4;
 assign Out1_DATA=outputState_u3;
 assign In1_ACK=fold_u3;
 assign outputState_done=bus_65298763_;
+assign outputState_done=bus_65298763_;
 assign Out1_COUNT=outputState_u5;
 assign fold_done=bus_41f2e7eb_;
+assign fold_done=bus_41f2e7eb_;
+assign outputState_go=scheduler_u0;
 assign outputState_go=scheduler_u0;
 maxPixel_outputState maxPixel_outputState_instance(.CLK(CLK), .RESET(bus_49a31303_), 
   .GO(outputState_go), .port_41bd616a_(bus_3626eac3_), .DONE(maxPixel_outputState_instance_DONE), 

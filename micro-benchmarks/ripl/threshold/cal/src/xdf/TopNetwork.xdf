@@ -25,29 +25,11 @@
 </Instance>
 
 
-<Connection dst="StreamToGrey" dst-port="stream" src="FileReader" src-port="O"> <Attribute kind="Value" name="bufferSize">
-   <Expr kind="Literal" literal-kind="Integer" value="512"/>
- </Attribute>
-</Connection>
-<Connection dst="Writer" dst-port="Byte" src="EndOfStream" src-port="Out"> <Attribute kind="Value" name="bufferSize">
-   <Expr kind="Literal" literal-kind="Integer" value="512"/>
- </Attribute>
-</Connection>
-<Connection dst="Writer" dst-port="pEOF" src="EndOfStream" src-port="pEOF"> <Attribute kind="Value" name="bufferSize">
-   <Expr kind="Literal" literal-kind="Integer" value="512"/>
- </Attribute>
-</Connection>
-<Connection dst="ProgNetwork" dst-port="In" src="StreamToGrey" src-port="G"> <Attribute kind="Value" name="bufferSize">
-   <Expr kind="Literal" literal-kind="Integer" value="512"/>
- </Attribute>
-</Connection>
-<Connection dst="YUVToStream" dst-port="Y" src="ProgNetwork" src-port="Out"> <Attribute kind="Value" name="bufferSize">
-   <Expr kind="Literal" literal-kind="Integer" value="512"/>
- </Attribute>
-</Connection>
-<Connection dst="EndOfStream" dst-port="In" src="YUVToStream" src-port="YUV"> <Attribute kind="Value" name="bufferSize">
-   <Expr kind="Literal" literal-kind="Integer" value="512"/>
- </Attribute>
-</Connection>
+<Connection dst="StreamToGrey" dst-port="stream" src="FileReader" src-port="O"></Connection>
+<Connection dst="Writer" dst-port="Byte" src="EndOfStream" src-port="Out"></Connection>
+<Connection dst="Writer" dst-port="pEOF" src="EndOfStream" src-port="pEOF"></Connection>
+<Connection dst="ProgNetwork" dst-port="In" src="StreamToGrey" src-port="G"></Connection>
+<Connection dst="YUVToStream" dst-port="Y" src="ProgNetwork" src-port="Out"></Connection>
+<Connection dst="EndOfStream" dst-port="In" src="YUVToStream" src-port="YUV"></Connection>
 
 </XDF>

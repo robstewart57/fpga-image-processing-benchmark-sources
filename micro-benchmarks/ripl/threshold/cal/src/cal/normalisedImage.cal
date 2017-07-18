@@ -1,19 +1,10 @@
-package cal ;
-actor normalisedImage () uint (size = 8)In1, uint (size = 8)In2 ==> uint (size = 8)Out1 : int (size = 16)scalarValue := 0 ;
-int (size = 32)count := 0 ;
-receiveScalar : action In2 : [x]==> 
- do scalarValue := x ;
-end
- zipStream : action In1 : [x]==> Out1 : [if x > ((scalarValue - (100)))then 255 else 0 end]
- guard count < (262144)
- do count := count + (1);
-end
- done : action ==> 
- guard count = (262144)
- do count := 0 ;
-end
- schedule fsm s0 :
- s0 (receiveScalar)--> s1 ;
-s1 (zipStream)--> s1 ;
-s1 (done)--> s0 ;
-end end
+package cal;
+actor normalisedImage () int (size = 16) In1, int (size = 16) In2 ==> int (size = 16) Out1 : int (size = 16) scalarValue := 0 ;
+ int (size = 32) count := 0 ;
+ receiveScalar : action In2 : [x] ==> do scalarValue := x;
+end zipStream : action In1 : [x] ==> Out1 : [if x > ((scalarValue - 50)) then scalarValue else 0 end] guard count < 262144 do count := count + 1;
+end done : action ==> guard count = 262144 do count := 0;
+end schedule fsm s0 : s0 (receiveScalar) --> s1 ;
+ s1 (zipStream) --> s1 ;
+ s1 (done) --> s0 ;
+ end end

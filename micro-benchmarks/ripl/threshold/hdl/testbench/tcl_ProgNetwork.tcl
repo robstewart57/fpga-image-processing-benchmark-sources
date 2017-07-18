@@ -6,7 +6,7 @@
 ## ############################################################################
 ## Xronos synthesizer
 ## Testbench TCL Script file for Network: ProgNetwork 
-## Date: 2017/07/15 13:04:01
+## Date: 2017/07/18 13:16:27
 ## ############################################################################
 
 ## Set paths
@@ -37,12 +37,12 @@ vlog -work work_ProgNetwork ../lib/simulation/glbl.v
 # Compile sim package
 vcom -93 -reportprogress 30 -work work_ProgNetwork $LibSim/sim_package.vhd
 ## Compile network instances and add them to work library	
-vlog -work work_ProgNetwork $Rtl/image1.v
-vlog -work work_ProgNetwork $Rtl/maxPixel.v
-vlog -work work_ProgNetwork $Rtl/normalisedImage.v
+vlog -work work_ProgNetwork $RtlGoDone/image1.v
+vlog -work work_ProgNetwork $RtlGoDone/maxPixel.v
+vlog -work work_ProgNetwork $RtlGoDone/normalisedImage.v
 
 ## Compile the Top Network
-vcom -93 -check_synthesis -quiet -work work_ProgNetwork $Rtl/ProgNetwork.vhd
+vcom -93 -check_synthesis -quiet -work work_ProgNetwork $RtlGoDone/ProgNetwork.vhd
 
 ## Compile the Testbench VHD
 vcom -93 -check_synthesis -quiet -work work_ProgNetwork $Testbench/ProgNetwork_tb.vhd
@@ -82,6 +82,8 @@ add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_image1/Out1_DATA
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_image1/Out1_ACK
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_image1/Out1_SEND
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_image1/Out1_RDY
+add wave -label the_action_go sim:/ProgNetwork_tb/i_ProgNetwork/i_image1/the_action_go
+add wave -label the_action_done sim:/ProgNetwork_tb/i_ProgNetwork/i_image1/the_action_done
 
 add wave -noupdate -divider -height 20 i_maxPixel
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/CLK
@@ -92,6 +94,10 @@ add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/Out1_DATA
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/Out1_ACK
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/Out1_SEND
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/Out1_RDY
+add wave -label fold_go sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/fold_go
+add wave -label fold_done sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/fold_done
+add wave -label outputState_go sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/outputState_go
+add wave -label outputState_done sim:/ProgNetwork_tb/i_ProgNetwork/i_maxPixel/outputState_done
 
 add wave -noupdate -divider -height 20 i_normalisedImage
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/CLK
@@ -106,6 +112,12 @@ add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/Out1_DATA
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/Out1_ACK
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/Out1_SEND
 add wave sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/Out1_RDY
+add wave -label receiveScalar_go sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/receiveScalar_go
+add wave -label receiveScalar_done sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/receiveScalar_done
+add wave -label zipStream_go sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/zipStream_go
+add wave -label zipStream_done sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/zipStream_done
+add wave -label done_go sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/done_go
+add wave -label done_done sim:/ProgNetwork_tb/i_ProgNetwork/i_normalisedImage/done_done
 
 ## FIFO FULL
 add wave -noupdate -divider -height 20 "FIFO FULL"

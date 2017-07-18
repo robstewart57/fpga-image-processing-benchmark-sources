@@ -43,6 +43,21 @@ port(
 	 Out_ack : in std_logic;
 	 Out_rdy : in std_logic;
 	 Out_count : out std_logic_vector(15 downto 0);
+	 -- Instance image1 Actions Go and Done
+	 image1_the_action_go : out std_logic;
+	 image1_the_action_done : out std_logic;
+	 -- Instance maxPixel Actions Go and Done
+	 maxPixel_fold_go : out std_logic;
+	 maxPixel_fold_done : out std_logic;
+	 maxPixel_outputState_go : out std_logic;
+	 maxPixel_outputState_done : out std_logic;
+	 -- Instance normalisedImage Actions Go and Done
+	 normalisedImage_receiveScalar_go : out std_logic;
+	 normalisedImage_receiveScalar_done : out std_logic;
+	 normalisedImage_zipStream_go : out std_logic;
+	 normalisedImage_zipStream_done : out std_logic;
+	 normalisedImage_done_go : out std_logic;
+	 normalisedImage_done_done : out std_logic;
 	 -- Clock(s) and Reset
 	 CLK : in std_logic;
 	 RESET : in std_logic);
@@ -150,6 +165,9 @@ architecture rtl of ProgNetwork is
 	     Out1_ack : in std_logic;
 	     Out1_rdy : in std_logic;
 	     Out1_count : out std_logic_vector(15 downto 0);
+	     -- Instance image1 Actions Go and Done
+	     the_action_go : out std_logic;
+	     the_action_done : out std_logic;
 	     clk: in std_logic;
 	     reset: in std_logic);
 	end component image1;
@@ -167,6 +185,12 @@ architecture rtl of ProgNetwork is
 	     Out1_ack : in std_logic;
 	     Out1_rdy : in std_logic;
 	     Out1_count : out std_logic_vector(15 downto 0);
+	     -- Instance maxPixel Actions Go and Done
+	     fold_go : out std_logic;
+	     fold_done : out std_logic;
+	     
+	     outputState_go : out std_logic;
+	     outputState_done : out std_logic;
 	     clk: in std_logic;
 	     reset: in std_logic);
 	end component maxPixel;
@@ -188,6 +212,15 @@ architecture rtl of ProgNetwork is
 	     Out1_ack : in std_logic;
 	     Out1_rdy : in std_logic;
 	     Out1_count : out std_logic_vector(15 downto 0);
+	     -- Instance normalisedImage Actions Go and Done
+	     receiveScalar_go : out std_logic;
+	     receiveScalar_done : out std_logic;
+	     
+	     zipStream_go : out std_logic;
+	     zipStream_done : out std_logic;
+	     
+	     done_go : out std_logic;
+	     done_done : out std_logic;
 	     clk: in std_logic;
 	     reset: in std_logic);
 	end component normalisedImage;
@@ -220,6 +253,9 @@ begin
 		Out1_ack => ao_image1_Out1_ack,
 		Out1_rdy => ao_image1_Out1_rdy,
 		Out1_count => ao_image1_Out1_count,
+		-- Instance image1 Actions Go and Done
+		the_action_go => image1_the_action_go,
+		the_action_done => image1_the_action_done,
 		-- Clock and Reset
 	clk => clocks(0),
 	--clk => clocks(0),
@@ -238,6 +274,12 @@ begin
 		Out1_ack => ao_maxPixel_Out1_ack,
 		Out1_rdy => ao_maxPixel_Out1_rdy,
 		Out1_count => ao_maxPixel_Out1_count,
+		-- Instance maxPixel Actions Go and Done
+		fold_go => maxPixel_fold_go,
+		fold_done => maxPixel_fold_done,
+		
+		outputState_go => maxPixel_outputState_go,
+		outputState_done => maxPixel_outputState_done,
 		-- Clock and Reset
 	clk => clocks(0),
 	--clk => clocks(0),
@@ -261,6 +303,15 @@ begin
 		Out1_ack => ao_normalisedImage_Out1_ack,
 		Out1_rdy => ao_normalisedImage_Out1_rdy,
 		Out1_count => ao_normalisedImage_Out1_count,
+		-- Instance normalisedImage Actions Go and Done
+		receiveScalar_go => normalisedImage_receiveScalar_go,
+		receiveScalar_done => normalisedImage_receiveScalar_done,
+		
+		zipStream_go => normalisedImage_zipStream_go,
+		zipStream_done => normalisedImage_zipStream_done,
+		
+		done_go => normalisedImage_done_go,
+		done_done => normalisedImage_done_done,
 		-- Clock and Reset
 	clk => clocks(0),
 	--clk => clocks(0),

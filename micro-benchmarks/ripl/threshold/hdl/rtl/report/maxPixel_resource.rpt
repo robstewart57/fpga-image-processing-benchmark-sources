@@ -1,18 +1,18 @@
 //
 // Design Resource Utilization Report
-// Generated on: Sat 15 Jul 2017 13:04:00 +0100
+// Generated on: Tue 18 Jul 2017 13:16:26 +0100
 //
 
 maxPixel Total: 
-1    Add : 1x64 
 17   Ands : 17x1 
-3    Registers : 3x1 
+1    Greater Than : 1x16 
+1    Equal To : 1x32 
+1    Add : 1x64 
+1    Or : 1x1 
 1    Less Than : 1x32 
 4    Nots : 4x1 
-1    Greater Than : 1x16 
-1    Or : 1x1 
 1    Mux : 1x16 
-1    Equal To : 1x32 
+3    Registers : 3x1 
 
 Design: maxPixel
 ----------------
@@ -20,29 +20,29 @@ Entry: maxPixel_fold_instance
 -----------------------------
     Method: maxPixel_fold
     ---------------------
-    1    Add : 1x64 
     4    Ands : 4x1 
-    1    Register : 1x1 
-    1    Not : 1x1 
     1    Greater Than : 1x16 
+    1    Add : 1x64 
+    1    Not : 1x1 
     1    Mux : 1x16 
+    1    Register : 1x1 
 
     Method Total:
-    1    Add : 1x64 
     4    Ands : 4x1 
-    1    Register : 1x1 
-    1    Not : 1x1 
     1    Greater Than : 1x16 
+    1    Add : 1x64 
+    1    Not : 1x1 
     1    Mux : 1x16 
+    1    Register : 1x1 
     -------------
 ------------------------------------
 Entry: maxPixel_fold_instance Total: 
-1    Add : 1x64 
 4    Ands : 4x1 
-1    Register : 1x1 
-1    Not : 1x1 
 1    Greater Than : 1x16 
+1    Add : 1x64 
+1    Not : 1x1 
 1    Mux : 1x16 
+1    Register : 1x1 
 ------------------------------------
 
 Entry: maxPixel_outputState_instance
@@ -64,27 +64,27 @@ Entry: maxPixel_scheduler_instance
     Method: maxPixel_scheduler
     --------------------------
     13   Ands : 13x1 
-    1    Register : 1x1 
+    1    Equal To : 1x32 
+    1    Or : 1x1 
     1    Less Than : 1x32 
     3    Nots : 3x1 
-    1    Or : 1x1 
-    1    Equal To : 1x32 
+    1    Register : 1x1 
 
     Method Total:
     13   Ands : 13x1 
-    1    Register : 1x1 
+    1    Equal To : 1x32 
+    1    Or : 1x1 
     1    Less Than : 1x32 
     3    Nots : 3x1 
-    1    Or : 1x1 
-    1    Equal To : 1x32 
+    1    Register : 1x1 
     -------------
 -----------------------------------------
 Entry: maxPixel_scheduler_instance Total: 
 13   Ands : 13x1 
-1    Register : 1x1 
+1    Equal To : 1x32 
+1    Or : 1x1 
 1    Less Than : 1x32 
 3    Nots : 3x1 
-1    Or : 1x1 
-1    Equal To : 1x32 
+1    Register : 1x1 
 -----------------------------------------
 

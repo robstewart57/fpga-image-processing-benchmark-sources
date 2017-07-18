@@ -7,7 +7,9 @@
 // Run date: Tue 18 Jul 2017 13:16:26 +0100
 // 
 
-module image1(RESET, Out1_RDY, Out1_SEND, In1_SEND, Out1_ACK, In1_DATA, In1_COUNT, In1_ACK, Out1_DATA, Out1_COUNT, CLK);
+module image1(RESET, Out1_RDY, Out1_SEND, In1_SEND, Out1_ACK, In1_DATA, In1_COUNT, In1_ACK, Out1_DATA, Out1_COUNT, CLK, the_action_go, the_action_done);
+output		the_action_go;
+output		the_action_done;
 wire		the_action_go;
 input		RESET;
 input		Out1_RDY;
@@ -32,10 +34,12 @@ wire		bus_006e7b57_;
 wire		image1_scheduler_instance_DONE;
 wire		scheduler;
 assign the_action_go=scheduler;
+assign the_action_go=scheduler;
 assign Out1_SEND=the_action_u0;
 assign In1_ACK=the_action;
 assign Out1_DATA=the_action_u1;
 assign Out1_COUNT=the_action_u2;
+assign the_action_done=bus_006e7b57_;
 assign the_action_done=bus_006e7b57_;
 image1_Kicker_0 image1_Kicker_0_1(.CLK(CLK), .RESET(bus_4ffc88c2_), .bus_0b298b9e_(bus_0b298b9e_));
 image1_the_action image1_the_action_instance(.CLK(CLK), .GO(the_action_go), .port_25d5b8d6_(In1_DATA), 
