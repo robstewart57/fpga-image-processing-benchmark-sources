@@ -18,24 +18,23 @@ void saveImage(string const &fname, uchar** image, int w, int h) {
       data[w*j+i] = image[j][i];
     }
   }
-
   Mat newY = Mat(Size(w,h), CV_8UC1, data);
   imwrite(fname,newY);
-  // Mat new_channels[3] = { newY , newY , newY };
-  // Mat new_ycrcb(Size(w,h), CV_8UC1);
-  // merge( new_channels, 3,  new_ycrcb );
-  // cvtColor(new_ycrcb, new_ycrcb, CV_YCrCb2BGR);
-  // imwrite( "tmp1.png" , new_ycrcb );
 }
 
 /* forward wavelet transform */
 void blurFilter (uchar **image, int w, int h) {
-  for (int i=1;i<w-1;++i) {
-    for (int j=1;i<h-1;++i) {
-      image[i][j] =
-        ( image[i-1][j+1] + image[i][j+1] + image[i+1][j+1]
-          + image[i-1][j] + image[i][j] + image[i+1][j]
-          + image[i-1][j-1] + image[i][j-1] + image[i+1][j-1]) / 9;
+  for (int j=0;j<h;++j) {
+    for (int i=0;i<w;++i) {
+      int left  = i == 0 ? 0 : i - 1;
+      int right = i == w-1 ? i : i + 1;
+      int above = j == 0 ? 0 : j - 1;
+      int below = j == h-1 ? j : j + 1;
+      // image[j][i] =
+      //   ( image[above][left] + image[above][i] + image[above][right]
+      //     + image[j][left] + image[j][i] + image[j][right]
+      //     + image[below][left] + image[below][i] +
+      //     image[below][right]) / 9;
     }
   }
 }
@@ -63,8 +62,6 @@ fwt_t fwt(uchar **image, int w, int h) {
     lBand[i] = new uchar[w/2];
 
   for (int row=0;row<h;row++) {
-    // lBand[row][0] = 0;
-    // lBand[row][w-1] = 0;
     for (int col=0;col<w;++col) {
       int left = col == 0 ? 0 : col-1;
       int right = col == w-1 ? w-1 : col+1;
@@ -92,8 +89,6 @@ fwt_t fwt(uchar **image, int w, int h) {
 
   for (int row=0;row<h;row++) {
     for (int col=0;col<w/2;++col) {
-    // llBand[0][col] = 0;
-    // llBand[h-1][col] = 0;
       int above = row == 0 ? 0 : row-1;
       int below = row == h-1 ? h-1 : row+1;
 
@@ -137,7 +132,6 @@ fwt_t fwt(uchar **image, int w, int h) {
       }
     }
   }
-
   fwt_t bands = { llBand, lhBand, hlBand, hhBand };
   return bands;
 }
@@ -150,8 +144,8 @@ uchar** mapForm(uchar **l1,uchar **l2,uchar **l3,uchar **l4,uchar
   }
   for (int i=0;i<w;++i) {
     for (int j=0;j<h;++j) {
-      newImage[i][j] =
-        l1[i][j] + l2[i][j]*6 + l3[i][j]*10 + l4[i][j]*6 + l5[i][j];
+      newImage[j][i] =
+        l1[j][i];// + l2[j][i]*6;// + l3[j][i]*2 + l4[j][i] + l5[j][i];
     }
   }
   return newImage;
@@ -165,8 +159,9 @@ uchar** orientForm(uchar **image1,uchar **image2,uchar **image3, int
   }
   for (int i=0;i<w;++i) {
     for (int j=0;j<h;++j) {
-      newImage[i][j] =
-        image1[i][j]*2 + image2[i][j]*2 + image3[i][j]*2;
+      newImage[j][i] =
+        // (value*255)/(2<<20)
+        image1[j][i]*2 + image2[j][i]*2 + image3[j][i]*2;
     }
   }
   return newImage;
@@ -177,11 +172,9 @@ uchar** resize(uchar **image, int w, int h, int scale) {
   for (int i=0; i<h*scale; ++i) {
     scaledImage[i] = new uchar[w*scale];
   }
-  for (int i=0; i<w; ++i) {
-    for (int j=0;j<h; ++j) {
-      for (int k=1;k<=scale;++k) {
-        scaledImage[k*i][j] = image[i][j];
-      }
+  for (int i=0; i<w*scale; ++i) {
+    for (int j=0;j<h*scale; ++j) {
+      scaledImage[j][i] = image[j/scale][i/scale];
     }
   }
   return scaledImage;
@@ -193,7 +186,6 @@ uchar** visualSaliency(uchar **image) {
   fwt_t l3 = fwt(l2.ll, 128, 128);
   fwt_t l4 = fwt(l3.ll, 64, 64);
   fwt_t l5 = fwt(l4.ll, 32, 32);
-
 
   blurFilter(l1.lh,256,256);
   blurFilter(l2.lh,128,128);
@@ -278,24 +270,25 @@ int main( int argc, char** argv )
 
   uchar** result = visualSaliency(array);
 
+  saveImage("out.png",result,512,512);
 
   /* convert array of pointers to consecutive memory */
-  uchar *data = new uchar[height*width];
-  for (int i=0; i<height; ++i) {
-    for (int j=0; j<width; ++j) {
-      data[i*height+j] = result[i][j];
-    }
-  }
+  // uchar *data = new uchar[height*width];
+  // for (int i=0; i<height; ++i) {
+  //   for (int j=0; j<width; ++j) {
+  //     data[i*height+j] = result[i][j];
+  //   }
+  // }
 
-  Mat newY = Mat(Size(512,512), CV_8UC1, data);
+  // Mat newY = Mat(Size(512,512), CV_8UC1, data);
 
   // Mat new_channels[3] = { newY , yuvChan[1], yuvChan[2] };
-  Mat new_channels[3] = { newY , newY , newY };
-  Mat new_ycrcb;
-  merge( new_channels, 3,  new_ycrcb );
-  cvtColor(new_ycrcb, new_ycrcb, CV_YCrCb2BGR);
+  // Mat new_channels[3] = { newY , newY , newY };
+  // Mat new_ycrcb;
+  // merge( new_channels, 3,  new_ycrcb );
+  // cvtColor(new_ycrcb, new_ycrcb, CV_YCrCb2BGR);
 
-  imwrite( argv[2] , new_ycrcb );
+  // imwrite( argv[2] , new_ycrcb );
 
   return 0;
 }
