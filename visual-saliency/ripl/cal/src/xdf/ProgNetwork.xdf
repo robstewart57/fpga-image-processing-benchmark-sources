@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="ProgramNetwork">
+<Port kind="Input" name="In">
+   <Type name="int">
+       <Entry kind="Expr" name="size">
+           <Expr kind="Literal" literal-kind="Integer" value="16"/>
+       </Entry>
+   </Type>
+</Port>
+
+<Port kind="Output" name="Out">
+   <Type name="int">
+       <Entry kind="Expr" name="size">
+           <Expr kind="Literal" literal-kind="Integer" value="16"/>
+       </Entry>
+   </Type>
+</Port>
+
+<Instance id="LL1_H_iunzipFilter2D">
+  <Class name="cal.LL1_H_iunzipFilter2D"/>
+</Instance>
+
+<Instance id="HH1">
+  <Class name="cal.HH1"/>
+</Instance>
+
+<Instance id="LL2_H_iunzipFilter2D">
+  <Class name="cal.LL2_H_iunzipFilter2D"/>
+</Instance>
+
+<Instance id="HH2">
+  <Class name="cal.HH2"/>
+</Instance>
+
+<Instance id="LL3_H_iunzipFilter2D">
+  <Class name="cal.LL3_H_iunzipFilter2D"/>
+</Instance>
+
+<Instance id="HH3">
+  <Class name="cal.HH3"/>
+</Instance>
+
+<Instance id="HL1">
+  <Class name="cal.HL1"/>
+</Instance>
+
+<Instance id="HL2">
+  <Class name="cal.HL2"/>
+</Instance>
+
+<Instance id="HL3">
+  <Class name="cal.HL3"/>
+</Instance>
+
+<Instance id="LL1_L_iunzipFilter2D">
+  <Class name="cal.LL1_L_iunzipFilter2D"/>
+</Instance>
+
+<Instance id="LH1">
+  <Class name="cal.LH1"/>
+</Instance>
+
+<Instance id="LL2_L_iunzipFilter2D">
+  <Class name="cal.LL2_L_iunzipFilter2D"/>
+</Instance>
+
+<Instance id="LH2">
+  <Class name="cal.LH2"/>
+</Instance>
+
+<Instance id="LL3_L_iunzipFilter2D">
+  <Class name="cal.LL3_L_iunzipFilter2D"/>
+</Instance>
+
+<Instance id="LH3">
+  <Class name="cal.LH3"/>
+</Instance>
+
+<Instance id="LL1">
+  <Class name="cal.LL1"/>
+</Instance>
+
+<Instance id="image1_iunzip">
+  <Class name="cal.image1_iunzip"/>
+</Instance>
+
+<Instance id="LL1_H">
+  <Class name="cal.LL1_H"/>
+</Instance>
+
+<Instance id="LL1_L">
+  <Class name="cal.LL1_L"/>
+</Instance>
+
+<Instance id="LL2">
+  <Class name="cal.LL2"/>
+</Instance>
+
+<Instance id="LL1_iunzip">
+  <Class name="cal.LL1_iunzip"/>
+</Instance>
+
+<Instance id="LL2_H">
+  <Class name="cal.LL2_H"/>
+</Instance>
+
+<Instance id="LL2_L">
+  <Class name="cal.LL2_L"/>
+</Instance>
+
+<Instance id="LL3">
+  <Class name="cal.LL3"/>
+</Instance>
+
+<Instance id="LL2_iunzip">
+  <Class name="cal.LL2_iunzip"/>
+</Instance>
+
+<Instance id="LL3_H">
+  <Class name="cal.LL3_H"/>
+</Instance>
+
+<Instance id="LL3_L">
+  <Class name="cal.LL3_L"/>
+</Instance>
+
+
+<Instance id="image1">
+  <Class name="cal.image1"/>
+</Instance>
+
+<Instance id="mapDia">
+  <Class name="cal.mapDia"/>
+</Instance>
+
+<Instance id="mapFinal">
+  <Class name="cal.mapFinal"/>
+</Instance>
+
+<Instance id="mapVer">
+  <Class name="cal.mapVer"/>
+</Instance>
+
+<Instance id="resized_HH1_xy">
+  <Class name="cal.resized_HH1_xy"/>
+</Instance>
+
+<Instance id="resized_HH1_xy_blurred">
+  <Class name="cal.resized_HH1_xy_blurred"/>
+</Instance>
+
+<Instance id="resized_HH2_xy">
+  <Class name="cal.resized_HH2_xy"/>
+</Instance>
+
+<Instance id="resized_HH2_xy_blurred">
+  <Class name="cal.resized_HH2_xy_blurred"/>
+</Instance>
+
+<Instance id="resized_HH3_xy">
+  <Class name="cal.resized_HH3_xy"/>
+</Instance>
+
+<Instance id="resized_HH3_xy_blurred">
+  <Class name="cal.resized_HH3_xy_blurred"/>
+</Instance>
+
+<Instance id="resized_LH1_xy">
+  <Class name="cal.resized_LH1_xy"/>
+</Instance>
+
+<Instance id="resized_LH1_xy_blurred">
+  <Class name="cal.resized_LH1_xy_blurred"/>
+</Instance>
+
+<Instance id="resized_LH2_xy">
+  <Class name="cal.resized_LH2_xy"/>
+</Instance>
+
+<Instance id="resized_LH2_xy_blurred">
+  <Class name="cal.resized_LH2_xy_blurred"/>
+</Instance>
+
+<Instance id="resized_LH3_xy">
+  <Class name="cal.resized_LH3_xy"/>
+</Instance>
+
+<Instance id="resized_LH3_xy_blurred">
+  <Class name="cal.resized_LH3_xy_blurred"/>
+</Instance>
+
+
+<Connection dst="HH1" dst-port="In1" src="LL1_H_iunzipFilter2D" src-port="Out2"></Connection>
+<Connection dst="LL1_H_iunzipFilter2D" dst-port="In1" src="LL1_H" src-port="Out1"></Connection>
+<Connection dst="HH2" dst-port="In1" src="LL2_H_iunzipFilter2D" src-port="Out2"></Connection>
+<Connection dst="LL2_H_iunzipFilter2D" dst-port="In1" src="LL2_H" src-port="Out1"></Connection>
+<Connection dst="HH3" dst-port="In1" src="LL3_H_iunzipFilter2D" src-port="Out2"></Connection>
+<Connection dst="LL3_H_iunzipFilter2D" dst-port="In1" src="LL3_H" src-port="Out1"></Connection>
+<Connection dst="HL1" dst-port="In1" src="LL1_H_iunzipFilter2D" src-port="Out1"></Connection>
+<Connection dst="HL2" dst-port="In1" src="LL2_H_iunzipFilter2D" src-port="Out1"></Connection>
+<Connection dst="HL3" dst-port="In1" src="LL3_H_iunzipFilter2D" src-port="Out1"></Connection>
+<Connection dst="LH1" dst-port="In1" src="LL1_L_iunzipFilter2D" src-port="Out2"></Connection>
+<Connection dst="LL1_L_iunzipFilter2D" dst-port="In1" src="LL1_L" src-port="Out1"></Connection>
+<Connection dst="LH2" dst-port="In1" src="LL2_L_iunzipFilter2D" src-port="Out2"></Connection>
+<Connection dst="LL2_L_iunzipFilter2D" dst-port="In1" src="LL2_L" src-port="Out1"></Connection>
+<Connection dst="LH3" dst-port="In1" src="LL3_L_iunzipFilter2D" src-port="Out2"></Connection>
+<Connection dst="LL3_L_iunzipFilter2D" dst-port="In1" src="LL3_L" src-port="Out1"></Connection>
+<Connection dst="LL1" dst-port="In1" src="LL1_L_iunzipFilter2D" src-port="Out1"></Connection>
+<Connection dst="LL1_H" dst-port="In1" src="image1_iunzip" src-port="Out2"></Connection>
+<Connection dst="image1_iunzip" dst-port="In1" src="image1" src-port="Out1"></Connection>
+<Connection dst="LL1_L" dst-port="In1" src="image1_iunzip" src-port="Out1"></Connection>
+<Connection dst="LL2" dst-port="In1" src="LL2_L_iunzipFilter2D" src-port="Out1"></Connection>
+<Connection dst="LL2_H" dst-port="In1" src="LL1_iunzip" src-port="Out2"></Connection>
+<Connection dst="LL1_iunzip" dst-port="In1" src="LL1" src-port="Out1"></Connection>
+<Connection dst="LL2_L" dst-port="In1" src="LL1_iunzip" src-port="Out1"></Connection>
+<Connection dst="LL3" dst-port="In1" src="LL3_L_iunzipFilter2D" src-port="Out1"></Connection>
+<Connection dst="LL3_H" dst-port="In1" src="LL2_iunzip" src-port="Out2"></Connection>
+<Connection dst="LL2_iunzip" dst-port="In1" src="LL2" src-port="Out1"></Connection>
+<Connection dst="LL3_L" dst-port="In1" src="LL2_iunzip" src-port="Out1"></Connection>
+<Connection dst="image1" dst-port="In1" src="" src-port="In"></Connection>
+<Connection dst="mapDia" dst-port="In1" src="resized_HH1_xy" src-port="Out1"></Connection>
+<Connection dst="mapDia" dst-port="In2" src="resized_HH2_xy" src-port="Out1"></Connection>
+<Connection dst="mapDia" dst-port="In3" src="resized_HH3_xy" src-port="Out1"></Connection>
+<Connection dst="mapFinal" dst-port="In1" src="mapVer" src-port="Out1"></Connection>
+<Connection dst="mapFinal" dst-port="In2" src="mapDia" src-port="Out1"></Connection>
+<Connection dst="mapVer" dst-port="In1" src="resized_LH1_xy" src-port="Out1"></Connection>
+<Connection dst="mapVer" dst-port="In2" src="resized_LH2_xy" src-port="Out1"></Connection>
+<Connection dst="mapVer" dst-port="In3" src="resized_LH3_xy" src-port="Out1"></Connection>
+<Connection dst="" dst-port="Out" src="mapFinal" src-port="Out1"></Connection>
+<Connection dst="resized_HH1_xy" dst-port="In1" src="resized_HH1_xy_blurred" src-port="Out1"></Connection>
+<Connection dst="resized_HH1_xy_blurred" dst-port="In1" src="HH1" src-port="Out1"></Connection>
+<Connection dst="resized_HH2_xy" dst-port="In1" src="resized_HH2_xy_blurred" src-port="Out1"></Connection>
+<Connection dst="resized_HH2_xy_blurred" dst-port="In1" src="HH2" src-port="Out1"></Connection>
+<Connection dst="resized_HH3_xy" dst-port="In1" src="resized_HH3_xy_blurred" src-port="Out1"></Connection>
+<Connection dst="resized_HH3_xy_blurred" dst-port="In1" src="HH3" src-port="Out1"></Connection>
+<Connection dst="resized_LH1_xy" dst-port="In1" src="resized_LH1_xy_blurred" src-port="Out1"></Connection>
+<Connection dst="resized_LH1_xy_blurred" dst-port="In1" src="LH1" src-port="Out1"></Connection>
+<Connection dst="resized_LH2_xy" dst-port="In1" src="resized_LH2_xy_blurred" src-port="Out1"></Connection>
+<Connection dst="resized_LH2_xy_blurred" dst-port="In1" src="LH2" src-port="Out1"></Connection>
+<Connection dst="resized_LH3_xy" dst-port="In1" src="resized_LH3_xy_blurred" src-port="Out1"></Connection>
+<Connection dst="resized_LH3_xy_blurred" dst-port="In1" src="LH3" src-port="Out1"></Connection>
+
+<Port kind="Output" name="dummy1">
+  <Type name="int">
+    <Entry kind="Expr" name="size">
+          <Expr kind="Literal" literal-kind="Integer" value="16"/>
+    </Entry>
+ </Type>
+</Port>
+<Connection dst="" dst-port="dummy1" src="HL1" src-port="Out1"/>
+<Port kind="Output" name="dummy2">
+  <Type name="int">
+    <Entry kind="Expr" name="size">
+          <Expr kind="Literal" literal-kind="Integer" value="16"/>
+    </Entry>
+ </Type>
+</Port>
+<Connection dst="" dst-port="dummy2" src="HL2" src-port="Out1"/>
+<Port kind="Output" name="dummy3">
+  <Type name="int">
+    <Entry kind="Expr" name="size">
+          <Expr kind="Literal" literal-kind="Integer" value="16"/>
+    </Entry>
+ </Type>
+</Port>
+<Connection dst="" dst-port="dummy3" src="HL3" src-port="Out1"/>
+<Port kind="Output" name="dummy4">
+  <Type name="int">
+    <Entry kind="Expr" name="size">
+          <Expr kind="Literal" literal-kind="Integer" value="16"/>
+    </Entry>
+ </Type>
+</Port>
+<Connection dst="" dst-port="dummy4" src="LL3" src-port="Out1"/>
+
+</XDF>
