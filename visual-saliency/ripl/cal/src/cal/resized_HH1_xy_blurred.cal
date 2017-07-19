@@ -1,0 +1,179 @@
+package cal;
+actor resized_HH1_xy_blurred () int (size = 16) In1 ==> int (size = 16) Out1 : uint (size = 16) bufferSize = 256 * 2 + 3 ;
+ int (size = 16) buffer [bufferSize] ;
+ int (size = 16) idx := 0 ;
+ int (size = 16) kernel [9] = [1, 1, 1, 1, 1, 1, 1, 1, 1] ;
+ int (size = 16) populatePtr := 0 ;
+ int (size = 16) processedRows := 0 ;
+ uint (size = 32) consumed := 0 ;
+ uint (size = 16) midPtr := 0 ;
+ function max (int (size = 16) i, int (size = 16) j) --> int (size = 16) : if i > j then i else j end end function applyKernel (int (size = 16) p1, int (size = 16) p2, int (size = 16) p3, int (size = 16) p4, int (size = 16) p5, int (size = 16) p6, int (size = 16) p7, int (size = 16) p8, int (size = 16) p9) --> int (size = 16) var int (size = 16) result = p1 * (kernel [0]) + (p2 * (kernel [1]) + (p3 * (kernel [2]) + (p4 * (kernel [3]) + (p5 * (kernel [4]) + (p6 * (kernel [5]) + (p7 * (kernel [6]) + (p8 * (kernel [7]) + p9 * (kernel [8])))))))) : max (0, result div 9) end function myMod (int (size = 16) x) --> int (size = 16) : if x > 2 * bufferSize - 1 then x - 2 * bufferSize else if x > bufferSize - 1 then x - bufferSize else x end end end populateBuffer : action In1 : [x] ==> guard populatePtr < 256 + 3 do buffer [populatePtr] := x;
+consumed := consumed + 1;
+populatePtr := populatePtr + 1;
+end donePopulateBuffer : action ==> guard populatePtr = 256 + 3 do populatePtr := 0;
+end topLeft : action In1 : [token] ==> Out1 : [v] var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [idx] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [idx] ,
+ int (size = 16) p5 = buffer [idx] ,
+ int (size = 16) p6 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + (256 - 1))] ,
+ int (size = 16) p8 = buffer [myMod (idx + (256 - 1))] ,
+ int (size = 16) p9 = buffer [myMod (idx + 256)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do buffer [consumed] := token;
+idx := myMod (idx + 1);
+midPtr := midPtr + 1;
+consumed := consumed + 1;
+end topRow : action In1 : [token] ==> Out1 : [v] guard midPtr < 255 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 2)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 3)] ,
+ int (size = 16) p4 = buffer [idx] ,
+ int (size = 16) p5 = buffer [myMod (idx + 2)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 3)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + (256 + 1))] ,
+ int (size = 16) p9 = buffer [myMod (idx + (256 + 2))] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do buffer [myMod (idx + bufferSize)] := token;
+consumed := consumed + 1;
+idx := myMod (idx + 1);
+midPtr := midPtr + 1;
+processedRows := processedRows + 1;
+end topRight : action In1 : [token] ==> Out1 : [v] guard midPtr = 255 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [idx] ,
+ int (size = 16) p5 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + (256 + 1))] ,
+ int (size = 16) p9 = buffer [myMod (idx + (256 + 2))] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do buffer [myMod (idx + bufferSize)] := token;
+consumed := consumed + 1;
+idx := myMod (idx + 1);
+midPtr := 0;
+processedRows := 1;
+end midLeft : action In1 : [token] ==> Out1 : [v] guard midPtr = 0, processedRows < 255, consumed < 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [idx] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do buffer [myMod (idx + bufferSize)] := token;
+consumed := consumed + 1;
+idx := myMod (idx + 1);
+midPtr := midPtr + 1;
+end midLeftNoConsume : action ==> Out1 : [v] guard midPtr = 0, processedRows < 255, consumed = 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [idx] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do idx := myMod (consumed);
+midPtr := midPtr + 1;
+end mid : action In1 : [token] ==> Out1 : [v] guard midPtr < 255, processedRows < 255, consumed < 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 2)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 256 + 2)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 2 * 256 + 2)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do buffer [myMod (idx + bufferSize)] := token;
+consumed := consumed + 1;
+idx := myMod (idx + 1);
+midPtr := midPtr + 1;
+end midNoConsume : action ==> Out1 : [v] guard midPtr < 255, consumed = 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 2)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 256 + 2)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 2 * 256 + 2)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do idx := myMod (idx + 1);
+midPtr := midPtr + 1;
+end midRight : action In1 : [token] ==> Out1 : [v] guard midPtr = 255, consumed < 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do buffer [myMod (idx + bufferSize)] := token;
+idx := myMod (idx + 1);
+consumed := consumed + 1;
+processedRows := processedRows + 1;
+midPtr := 0;
+end midRightNoConsume : action ==> Out1 : [v] guard midPtr = 255, consumed = 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 2 * 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 2 * 256 + 1)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do processedRows := processedRows + 1;
+midPtr := 0;
+end bottomLeftNoConsume : action ==> Out1 : [v] guard midPtr = 0, processedRows = 255, consumed = 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [idx] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do idx := myMod (idx + 1);
+midPtr := midPtr + 1;
+end bottomRowNoConsume : action ==> Out1 : [v] guard midPtr < 255, consumed = 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 2)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 256 + 2)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 256 + 2)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do idx := myMod (idx + 1);
+midPtr := midPtr + 1;
+end bottomRightNoConsume : action ==> Out1 : [v] guard midPtr = 255, consumed = 65536 var int (size = 16) p1 = buffer [idx] ,
+ int (size = 16) p2 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p3 = buffer [myMod (idx + 1)] ,
+ int (size = 16) p4 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p5 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p6 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p7 = buffer [myMod (idx + 256)] ,
+ int (size = 16) p8 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) p9 = buffer [myMod (idx + 256 + 1)] ,
+ int (size = 16) v = applyKernel (p1, p2, p3, p4, p5, p6, p7, p8, p9) do processedRows := 0;
+idx := 0;
+midPtr := 0;
+consumed := 0;
+end schedule fsm s0 : s0 (populateBuffer) --> s0 ;
+ s0 (donePopulateBuffer) --> s1 ;
+ s1 (topLeft) --> s2 ;
+ s2 (topRow) --> s2 ;
+ s2 (topRight) --> s3 ;
+ s3 (midLeft) --> s4 ;
+ s3 (midLeftNoConsume) --> s4 ;
+ s4 (mid) --> s4 ;
+ s4 (midNoConsume) --> s4 ;
+ s4 (midRight) --> s5 ;
+ s4 (midRightNoConsume) --> s5 ;
+ s5 (midLeft) --> s4 ;
+ s5 (midLeftNoConsume) --> s4 ;
+ s5 (bottomLeftNoConsume) --> s6 ;
+ s6 (bottomRowNoConsume) --> s6 ;
+ s6 (bottomRightNoConsume) --> s0 ;
+ end end

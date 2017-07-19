@@ -1,0 +1,13 @@
+package cal;
+actor resized_HH3_xy () int (size = 16) In1 ==> int (size = 16) Out1 : uint (size = 16) x := 0 ;
+ uint (size = 16) imageWidth = 64 ;
+ uint (size = 16) outputRow [imageWidth * scaleFactorWidth] ;
+ uint (size = 16) rowRepeated := 1 ;
+ uint (size = 16) scaleFactorWidth := 8 ;
+ uint (size = 16) scaleFactorHeight := 8 ;
+ consumeRow : action In1 : [token] ==> Out1 : [[token : for int (size = 16) i in 1 .. scaleFactorWidth]] repeat scaleFactorWidth guard x < imageWidth do foreach int (size = 16) i in 0 .. (scaleFactorWidth - 1) do outputRow [x * scaleFactorWidth + i] := token;
+end x := x + 1;
+end repeatRowExpanded : action ==> Out1 : [outputRow] repeat imageWidth * scaleFactorWidth guard x = imageWidth, rowRepeated < scaleFactorHeight do rowRepeated := rowRepeated + 1;
+end reset : action ==> guard rowRepeated = scaleFactorHeight do rowRepeated := 1;
+x := 0;
+end end

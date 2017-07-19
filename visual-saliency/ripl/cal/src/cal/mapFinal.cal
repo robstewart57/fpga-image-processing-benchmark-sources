@@ -1,0 +1,2 @@
+package cal;
+actor mapFinal () int (size = 16) In1, int (size = 16) In2 ==> int (size = 16) Out1 : zipWith : action In1 : [x], In2 : [z] ==> Out1 : [x + z] do end end
