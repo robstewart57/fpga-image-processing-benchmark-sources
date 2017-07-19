@@ -304,7 +304,7 @@ int main( int argc, char** argv )
     }
   }
 
-  saveImage(argv[1],castedImg,width,height);
+  saveImage(argv[2],castedImg,width,height);
 
   return 0;
 }
