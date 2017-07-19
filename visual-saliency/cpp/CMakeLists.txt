@@ -3,4 +3,8 @@ project (VisualSaliency)
 find_package( OpenCV REQUIRED )
 
 add_executable(VisualSaliency visual-saliency.cpp)
+add_executable(VisualSaliencyStd visual-saliency-std-array.cpp)
+add_executable(VisualSaliencyTemplates visual-saliency-templates.cpp)
 target_link_libraries( VisualSaliency ${OpenCV_LIBS} )
+target_link_libraries( VisualSaliencyStd ${OpenCV_LIBS} )
+target_link_libraries( VisualSaliencyTemplates ${OpenCV_LIBS} )
