@@ -1,0 +1,42 @@
+let waveletDecompose image =
+  (L,H) = iunzip image (\[.] -> ([.] - (([.-1] + [.+1]) >> 1)))
+                       (\[.] -> ([.] + (([.-1] + [.+1]) >> 2)));
+  (LL,LH) = iunzipFilter2D L (3,3)
+    (\p1 p2 p3 p4 p5 p6 p7 p8 p9 -> (p2 + p6) >> 2)
+    (\p1 p2 p3 p4 p5 p6 p7 p8 p9 -> (p2 - p6) >> 1);
+  (HL,HH) = iunzipFilter2D H (3,3)
+    (\p1 p2 p3 p4 p5 p6 p7 p8 p9 -> (p2 + p6) >> 2)
+    (\p1 p2 p3 p4 p5 p6 p7 p8 p9 -> (p2 - p6) >> 1);
+  (LL,LH,HL,HH);
+
+/* blur a tile then scale up */
+let blurResize region scaleFactor =
+  blurred = convolve region (3,3) {1,1,1,1,1,1,1,1,1};
+  resized = scale blurred (scaleFactor,scaleFactor);
+  resized;
+
+/* the program starts here */
+image1 = imread 512 512;
+
+/*  3 levels of decomposition */
+(LL1,LH1,HL1,HH1) = waveletDecompose image1;
+(LL2,LH2,HL2,HH2) = waveletDecompose LL1;
+(LL3,LH3,HL3,HH3) = waveletDecompose LL2;
+
+/* blur and scale wavelet quartiles */
+resized_LH1_xy = blurResize LH1 2;
+resized_LH2_xy = blurResize LH2 4;
+resized_LH3_xy = blurResize LH3 8;
+resized_HH1_xy = blurResize HH1 2;
+resized_HH2_xy = blurResize HH2 4;
+resized_HH3_xy = blurResize HH3 8;
+
+mapVer = zipWith resized_LH1_xy resized_LH2_xy resized_LH3_xy
+         (\x y z -> 4*x + 8*y + 4*z);
+
+mapDia = zipWith resized_HH1_xy resized_HH2_xy resized_HH3_xy
+         (\x y z -> 4*x + 8*y + 4*z);
+
+mapFinal = zipWith mapVer mapDia (\x z -> x + z);
+
+out mapFinal;
