@@ -7,6 +7,8 @@ bin/
 solution*/
 syn/
 .autopilot/
+*.launch
+.vivado_hls_log_all.xml
 
 CMakeCache.txt
 CMakeFiles/
