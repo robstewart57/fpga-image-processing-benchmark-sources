@@ -16,3 +16,4 @@ cmake_install.cmake
 VisualSaliency
 VisualSaliencyStd
 VisualSaliencyTemplates
+VisualSaliencyStatic
