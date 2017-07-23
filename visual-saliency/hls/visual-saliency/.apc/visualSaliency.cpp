@@ -20,8 +20,8 @@ void blurFilter (unsigned char image[h][w]) {
 template <int h, int w>
 void fwt(unsigned char image[h][w],unsigned char llBand[h/2][w/2], unsigned char lhBand[h/2][w/2],
          unsigned char hlBand[h/2][w/2],unsigned char hhBand[h/2][w/2]) {
-  int lBand[h][w/2];
-  int hBand[h][w/2];
+  unsigned char lBand[h][w/2];
+  unsigned char hBand[h][w/2];
   // low
   for (int row=0;row<h;row++) {
     for (int col=0;col<w;++col) {
@@ -155,9 +155,9 @@ void visualSaliency(unsigned char image[h][w]) {
   resize<h/2,w/2,2>(lh1,lh1_scaled);
   resize<h/2,w/2,2>(hl1,hl1_scaled);
   resize<h/2,w/2,2>(hh1,hh1_scaled);
+  resize<h/4,w/4,4>(lh2,lh2_scaled);
   resize<h/4,w/4,4>(hl2,hl2_scaled);
-  resize<h/4,w/4,4>(hl2,hl2_scaled);
-  resize<h/4,w/4,4>(hl2,hl2_scaled);
+  resize<h/4,w/4,4>(hh2,hh2_scaled);
   resize<h/8,w/8,8>(lh3,lh3_scaled);
   resize<h/8,w/8,8>(hl3,hl3_scaled);
   resize<h/8,w/8,8>(hh3,hh3_scaled);
@@ -178,4 +178,3 @@ int main() {
 	unsigned char image[height][width];
 	visualSaliency<height,width>(image);
 }
-

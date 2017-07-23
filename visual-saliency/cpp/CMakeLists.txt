@@ -4,5 +4,7 @@ find_package( OpenCV REQUIRED )
 
 add_executable(VisualSaliency visual-saliency.cpp)
 add_executable(VisualSaliencyStatic visual-saliency-static-arrays.cpp)
+add_executable(VisualSaliencyStaticReuse visual-saliency-static-arrays-reuse.cpp)
 target_link_libraries( VisualSaliency ${OpenCV_LIBS} )
 target_link_libraries( VisualSaliencyStatic ${OpenCV_LIBS} )
+target_link_libraries( VisualSaliencyStaticReuse ${OpenCV_LIBS} )

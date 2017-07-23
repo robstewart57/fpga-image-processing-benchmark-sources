@@ -1,4 +1,4 @@
-<project xmlns="com.autoesl.autopilot.project" top="main" name="visual-saliency">
+<project xmlns="com.autoesl.autopilot.project" top="visualSaliency" name="visual-saliency">
     <includePaths/>
     <libraryPaths/>
     <Simulation>
