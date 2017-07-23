@@ -1,0 +1,282 @@
+
+
+================================================================
+== Vivado HLS Report for 'visualSaliency'
+================================================================
+* Date:           Fri Jul 21 09:31:39 2017
+
+* Version:        2016.2 (Build 1577090 on Thu Jun 02 16:59:10 MDT 2016)
+* Project:        visual-saliency-array-reuse
+* Solution:       visual-saliency-reuse
+* Product family: virtex7
+* Target device:  xc7vx485tffg1761-2
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|      8.56|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +---------+---------+---------+---------+---------+
+    |      Latency      |      Interval     | Pipeline|
+    |   min   |   max   |   min   |   max   |   Type  |
+    +---------+---------+---------+---------+---------+
+    |  3618339|  3618339|  3618340|  3618340|   none  |
+    +---------+---------+---------+---------+---------+
+
+    + Detail: 
+        * Instance: 
+        +------------------------------------------------------------+-------------------------------------------------+--------+--------+--------+--------+---------+
+        |                                                            |                                                 |     Latency     |     Interval    | Pipeline|
+        |                          Instance                          |                      Module                     |   min  |   max  |   min  |   max  |   Type  |
+        +------------------------------------------------------------+-------------------------------------------------+--------+--------+--------+--------+---------+
+        |grp_visualSaliency_512_512_fwt_512_512_s_fu_78              |visualSaliency_512_512_fwt_512_512_s             |  970756|  970756|  970756|  970756|   none  |
+        |grp_visualSaliency_512_512_fwt_256_256_s_fu_92              |visualSaliency_512_512_fwt_256_256_s             |  243716|  243716|  243716|  243716|   none  |
+        |grp_visualSaliency_512_512_fwt_128_128_s_fu_101             |visualSaliency_512_512_fwt_128_128_s             |   61444|   61444|   61444|   61444|   none  |
+        |grp_visualSaliency_512_512_blurFilter_256_256_s_fu_110      |visualSaliency_512_512_blurFilter_256_256_s      |  279041|  279041|  279041|  279041|   none  |
+        |grp_visualSaliency_512_512_blurFilter_256_256_s_fu_115      |visualSaliency_512_512_blurFilter_256_256_s      |  279041|  279041|  279041|  279041|   none  |
+        |grp_visualSaliency_512_512_blurFilter_256_256_s_fu_120      |visualSaliency_512_512_blurFilter_256_256_s      |  279041|  279041|  279041|  279041|   none  |
+        |grp_visualSaliency_512_512_blurFilter_128_128_s_fu_125      |visualSaliency_512_512_blurFilter_128_128_s      |   69889|   69889|   69889|   69889|   none  |
+        |grp_visualSaliency_512_512_blurFilter_128_128_s_fu_130      |visualSaliency_512_512_blurFilter_128_128_s      |   69889|   69889|   69889|   69889|   none  |
+        |grp_visualSaliency_512_512_blurFilter_128_128_s_fu_135      |visualSaliency_512_512_blurFilter_128_128_s      |   69889|   69889|   69889|   69889|   none  |
+        |grp_visualSaliency_512_512_blurFilter_64_64_s_fu_140        |visualSaliency_512_512_blurFilter_64_64_s        |   17537|   17537|   17537|   17537|   none  |
+        |grp_visualSaliency_512_512_blurFilter_64_64_s_fu_145        |visualSaliency_512_512_blurFilter_64_64_s        |   17537|   17537|   17537|   17537|   none  |
+        |grp_visualSaliency_512_512_resizeAndAdd_256_256_2_s_fu_150  |visualSaliency_512_512_resizeAndAdd_256_256_2_s  |  263169|  263169|  263169|  263169|   none  |
+        |grp_visualSaliency_512_512_resizeAndAdd_128_128_4_s_fu_157  |visualSaliency_512_512_resizeAndAdd_128_128_4_s  |  263169|  263169|  263169|  263169|   none  |
+        |grp_visualSaliency_512_512_resizeAndAdd_64_64_8_s_fu_164    |visualSaliency_512_512_resizeAndAdd_64_64_8_s    |  263169|  263169|  263169|  263169|   none  |
+        |grp_visualSaliency_512_512_resetImage_512_512_s_fu_171      |visualSaliency_512_512_resetImage_512_512_s      |  132097|  132097|  132097|  132097|   none  |
+        +------------------------------------------------------------+-------------------------------------------------+--------+--------+--------+--------+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+--------+--------+
+|       Name      | BRAM_18K| DSP48E|   FF   |   LUT  |
++-----------------+---------+-------+--------+--------+
+|DSP              |        -|      -|       -|       -|
+|Expression       |        -|      -|       -|       -|
+|FIFO             |        -|      -|       -|       -|
+|Instance         |       84|    128|   19869|   36251|
+|Memory           |      168|      -|       0|       0|
+|Multiplexer      |        -|      -|       -|     532|
+|Register         |        -|      -|      37|       -|
++-----------------+---------+-------+--------+--------+
+|Total            |      252|    128|   19906|   36783|
++-----------------+---------+-------+--------+--------+
+|Available        |     2060|   2800|  607200|  303600|
++-----------------+---------+-------+--------+--------+
+|Utilization (%)  |       12|      4|       3|      12|
++-----------------+---------+-------+--------+--------+
+
++ Detail: 
+    * Instance: 
+    +------------------------------------------------------------+-------------------------------------------------+---------+-------+------+------+
+    |                          Instance                          |                      Module                     | BRAM_18K| DSP48E|  FF  |  LUT |
+    +------------------------------------------------------------+-------------------------------------------------+---------+-------+------+------+
+    |grp_visualSaliency_512_512_blurFilter_128_128_s_fu_125      |visualSaliency_512_512_blurFilter_128_128_s      |        0|     16|  1685|  2029|
+    |grp_visualSaliency_512_512_blurFilter_128_128_s_fu_130      |visualSaliency_512_512_blurFilter_128_128_s      |        0|     16|  1685|  2029|
+    |grp_visualSaliency_512_512_blurFilter_128_128_s_fu_135      |visualSaliency_512_512_blurFilter_128_128_s      |        0|     16|  1685|  2029|
+    |grp_visualSaliency_512_512_blurFilter_256_256_s_fu_110      |visualSaliency_512_512_blurFilter_256_256_s      |        0|     16|  1809|  2143|
+    |grp_visualSaliency_512_512_blurFilter_256_256_s_fu_115      |visualSaliency_512_512_blurFilter_256_256_s      |        0|     16|  1809|  2143|
+    |grp_visualSaliency_512_512_blurFilter_256_256_s_fu_120      |visualSaliency_512_512_blurFilter_256_256_s      |        0|     16|  1809|  2143|
+    |grp_visualSaliency_512_512_blurFilter_64_64_s_fu_140        |visualSaliency_512_512_blurFilter_64_64_s        |        0|     16|  1561|  1917|
+    |grp_visualSaliency_512_512_blurFilter_64_64_s_fu_145        |visualSaliency_512_512_blurFilter_64_64_s        |        0|     16|  1561|  1917|
+    |grp_visualSaliency_512_512_fwt_128_128_s_fu_101             |visualSaliency_512_512_fwt_128_128_s             |        4|      0|  1386|  5352|
+    |grp_visualSaliency_512_512_fwt_256_256_s_fu_92              |visualSaliency_512_512_fwt_256_256_s             |       16|      0|  1541|  5727|
+    |grp_visualSaliency_512_512_fwt_512_512_s_fu_78              |visualSaliency_512_512_fwt_512_512_s             |       64|      0|  1712|  6135|
+    |grp_visualSaliency_512_512_resetImage_512_512_s_fu_171      |visualSaliency_512_512_resetImage_512_512_s      |        0|      0|    93|   486|
+    |grp_visualSaliency_512_512_resizeAndAdd_128_128_4_s_fu_157  |visualSaliency_512_512_resizeAndAdd_128_128_4_s  |        0|      0|   511|   727|
+    |grp_visualSaliency_512_512_resizeAndAdd_256_256_2_s_fu_150  |visualSaliency_512_512_resizeAndAdd_256_256_2_s  |        0|      0|   481|   733|
+    |grp_visualSaliency_512_512_resizeAndAdd_64_64_8_s_fu_164    |visualSaliency_512_512_resizeAndAdd_64_64_8_s    |        0|      0|   541|   741|
+    +------------------------------------------------------------+-------------------------------------------------+---------+-------+------+------+
+    |Total                                                       |                                                 |       84|    128| 19869| 36251|
+    +------------------------------------------------------------+-------------------------------------------------+---------+-------+------+------+
+
+    * DSP48: 
+    N/A
+
+    * Memory: 
+    +-------+--------------------+---------+---+----+-------+-----+------+-------------+
+    | Memory|       Module       | BRAM_18K| FF| LUT| Words | Bits| Banks| W*Bits*Banks|
+    +-------+--------------------+---------+---+----+-------+-----+------+-------------+
+    |lh1_U  |visualSaliency_lh1  |       32|  0|   0|  65536|    8|     1|       524288|
+    |hl1_U  |visualSaliency_lh1  |       32|  0|   0|  65536|    8|     1|       524288|
+    |hh1_U  |visualSaliency_lh1  |       32|  0|   0|  65536|    8|     1|       524288|
+    |lh2_U  |visualSaliency_lh2  |        8|  0|   0|  16384|    8|     1|       131072|
+    |hl2_U  |visualSaliency_lh2  |        8|  0|   0|  16384|    8|     1|       131072|
+    |hh2_U  |visualSaliency_lh2  |        8|  0|   0|  16384|    8|     1|       131072|
+    |lh3_U  |visualSaliency_lh3  |        2|  0|   0|   4096|    8|     1|        32768|
+    |hl3_U  |visualSaliency_lh3  |        2|  0|   0|   4096|    8|     1|        32768|
+    |hh3_U  |visualSaliency_lh3  |        2|  0|   0|   4096|    8|     1|        32768|
+    |ll1_U  |visualSaliency_ll1  |       32|  0|   0|  65536|    8|     1|       524288|
+    |ll2_U  |visualSaliency_ll2  |        8|  0|   0|  16384|    8|     1|       131072|
+    |ll3_U  |visualSaliency_ll3  |        2|  0|   0|   4096|    8|     1|        32768|
+    +-------+--------------------+---------+---+----+-------+-----+------+-------------+
+    |Total  |                    |      168|  0|   0| 344064|   96|    12|      2752512|
+    +-------+--------------------+---------+---+----+-------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    +-----------------------------------------------------------------------+----+-----------+-----+-----------+
+    |                                  Name                                 | LUT| Input Size| Bits| Total Bits|
+    +-----------------------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                                              |  18|         23|    1|         23|
+    |grp_visualSaliency_512_512_blurFilter_64_64_s_fu_140_image_r_q0        |   8|          3|    8|         24|
+    |grp_visualSaliency_512_512_blurFilter_64_64_s_fu_140_image_r_q1        |   8|          3|    8|         24|
+    |grp_visualSaliency_512_512_resizeAndAdd_128_128_4_s_fu_157_image_r_q0  |   8|          4|    8|         32|
+    |grp_visualSaliency_512_512_resizeAndAdd_128_128_4_s_fu_157_image_r_q1  |   8|          4|    8|         32|
+    |grp_visualSaliency_512_512_resizeAndAdd_256_256_2_s_fu_150_image_r_q0  |   8|          4|    8|         32|
+    |grp_visualSaliency_512_512_resizeAndAdd_256_256_2_s_fu_150_image_r_q1  |   8|          4|    8|         32|
+    |grp_visualSaliency_512_512_resizeAndAdd_64_64_8_s_fu_164_image_r_q0    |   8|          4|    8|         32|
+    |grp_visualSaliency_512_512_resizeAndAdd_64_64_8_s_fu_164_image_r_q1    |   8|          4|    8|         32|
+    |hh1_address0                                                           |  16|          4|   16|         64|
+    |hh1_address1                                                           |  16|          3|   16|         48|
+    |hh1_ce0                                                                |   1|          4|    1|          4|
+    |hh1_ce1                                                                |   1|          3|    1|          3|
+    |hh1_d0                                                                 |   8|          3|    8|         24|
+    |hh1_we0                                                                |   1|          3|    1|          3|
+    |hh1_we1                                                                |   1|          2|    1|          2|
+    |hh2_address0                                                           |  14|          4|   14|         56|
+    |hh2_address1                                                           |  14|          3|   14|         42|
+    |hh2_ce0                                                                |   1|          4|    1|          4|
+    |hh2_ce1                                                                |   1|          3|    1|          3|
+    |hh2_d0                                                                 |   8|          3|    8|         24|
+    |hh2_we0                                                                |   1|          3|    1|          3|
+    |hh2_we1                                                                |   1|          2|    1|          2|
+    |hh3_address0                                                           |  12|          4|   12|         48|
+    |hh3_address1                                                           |  12|          3|   12|         36|
+    |hh3_ce0                                                                |   1|          4|    1|          4|
+    |hh3_ce1                                                                |   1|          3|    1|          3|
+    |hh3_d0                                                                 |   8|          3|    8|         24|
+    |hh3_we0                                                                |   1|          3|    1|          3|
+    |hh3_we1                                                                |   1|          2|    1|          2|
+    |hl1_address0                                                           |  16|          4|   16|         64|
+    |hl1_address1                                                           |  16|          3|   16|         48|
+    |hl1_ce0                                                                |   1|          4|    1|          4|
+    |hl1_ce1                                                                |   1|          3|    1|          3|
+    |hl1_d0                                                                 |   8|          3|    8|         24|
+    |hl1_we0                                                                |   1|          3|    1|          3|
+    |hl1_we1                                                                |   1|          2|    1|          2|
+    |hl2_address0                                                           |  14|          4|   14|         56|
+    |hl2_address1                                                           |  14|          3|   14|         42|
+    |hl2_ce0                                                                |   1|          4|    1|          4|
+    |hl2_ce1                                                                |   1|          3|    1|          3|
+    |hl2_d0                                                                 |   8|          3|    8|         24|
+    |hl2_we0                                                                |   1|          3|    1|          3|
+    |hl2_we1                                                                |   1|          2|    1|          2|
+    |hl3_address0                                                           |  12|          4|   12|         48|
+    |hl3_address1                                                           |  12|          3|   12|         36|
+    |hl3_ce0                                                                |   1|          4|    1|          4|
+    |hl3_ce1                                                                |   1|          3|    1|          3|
+    |hl3_d0                                                                 |   8|          3|    8|         24|
+    |hl3_we0                                                                |   1|          3|    1|          3|
+    |hl3_we1                                                                |   1|          2|    1|          2|
+    |image_r_address0                                                       |  18|          6|   18|        108|
+    |image_r_address1                                                       |  18|          6|   18|        108|
+    |image_r_ce0                                                            |   1|          6|    1|          6|
+    |image_r_ce1                                                            |   1|          6|    1|          6|
+    |image_r_d0                                                             |   8|          5|    8|         40|
+    |image_r_d1                                                             |   8|          5|    8|         40|
+    |image_r_we0                                                            |   1|          5|    1|          5|
+    |image_r_we1                                                            |   1|          5|    1|          5|
+    |lh1_address0                                                           |  16|          4|   16|         64|
+    |lh1_address1                                                           |  16|          3|   16|         48|
+    |lh1_ce0                                                                |   1|          4|    1|          4|
+    |lh1_ce1                                                                |   1|          3|    1|          3|
+    |lh1_d0                                                                 |   8|          3|    8|         24|
+    |lh1_we0                                                                |   1|          3|    1|          3|
+    |lh1_we1                                                                |   1|          2|    1|          2|
+    |lh2_address0                                                           |  14|          4|   14|         56|
+    |lh2_address1                                                           |  14|          3|   14|         42|
+    |lh2_ce0                                                                |   1|          4|    1|          4|
+    |lh2_ce1                                                                |   1|          3|    1|          3|
+    |lh2_d0                                                                 |   8|          3|    8|         24|
+    |lh2_we0                                                                |   1|          3|    1|          3|
+    |lh2_we1                                                                |   1|          2|    1|          2|
+    |lh3_address0                                                           |  12|          4|   12|         48|
+    |lh3_address1                                                           |  12|          3|   12|         36|
+    |lh3_ce0                                                                |   1|          4|    1|          4|
+    |lh3_ce1                                                                |   1|          3|    1|          3|
+    |lh3_d0                                                                 |   8|          3|    8|         24|
+    |lh3_we0                                                                |   1|          3|    1|          3|
+    |lh3_we1                                                                |   1|          2|    1|          2|
+    |ll1_address0                                                           |  16|          3|   16|         48|
+    |ll1_ce0                                                                |   1|          3|    1|          3|
+    |ll1_ce1                                                                |   1|          2|    1|          2|
+    |ll2_address0                                                           |  14|          3|   14|         42|
+    |ll2_ce0                                                                |   1|          3|    1|          3|
+    |ll2_ce1                                                                |   1|          2|    1|          2|
+    +-----------------------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                                  | 532|        311|  515|       1887|
+    +-----------------------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +----------------------------------------------------------------------------+----+----+-----+-----------+
+    |                                    Name                                    | FF | LUT| Bits| Const Bits|
+    +----------------------------------------------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                                                   |  22|   0|   22|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_128_128_s_fu_125_ap_start      |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_128_128_s_fu_130_ap_start      |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_128_128_s_fu_135_ap_start      |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_256_256_s_fu_110_ap_start      |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_256_256_s_fu_115_ap_start      |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_256_256_s_fu_120_ap_start      |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_64_64_s_fu_140_ap_start        |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_blurFilter_64_64_s_fu_145_ap_start        |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_fwt_128_128_s_fu_101_ap_start             |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_fwt_256_256_s_fu_92_ap_start              |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_fwt_512_512_s_fu_78_ap_start              |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_resetImage_512_512_s_fu_171_ap_start      |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_resizeAndAdd_128_128_4_s_fu_157_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_resizeAndAdd_256_256_2_s_fu_150_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_visualSaliency_512_512_resizeAndAdd_64_64_8_s_fu_164_ap_start    |   1|   0|    1|          0|
+    +----------------------------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                                       |  37|   0|   37|          0|
+    +----------------------------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------+-----+-----+------------+--------------------------+--------------+
+|     RTL Ports    | Dir | Bits|  Protocol  |       Source Object      |    C Type    |
++------------------+-----+-----+------------+--------------------------+--------------+
+|ap_clk            |  in |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_rst            |  in |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_start          |  in |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_done           | out |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_idle           | out |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_ready          | out |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|image_r_address0  | out |   18|  ap_memory |          image_r         |     array    |
+|image_r_ce0       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_we0       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_d0        | out |    8|  ap_memory |          image_r         |     array    |
+|image_r_q0        |  in |    8|  ap_memory |          image_r         |     array    |
+|image_r_address1  | out |   18|  ap_memory |          image_r         |     array    |
+|image_r_ce1       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_we1       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_d1        | out |    8|  ap_memory |          image_r         |     array    |
+|image_r_q1        |  in |    8|  ap_memory |          image_r         |     array    |
++------------------+-----+-----+------------+--------------------------+--------------+
+
