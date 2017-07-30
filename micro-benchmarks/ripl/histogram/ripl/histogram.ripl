@@ -1,6 +1,0 @@
-image1 = imread 512 512;
-histogram = foldVector image1 256 0 (\p hist -> hist[p]++);
-scanSums = scan histogram 0 (\elem state -> state + elem);
-lut = map scanSums (\[sumHere] -> [(sumHere * 255) / 262144]);
-equalisedImage = zipWithVector image1 lut (\pixel vect -> vect[pixel]);
-out equalisedImage;
