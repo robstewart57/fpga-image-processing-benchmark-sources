@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="rgb_to_rgb_par08">
+    <Port kind="Input" name="R">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="G">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="B">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Rout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Gout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Bout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="findPeaks8_1">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="CreateOutput8">
+        <Class name="Vivado.createOutput8"/>
+    </Instance>
+    <Instance id="findPeaks8_2">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="findPeaks8_3">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="findPeaks8_7">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="findPeaks8_8">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="findPeaks8_6">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="findPeaks8_5">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="findPeaks8_4">
+        <Class name="Vivado.findPeaks8"/>
+    </Instance>
+    <Instance id="buildFS8">
+        <Class name="Vivado.buildFS8"/>
+    </Instance>
+    <Connection dst="CreateOutput8" dst-port="P8" src="findPeaks8_8" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="P7" src="findPeaks8_7" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="P6" src="findPeaks8_6" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="P5" src="findPeaks8_5" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="P4" src="findPeaks8_4" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="P3" src="findPeaks8_3" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="P2" src="findPeaks8_2" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="P1" src="findPeaks8_1" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="131072"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="findPeaks8_1" dst-port="FS" src="buildFS8" src-port="FS1"/>
+    <Connection dst="findPeaks8_2" dst-port="FS" src="buildFS8" src-port="FS2"/>
+    <Connection dst="findPeaks8_3" dst-port="FS" src="buildFS8" src-port="FS3"/>
+    <Connection dst="findPeaks8_4" dst-port="FS" src="buildFS8" src-port="FS4"/>
+    <Connection dst="findPeaks8_5" dst-port="FS" src="buildFS8" src-port="FS5"/>
+    <Connection dst="findPeaks8_6" dst-port="FS" src="buildFS8" src-port="FS6"/>
+    <Connection dst="findPeaks8_7" dst-port="FS" src="buildFS8" src-port="FS7"/>
+    <Connection dst="findPeaks8_8" dst-port="FS" src="buildFS8" src-port="FS8"/>
+    <Connection dst="CreateOutput8" dst-port="R" src="buildFS8" src-port="Rout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="G" src="buildFS8" src-port="Gout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="CreateOutput8" dst-port="B" src="buildFS8" src-port="Bout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Rout" src="CreateOutput8" src-port="Rout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Gout" src="CreateOutput8" src-port="Gout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Bout" src="CreateOutput8" src-port="Bout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="buildFS8" dst-port="R" src="" src-port="R">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="buildFS8" dst-port="G" src="" src-port="G">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="buildFS8" dst-port="B" src="" src-port="B">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="65536"/>
+        </Attribute>
+    </Connection>
+</XDF>

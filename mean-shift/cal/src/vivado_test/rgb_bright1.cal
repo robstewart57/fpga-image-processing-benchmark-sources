@@ -1,0 +1,17 @@
+
+package vivado_test;
+
+ 
+actor rgb_bright1() uint(size=8) Rin, uint(size=8) Gin, uint(size=8) Bin ==> uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+
+	uint(size=8) outR;
+	uint(size=8) outG;
+	uint(size=8) outB;
+
+	getArray: action Rin:[arrayValR], Gin:[arrayValG], Bin:[arrayValB] ==>  Rout:[outR], Gout:[outG], Bout:[outB]
+	do
+		outR := arrayValR ;
+		outG := arrayValG ;
+		outB := arrayValB ;
+	end
+end

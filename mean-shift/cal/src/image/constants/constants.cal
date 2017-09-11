@@ -1,0 +1,20 @@
+package image.constants;
+
+unit constants:
+	int IM_WIDTH  = 512;
+	int IM_HEIGHT = 512;
+	int FS_SIZE = 64;
+	int WINDOW_SZ = 32;
+	
+	int FRAMES    = 1;
+	int COLOUR_CHANNELS_OUT = 3;
+	
+	
+	int IM_WIDTH_OUT  = IM_WIDTH;
+	int IM_HEIGHT_OUT = IM_HEIGHT;
+    int IM_WIDTH_IN   = IM_WIDTH;
+	int IM_HEIGHT_IN  = IM_HEIGHT;
+	
+	
+	
+end

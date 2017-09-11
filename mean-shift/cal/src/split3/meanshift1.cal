@@ -1,0 +1,156 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: KirstyD Duncan
+
+
+package split3;
+import image.constants.constants.*;
+ 
+actor meanshift1() uint(size=8) R, uint(size=8) G, uint(size=8) B ==> uint(size=8) FSout, uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+
+	/* constants */
+	uint(size=16) imageWidth = IM_WIDTH;
+	uint(size=16) imageHeight = IM_HEIGHT;
+	uint(size=8) fsSize = FS_SIZE;
+	uint(size=8) FSdiv = 256/fsSize;
+	uint(size=8) actualWindowSize = WINDOW_SZ; // 42;
+	uint(size=8) windowSize = actualWindowSize/4;
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	/* output */
+	uint(size=8) output [(fsSize)*(fsSize)*(fsSize)+6];
+	uint(size=8) featureSpace [fsSize][fsSize][fsSize];
+	
+	
+	
+	
+	//bufferRows: 
+	rob: action R:[ imgR ] repeat imageWidth*imageHeight, G:[ imgG ] repeat imageWidth*imageHeight, B:[ imgB ] repeat imageWidth*imageHeight ==> FSout:[output] repeat (fsSize)*(fsSize)*(fsSize)+6, Rout:[imgR] repeat imageWidth*imageHeight, Gout:[imgG] repeat imageWidth*imageHeight, Bout:[imgB] repeat imageWidth*imageHeight
+	do
+		xCount := 0;
+		yCount := 0;
+		while (yCount < imageHeight) do
+			/* populate feature space values */
+			featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)] := featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)] + 1;
+			if (xCount < imageWidth - 1) then
+				xCount := xCount+1;
+			else
+				xCount := 0;
+				yCount := yCount + 1;
+			end
+		end
+		
+		//output feature space
+		foreach uint(size=16) i in 0 .. (fsSize-1) do
+	    	foreach uint(size=16) j in 0 .. (fsSize-1) do
+	    		foreach uint(size=16) k in 0 .. (fsSize-1) do
+	    			output[(i*fsSize*fsSize) + (j*fsSize) + k] := featureSpace[i][j][k];
+	    			
+	    		end
+	    	end
+	    end
+	    
+	    output[(fsSize)*(fsSize)*(fsSize)+0] := 0;
+		output[(fsSize)*(fsSize)*(fsSize)+1] := 0;
+		output[(fsSize)*(fsSize)*(fsSize)+2] := 0;
+		output[(fsSize)*(fsSize)*(fsSize)+3] := fsSize-1;
+		output[(fsSize)*(fsSize)*(fsSize)+4] := fsSize-1;
+		output[(fsSize)*(fsSize)*(fsSize)+5] := fsSize-1;
+
+	    	   
+	   
+	end
+	
+end
+
+
+//
+//package split3;
+//import image.constants.constants.*;
+// 
+//actor meanshift1() uint(size=8) R, uint(size=8) G, uint(size=8) B ==> uint(size=8) FSout, uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+//
+//	/* constants */
+//	uint(size=16) imageWidth = IM_WIDTH;
+//	uint(size=16) imageHeight = IM_HEIGHT;
+//	uint(size=8) fsSize = FS_SIZE;
+//	uint(size=8) FSdiv = 256/fsSize;
+//	uint(size=8) actualWindowSize = WINDOW_SZ; // 42;
+//	uint(size=8) windowSize = actualWindowSize/4;
+//	uint(size=8) fsWidth = fsSize+windowSize+windowSize;
+//	/* how many row/column elements have been consumed */
+//	uint(size=16) xCount := 0;
+//	uint(size=16) yCount := 0;
+//	/* output */
+//	uint(size=8) output [(fsWidth)*(fsWidth)*(fsWidth)+6];
+//	uint(size=8) featureSpace [fsWidth][fsWidth][fsWidth];
+//	
+//	
+//	
+//	
+//	//bufferRows: 
+//	rob: action R:[ imgR ] repeat imageWidth*imageHeight, G:[ imgG ] repeat imageWidth*imageHeight, B:[ imgB ] repeat imageWidth*imageHeight ==> FSout:[output] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, Rout:[imgR] repeat imageWidth*imageHeight, Gout:[imgG] repeat imageWidth*imageHeight, Bout:[imgB] repeat imageWidth*imageHeight
+//	do
+//		xCount := 0;
+//		yCount := 0;
+//		while (yCount < imageHeight) do
+//			/* populate feature space values */
+//			featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] := featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] + 1;
+//			if (xCount < imageWidth - 1) then
+//				xCount := xCount+1;
+//			else
+//				xCount := 0;
+//				yCount := yCount + 1;
+//			end
+//		end
+//		
+//		//output feature space
+//		foreach uint(size=16) i in 0 .. (fsWidth-1) do
+//	    	foreach uint(size=16) j in 0 .. (fsWidth-1) do
+//	    		foreach uint(size=16) k in 0 .. (fsWidth-1) do
+//	    			output[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+//	    			
+//	    		end
+//	    	end
+//	    end
+//	    
+//	    output[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+//		output[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+//		output[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+//		output[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+//		output[(fsWidth)*(fsWidth)*(fsWidth)+4] := fsSize-1;
+//		output[(fsWidth)*(fsWidth)*(fsWidth)+5] := fsSize-1;
+//
+//	    	   
+//	   
+//	end
+//	
+//end

@@ -1,0 +1,588 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+package parallel;
+
+actor buildFS56() uint(size=8) R, uint(size=8) G, uint(size=8) B ==> uint(size=8) FS1, uint(size=8) FS2, uint(size=8) FS3, uint(size=8) FS4, uint(size=8) FS5, uint(size=8) FS6, uint(size=8) FS7, uint(size=8) FS8, uint(size=8) FS9, uint(size=8) FS10, uint(size=8) FS11, uint(size=8) FS12, uint(size=8) FS13, uint(size=8) FS14, uint(size=8) FS15, uint(size=8) FS16, uint(size=8) FS17, uint(size=8) FS18, uint(size=8) FS19, uint(size=8) FS20, uint(size=8) FS21, uint(size=8) FS22, uint(size=8) FS23, uint(size=8) FS24, uint(size=8) FS25, uint(size=8) FS26, uint(size=8) FS27, uint(size=8) FS28, uint(size=8) FS29, uint(size=8) FS30, uint(size=8) FS31, uint(size=8) FS32, uint(size=8) FS33, uint(size=8) FS34, uint(size=8) FS35, uint(size=8) FS36, uint(size=8) FS37, uint(size=8) FS38, uint(size=8) FS39, uint(size=8) FS40,  uint(size=8) FS41, uint(size=8) FS42, uint(size=8) FS43, uint(size=8) FS44, uint(size=8) FS45, uint(size=8) FS46, uint(size=8) FS47, uint(size=8) FS48, uint(size=8) FS49, uint(size=8) FS50, uint(size=8) FS51, uint(size=8) FS52, uint(size=8) FS53, uint(size=8) FS54, uint(size=8) FS55, uint(size=8) FS56, uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+
+	/* constants */
+	uint(size=16) imageWidth = 512;
+	uint(size=16) imageHeight = 512;
+	uint(size=8) fsSize = 64;
+	uint(size=8) FSdiv = 256/fsSize;
+	uint(size=8) actualWindowSize = 16; // 42;
+	uint(size=8) windowSize = actualWindowSize/FSdiv;
+	uint(size=8) fsWidth = fsSize+windowSize+windowSize;
+	/* feature space dividers */
+	uint(size=8) fsHalf  = fsSize/2;
+	uint(size=8) fsThird  = fsSize/3;
+	uint(size=8) fsQuart = fsSize/4;	
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	/* output */
+	uint(size=8) output1 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output2 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output3 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output4 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output5 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output6 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output7 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output8 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output9 [(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output10[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output11[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output12[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output13[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output14[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output15[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output16[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output17[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output18[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output19[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output20[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output21[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output22[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output23[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output24[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output25[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output26[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output27[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output28[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output29[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output30[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output31[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output32[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output33[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output34[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output35[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output36[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output37[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output38[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output39[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output40[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output41[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output42[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output43[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output44[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output45[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output46[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output47[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output48[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output49[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output50[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output51[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output52[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output53[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output54[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output55[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) output56[(fsWidth)*(fsWidth)*(fsWidth)+6];
+	uint(size=8) featureSpace [fsWidth][fsWidth][fsWidth];
+	
+	
+	//bufferRows: 
+	action R:[ imgR ] repeat imageWidth*imageHeight, G:[ imgG ] repeat imageWidth*imageHeight, B:[ imgB ] repeat imageWidth*imageHeight ==> FS1:[output1] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS2:[output2] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS3:[output3] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS4:[output4] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS5:[output5] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS6:[output6] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS7:[output7] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS8:[output8] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS9:[output9] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS10:[output10] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS11:[output11] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS12:[output12] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS13:[output13] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS14:[output14] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS15:[output15] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS16:[output16] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS17:[output17] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS18:[output18] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS19:[output19] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS20:[output20] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS21:[output21] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS22:[output22] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS23:[output23] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS24:[output24] repeat (fsWidth)*(fsWidth)*(fsWidth)+6 , FS25:[output25] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS26:[output26] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS27:[output27] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS28:[output28] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS29:[output29] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS30:[output30] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS31:[output31] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS32:[output32] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS33:[output33] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS34:[output34] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS35:[output35] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS36:[output36] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS37:[output37] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS38:[output38] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS39:[output39] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS40:[output40] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS41:[output41] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS42:[output42] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS43:[output43] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS44:[output44] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS45:[output45] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS46:[output46] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS47:[output47] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS48:[output48] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS49:[output49] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS50:[output50] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS51:[output51] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS52:[output52] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS53:[output53] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS54:[output54] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS55:[output55] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, FS56:[output56] repeat (fsWidth)*(fsWidth)*(fsWidth)+6, Rout:[imgR] repeat imageWidth*imageHeight, Gout:[imgG] repeat imageWidth*imageHeight, Bout:[imgB] repeat imageWidth*imageHeight
+	do
+		xCount := 0;
+		yCount := 0;
+		while (yCount < imageHeight) do
+			/* populate feature space values */
+			//println("feature space BEFORE: " + featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)+windowSize]);
+			featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] := featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] + 1;
+			//println("i: " + ((imgR[xCount+(yCount*imageWidth)]/FSdiv)+windowSize) + " j: " + ((imgG[xCount+(yCount*imageWidth)]/FSdiv)+windowSize) + " k: " + ((imgB[xCount+(yCount*imageWidth)]/FSdiv)+windowSize));
+			//println("feature space AFTER: " + featureSpace[(imgR[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgG[xCount+(yCount*imageWidth)]/FSdiv)+windowSize] [(imgB[xCount+(yCount*imageWidth)]/FSdiv)+windowSize]);
+			
+			if (xCount < imageWidth - 1) then
+				xCount := xCount+1;
+			else
+				xCount := 0;
+				yCount := yCount + 1;
+			end
+		end
+		
+		//output feature space
+		foreach uint(size=16) i in 0 .. (fsWidth-1) do
+	    	foreach uint(size=16) j in 0 .. (fsWidth-1) do
+	    		foreach uint(size=16) k in 0 .. (fsWidth-1) do
+	    			output1 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output2 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output3 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output4 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output5 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output6 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output7 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output8 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output9 [(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output10[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output11[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output12[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output13[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output14[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output15[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output16[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output17[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output18[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output19[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output20[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output21[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output22[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output23[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output24[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output25[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output26[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output27[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output28[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output29[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output30[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output31[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output32[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output33[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output34[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output35[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output36[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output37[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output38[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output39[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output40[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output41[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output42[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output43[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output44[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output45[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output46[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output47[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output48[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output49[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output50[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output51[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output52[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output53[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output54[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output55[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    			output56[(i*fsWidth*fsWidth) + (j*fsWidth) + k] := featureSpace[i][j][k];
+	    		end
+	    	end
+	    end
+		// 1
+		output1[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output1[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output1[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output1[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart-1;
+		output1[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output1[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 2
+		output2[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output2[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output2[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output2[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output2[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output2[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 3
+		output3[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output3[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output3[(fsWidth)*(fsWidth)*(fsWidth)+3] := 0;
+		output3[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output3[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output3[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 4
+		output4[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output4[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output4[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output4[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output4[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output4[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 5
+		output5[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output5[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output5[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output5[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart-1;
+		output5[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output5[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 6
+		output6[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output6[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output6[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output6[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf-1;
+		output6[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output6[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 7
+		output7[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output7[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output7[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output7[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output7[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output7[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 8
+		output8[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output8[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output8[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output8[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output8[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output8[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 9
+		output9[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output9[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output9[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output9[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart-1;
+		output9[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output9[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 10
+		output10[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output10[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output10[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output10[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output10[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output10[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 11
+		output11[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output11[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output11[(fsWidth)*(fsWidth)*(fsWidth)+3] := 0;
+		output11[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output11[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output11[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 12
+		output12[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output12[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output12[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output12[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output12[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output12[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 13
+		output13[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output13[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output13[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output13[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart-1;
+		output13[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output13[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 14
+		output14[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output14[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output14[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output14[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf-1;
+		output14[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output14[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 15
+		output15[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output15[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output15[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output15[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output15[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output15[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 16
+		output16[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output16[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output16[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output16[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output16[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		output16[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 17
+		output17[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output17[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output17[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output17[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart-1;
+		output17[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output17[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 18
+		output18[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output18[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output18[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output18[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output18[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output18[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 19
+		output19[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output19[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output19[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart;
+		output19[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output19[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output19[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 20
+		output20[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output20[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output20[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output20[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output20[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output20[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 21
+		output21[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output21[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output21[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output21[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart-1;
+		output21[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output21[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 22
+		output22[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output22[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output22[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output22[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf-1;
+		output22[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output22[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 23
+		output23[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output23[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output23[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output23[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output23[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output23[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 24
+		output24[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output24[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output24[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output24[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output24[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output24[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 25
+		output25[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output25[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output25[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output25[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart-1;
+		output25[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output25[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 26
+		output26[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output26[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output26[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output26[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output26[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output26[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 27
+		output27[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output27[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output27[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart;
+		output27[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output27[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output27[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 28
+		output28[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output28[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output28[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output28[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output28[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output28[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 29
+		output29[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output29[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output29[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output29[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart-1;
+		output29[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output29[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 30
+		output30[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output30[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output30[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output30[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf-1;
+		output30[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output30[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 31
+		output31[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output31[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output31[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output31[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output31[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output31[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 32
+		output32[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output32[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output32[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output32[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output32[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		output32[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		// 33
+		output33[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output33[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output33[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output33[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart-1;
+		output33[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output33[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 34
+		output34[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output34[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output34[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output34[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output34[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output34[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 35
+		output35[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output35[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output35[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf;
+		output35[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output35[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output35[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 36
+		output36[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output36[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output36[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output36[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output36[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output36[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 37
+		output37[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output37[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output37[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output37[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart-1;
+		output37[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output37[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 38
+		output38[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output38[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output38[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output38[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf-1;
+		output38[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output38[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 39
+		output39[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output39[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output39[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output39[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output39[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output39[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 40
+		output40[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output40[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output40[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output40[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output40[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output40[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 41
+		output41[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output41[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output41[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output41[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart-1;
+		output41[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output41[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 42
+		output42[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output42[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output42[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output42[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output42[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output42[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 43
+		output43[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output43[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output43[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf;
+		output43[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output43[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output43[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 44
+		output44[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output44[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output44[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf;
+		output44[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output44[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart-1;
+		output44[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 45
+		output45[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output45[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output45[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output45[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart-1;
+		output45[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output45[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 46
+		output46[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output46[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output46[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output46[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf-1;
+		output46[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output46[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 47
+		output47[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output47[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output47[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output47[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output47[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output47[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 48
+		output48[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output48[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output48[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf;
+		output48[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output48[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		output48[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart-1;
+		// 49
+		output49[(fsWidth)*(fsWidth)*(fsWidth)+0] := 0;
+		output49[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output49[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output49[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsQuart-1;
+		output49[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output49[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		// 50
+		output50[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output50[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output50[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output50[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output50[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output50[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		// 51
+		output51[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output51[(fsWidth)*(fsWidth)*(fsWidth)+2] := 0;
+		output51[(fsWidth)*(fsWidth)*(fsWidth)+3] := 3*fsQuart;
+		output51[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output51[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output51[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		// 52
+		output52[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output52[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output52[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart;
+		output52[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output52[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart-1;
+		output52[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		// 53
+		output53[(fsWidth)*(fsWidth)*(fsWidth)+1] := 0;
+		output53[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsQuart;
+		output53[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output53[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart-1;
+		output53[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output53[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		// 54
+		output54[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsQuart;
+		output54[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output54[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output54[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsHalf-1;
+		output54[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output54[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		// 55
+		output55[(fsWidth)*(fsWidth)*(fsWidth)+0] := fsHalf;
+		output55[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output55[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output55[(fsWidth)*(fsWidth)*(fsWidth)+1] := 3*fsQuart-1;
+		output55[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsHalf-1;
+		output55[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+		// 56
+		output56[(fsWidth)*(fsWidth)*(fsWidth)+0] := 3*fsQuart;
+		output56[(fsWidth)*(fsWidth)*(fsWidth)+1] := fsQuart;
+		output56[(fsWidth)*(fsWidth)*(fsWidth)+2] := 3*fsQuart;
+		output56[(fsWidth)*(fsWidth)*(fsWidth)+2] := fsSize-1;
+		output56[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsHalf-1;
+		output56[(fsWidth)*(fsWidth)*(fsWidth)+3] := fsSize-1;
+	end
+	
+end

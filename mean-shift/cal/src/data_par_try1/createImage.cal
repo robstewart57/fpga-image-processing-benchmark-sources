@@ -1,0 +1,122 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+package data_par_try1;
+ 
+actor createImage() uint(size=8) peaks1, uint(size=8) peaks2, uint(size=8) peaks3, uint(size=8) peaks4, uint(size=8) peaks5, uint(size=8) peaks6, uint(size=8) peaks7, uint(size=8) peaks8 ==> uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+
+     function clip(int x) --> int :
+	 if x > 255 then 255 else
+	 if x < 0 then 0 else x
+	 end
+	 end
+	end
+
+	/* constants */
+	uint(size=16) imageWidth = 512;
+	uint(size=16) imageHeight = 512;
+	/* output row and buffer windows */
+	uint(size=8) image [imageWidth][imageHeight][3];
+	uint(size=8) outputR [imageWidth*imageHeight];
+	uint(size=8) outputG [imageWidth*imageHeight];
+	uint(size=8) outputB [imageWidth*imageHeight];
+
+	/*  */
+	int(size=16) peaks[256][256][256][3];	
+	
+	//bufferRows: 
+	action peaks1:[ imgPeaks1 ] repeat 128*128*128*3, peaks2:[ imgPeaks2 ] repeat 128*128*128*3, peaks3:[ imgPeaks3 ] repeat 128*128*128*3, peaks4:[ imgPeaks4 ] repeat 128*128*128*3, peaks5:[ imgPeaks5 ] repeat 128*128*128*3, peaks6:[ imgPeaks6 ] repeat 128*128*128*3, peaks7:[ imgPeaks7 ] repeat 128*128*128*3, peaks8:[ imgPeaks8 ] repeat 128*128*128*3
+			 ==> Rout:[outputR] repeat imageWidth*imageHeight, Gout:[outputG] repeat imageWidth*imageHeight, Bout:[outputB] repeat imageWidth*imageHeight
+	do
+	
+	
+	//outputPeaks[128*i +128*j +128*k +1]
+	foreach uint(size=16) i in 0 .. 255 do
+	    	foreach uint(size=16) j in 0 .. 255 do
+	    		foreach uint(size=16) k in 0 .. 255 do
+	    			//split output into 8
+		    		if (i < 128) then
+		    			if (j < 128) then
+		    				if (k < 128) then
+		    					
+		    				end
+		    				if (k > 128) then
+		    					peaks[i][j][k][0] := imgPeaks2[128*i +128*j +128*k];
+		    				end
+		    			end
+		    			if (j > 128) then
+		    				if (k < 128) then
+		    					peaks[i][j][k][0] := imgPeaks3[128*i +128*j +128*k];
+		    				end
+		    				if (k < 128) then
+		    					peaks[i][j][k][0] := imgPeaks4[128*i +128*j +128*k];
+		    				end
+		    			end
+		    		end
+		    		if (i > 128) then
+		    			if (j < 128) then
+		    				if (k < 128) then
+		    					peaks[i][j][k][0] := imgPeaks5[128*i +128*j +128*k];
+		    				end
+		    				if (k > 128) then
+		    					peaks[i][j][k][0] := imgPeaks6[128*i +128*j +128*k];
+		    				end
+		    			end
+		    			if (j > 128) then
+		    				if (k < 128) then
+		    					peaks[i][j][k][0] := imgPeaks7[128*i +128*j +128*k];
+		    				end
+		    				if (k < 128) then
+		    					peaks[i][j][k][0] := imgPeaks8[128*i +128*j +128*k];
+		    				end
+		    			end
+		    		end
+		    		//
+	   			end
+	   		end
+	   	end
+	   	
+	   	
+	
+	    	    
+	    foreach uint(size=16) i in 0 .. (imageWidth-1) do
+	    	foreach uint(size=16) j in 0 .. (imageHeight-1) do
+	    	    //
+	    		outputR[j*imageHeight + i] := clip(peaks[image[i][j][0]][image[i][j][1]][image[i][j][2]][0]);
+	    		outputG[j*imageHeight + i] := clip(peaks[image[i][j][0]][image[i][j][1]][image[i][j][2]][1]);
+	    		outputB[j*imageHeight + i] := clip(peaks[image[i][j][0]][image[i][j][1]][image[i][j][2]][2]);
+	    	end
+	    end
+	   
+		println("exited the outer for loop");	
+	end
+	
+end

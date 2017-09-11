@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="threads01">
+    <Port kind="Input" name="R">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="G">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="B">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Rout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Gout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Bout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="threads01">
+        <Class name=".rgb_to_rgb_par01"/>
+    </Instance>
+    <Connection dst="threads01" dst-port="R" src="" src-port="R">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="threads01" dst-port="G" src="" src-port="G">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="threads01" dst-port="B" src="" src-port="B">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Rout" src="threads01" src-port="Rout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Gout" src="threads01" src-port="Gout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Bout" src="threads01" src-port="Bout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+</XDF>

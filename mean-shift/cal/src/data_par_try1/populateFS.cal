@@ -1,0 +1,143 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+package data_par_try1;
+ 
+ 
+actor populateFS() uint(size=8) R, uint(size=8) G, uint(size=8) B ==> uint(size=8) out1, uint(size=8) out2, uint(size=8) out3, uint(size=8) out4, uint(size=8) out5, uint(size=8) out6, uint(size=8) out7, uint(size=8) out8 :
+
+
+	/* constants */
+	uint(size=16) imageWidth = 512;
+	uint(size=16) imageHeight = 512;
+	uint(size=8) windowSize = 15; // 42;
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	/* output row and buffer windows */
+	uint(size=8) image [imageWidth][imageHeight][3];
+	uint(size=8) output1 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) output2 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) output3 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) output4 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) output5 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) output6 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) output7 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) output8 [(128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)];
+	uint(size=8) featureSpace [256+windowSize+windowSize][256+windowSize+windowSize][256+windowSize+windowSize];
+	
+	
+	
+	//bufferRows: 
+	action R:[ imgR ] repeat imageWidth*imageHeight, G:[ imgG ] repeat imageWidth*imageHeight, B:[ imgB ] repeat imageWidth*imageHeight ==> 
+				out1:[output1] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize), out2:[output2] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize), out3:[output3] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize), out4:[output4] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize),
+				out5:[output5] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize), out6:[output6] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize), out7:[output7] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize), out8:[output8] repeat (128+2*windowSize)*(128+2*windowSize)*(128+2*windowSize)
+	do
+	    println("in body");
+		xCount := 0;
+		yCount := 0;
+		foreach uint(size=8) i in 0 .. (windowSize-1) do
+			foreach uint(size=8) j in 0 .. (windowSize-1) do
+				foreach uint(size=8) k in 0 .. (windowSize-1) do
+					featureSpace[i][j][k] := 0;
+					featureSpace[i+windowSize+255][j+windowSize+255][k+windowSize+255]:= 0;
+				end
+			end
+		end
+		println("white space done");
+		while (yCount < imageHeight) do
+			/* populate image RGB values */
+			image[xCount][yCount][0] := imgR[xCount + (yCount*imageWidth)];
+			image[xCount][yCount][1] := imgG[xCount + (yCount*imageWidth)];
+			image[xCount][yCount][2] := imgB[xCount + (yCount*imageWidth)];
+			/* populate feature space values */
+			featureSpace[image[xCount][yCount][0]+windowSize][image[xCount][yCount][1]+windowSize][image[xCount][yCount][2]+windowSize] := featureSpace[image[xCount][yCount][0]+windowSize][image[xCount][yCount][1]+windowSize][image[xCount][yCount][2]+windowSize] + 1;
+			if (xCount < imageWidth - 1) then
+				xCount := xCount+1;
+			else
+				xCount := 0;
+				yCount := yCount + 1;
+			end
+		end
+	    println("image + FS populated");
+	    
+	    
+	    /* each value in featureSpace */
+	    foreach uint(size=16) i in 0 .. 255 do
+	    	foreach uint(size=16) j in 0 .. 255 do
+	    		foreach uint(size=16) k in 0 .. 255 do
+	    			//split output into 8
+		    		if (i < 128+(2*windowSize)) then
+		    			if (j < 128+(2*windowSize)) then
+		    				if (k < 128+(2*windowSize)) then
+		    					output1[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    				if (k > 128) then
+		    					output2[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    			end
+		    			if (j > 128) then
+		    				if (k < 128+(2*windowSize)) then
+		    					output3[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    				if (k < 128) then
+		    					output4[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    			end
+		    		end
+		    		if (i > 128) then
+		    			if (j < 128+(2*windowSize)) then
+		    				if (k < 128+(2*windowSize)) then
+		    					output5[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    				if (k > 128) then
+		    					output6[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    			end
+		    			if (j > 128) then
+		    				if (k < 128+(2*windowSize)) then
+		    					output7[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    				if (k < 128) then
+		    					output8[k*(128+(2*windowSize))+j*(128+(2*windowSize))+i] := featureSpace[i+windowSize][j+windowSize][k+windowSize];
+		    				end
+		    			end
+		    		end
+		    		//
+	   			end
+	   		end
+	   	end
+	   	//***************************************************************************************************
+	   
+		println("feature space split into 8");	
+	end
+	
+end

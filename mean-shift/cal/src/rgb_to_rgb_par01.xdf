@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="rgb_to_rgb_par01">
+    <Port kind="Input" name="R">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="G">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="B">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Rout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Gout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Bout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="createOutput1">
+        <Class name="Final.createOutput01"/>
+    </Instance>
+    <Instance id="findPeaks">
+        <Class name="Final.findPeaks01"/>
+    </Instance>
+    <Instance id="buildFS1">
+        <Class name="Final.buildFS01"/>
+    </Instance>
+    <Connection dst="createOutput1" dst-port="R" src="buildFS1" src-port="Rout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="createOutput1" dst-port="G" src="buildFS1" src-port="Gout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="createOutput1" dst-port="B" src="buildFS1" src-port="Bout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="buildFS1" dst-port="R" src="" src-port="R">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="buildFS1" dst-port="G" src="" src-port="G">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="buildFS1" dst-port="B" src="" src-port="B">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Rout" src="createOutput1" src-port="Rout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Gout" src="createOutput1" src-port="Gout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="" dst-port="Bout" src="createOutput1" src-port="Bout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="262144"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="createOutput1" dst-port="P" src="findPeaks" src-port="Pout">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="1048576"/>
+        </Attribute>
+    </Connection>
+    <Connection dst="findPeaks" dst-port="FS" src="buildFS1" src-port="FS">
+        <Attribute kind="Value" name="bufferSize">
+            <Expr kind="Literal" literal-kind="Integer" value="524288"/>
+        </Attribute>
+    </Connection>
+</XDF>

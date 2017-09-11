@@ -1,0 +1,177 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+package grey;
+ 
+import std.stdio;
+ 
+actor meanshift_filter_only() uint(size=8) Gin ==> uint(size=8) Gout :
+
+	/* constants */
+	uint(size=16) imageWidth = 512;
+	uint(size=16) imageHeight = 512;
+	uint(size=8) windowSize = 40;
+	uint(size=8) spatialWindow = 10;
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	/* output row and buffer windows */
+	uint(size=8) image [imageWidth][imageHeight];
+	uint(size=8) output [imageWidth*imageHeight];
+	uint(size=8) histogram [256+windowSize+windowSize];
+	
+	int(size=16) xVal;
+	int(size=16) xMove;
+	int(size=8) sign;
+	int(size=16) norm;
+	/*  */
+	int(size=16) movements[256];
+	int(size=16) peaks[256];
+	
+	
+	//bufferRows: 
+	action Gin:[ img ] repeat imageWidth*imageHeight ==> Gout:[output] repeat imageWidth*imageHeight
+	do
+	    println("in body");
+		xCount := 0;
+		yCount := 0;
+		foreach uint(size=8) i in 0 .. windowSize do
+			histogram[i] := 0;
+			histogram[i+windowSize+255] := 0;
+		end
+		
+		while (yCount < imageHeight) do
+			image[xCount][yCount] := img[xCount + (yCount*imageWidth)] ;
+			histogram[image[xCount][yCount]] := histogram[image[xCount][yCount]] + 1;
+			//println("assigned: " + img[xCount + (yCount*imageWidth)]);
+			//println("received: " + image[xCount+windowSize][yCount+windowSize]);
+			if (xCount < imageWidth - 1) then
+				xCount := xCount+1;
+			else
+				xCount := 0;
+				yCount := yCount + 1;
+			end
+		end
+	    
+	    /* each value in histogram */
+	    foreach uint(size=16) i in 0 .. 255 do
+	    	//println(i + ":  " + histogram[i+windowSize]);
+	    	xVal := 0;
+	    	xMove := 0;
+	    	norm := 0;
+	    	foreach uint(size=16) j in 1 .. windowSize do
+	    		xVal := xVal - j*histogram[i+windowSize-j]
+	    					+ j*histogram[i+j+windowSize];
+	    		norm := norm + histogram[i+windowSize-j] + histogram[i+j+windowSize];
+	    	end
+	    	if (norm != 0) then
+	    	//	println("xVal: " + xVal/norm);
+	    	//end
+	    		if (xVal >0 ) then
+	    			sign := 1;
+	    		end
+	    		if (xVal <0) then
+	    			sign := -1;
+	    		end
+	    		//
+	    		xMove := 0;
+    			if ((sign*4*xVal) > norm) then
+    				xMove := 1;
+    			end
+	    		foreach int(size=8) k in 1 .. windowSize do
+	    			if ((sign*2*xVal) > (k*2-1)*norm) then
+	    			xMove := sign*k;
+	   				end
+	   			end
+	   		end
+		   	//println(i + "x Move Value: " + xMove);
+		   	//println("xVa: " + xVal);
+	   		//println("norm: " + norm);
+	   		movements[i] := xMove;
+	   	end
+	   	println("hello");
+	   	
+	   	
+	   	/* each value in histogram, loop towards peak*/ 
+	    foreach uint(size=16) i in 0 .. 255 do
+	    	xMove := movements[i];
+	    	xCount := 0;
+	    	while (xCount < 40) do
+	    	//println(xMove);
+	    		xMove := movements[i + movements[i]];
+	    		movements[i] := movements[i] + xMove;
+	    		xCount := xCount + 1;
+	    	end
+	    		peaks[i] := i + movements[i];
+	    	//println("move " + i + " by: " + movements[i]);
+	    end
+	    
+
+	    //populate output image
+	    foreach uint(size=16) i in windowSize .. imageWidth-windowSize do
+	    	foreach uint(size=16) j in windowSize .. imageHeight-windowSize do
+	    		foreach uint(size=16) k in 1 .. windowSize do
+	    			foreach uint(size=16) l in 1 .. windowSize do
+		    			//
+	    				if (image[i+k][j+l] < image[i][j]) then
+	    					sign := -1;
+	    				else
+	    					sign := 1;
+	    				end
+	    				//
+	    				if sign*(image[i+k][j+l]-image[i][j]) < spatialWindow then
+	    					image[i+k][j+l] := image[i][j];
+	    				end
+	    				if (image[i-k][j-l] < image[i][j]) then
+	    					sign := -1;
+	    				else
+	    					sign := 1;
+	    				end
+	    				//
+	    				if sign*(image[i-k][j-l]-image[i][j]) < spatialWindow then
+	    					image[i-k][j-l] := image[i][j];
+	    				end
+	    			end
+	    		end
+	    	end
+	    end
+	    
+	    	    
+	    foreach uint(size=16) i in 0 .. imageWidth do
+	    	foreach uint(size=16) j in 0 .. imageHeight do
+	    		output[j*imageHeight + i] := image[i][j];
+	    	end
+	    end
+	   
+		println("exited the outer for loop");	
+	end
+	
+end

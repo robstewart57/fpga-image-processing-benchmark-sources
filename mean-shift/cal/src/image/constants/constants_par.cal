@@ -1,0 +1,106 @@
+package image.constants;
+
+unit constants_par:
+	int XDIV1 = 1;
+	
+	// 2
+	uint(size=8) PAR2   = 2;
+	uint(size=8) XDIV2  = 1;
+	uint(size=8) YDIV2  = 1;
+	uint(size=8) ZDIV2  = 2;
+	// 4
+	uint(size=8) PAR4   = 4;
+	uint(size=8) XDIV4  = 2;
+	uint(size=8) YDIV4  = 2;
+	uint(size=8) ZDIV4  = 1;
+	// 6
+	uint(size=8) PAR6   = 6;
+	uint(size=8) XDIV6  = 3;
+	uint(size=8) YDIV6  = 2;
+	uint(size=8) ZDIV6  = 1;
+	// 8
+	uint(size=8) PAR8   = 8;
+	uint(size=8) XDIV8  = 2;
+	uint(size=8) YDIV8  = 2;
+	uint(size=8) ZDIV8  = 2;
+	// 10
+	uint(size=8) PAR10  = 10;
+	uint(size=8) XDIV10 = 5;
+	uint(size=8) YDIV10 = 2;
+	uint(size=8) ZDIV10 = 1;
+	// 12
+	uint(size=8) PAR12  = 12;
+	uint(size=8) XDIV12 = 3;
+	uint(size=8) YDIV12 = 2;
+	uint(size=8) ZDIV12 = 2;
+	// 14
+	uint(size=8) PAR14  = 14;
+	uint(size=8) XDIV14 = 7;
+	uint(size=8) YDIV14 = 2;
+	uint(size=8) ZDIV14 = 1;
+	// 16
+	uint(size=8) PAR16  = 16;
+	uint(size=8) XDIV16 = 4;
+	uint(size=8) YDIV16 = 2;
+	uint(size=8) ZDIV16 = 2;
+	// 20
+	uint(size=8) PAR20  = 20;
+	uint(size=8) XDIV20 = 5;
+	uint(size=8) YDIV20 = 2;
+	uint(size=8) ZDIV20 = 2;
+	// 24
+	uint(size=8) PAR24  = 24;
+	uint(size=8) XDIV24 = 3;
+	uint(size=8) YDIV24 = 4;
+	uint(size=8) ZDIV24 = 2;
+	// 28
+	uint(size=8) PAR28  = 28;
+	uint(size=8) XDIV28 = 7;
+	uint(size=8) YDIV28 = 2;
+	uint(size=8) ZDIV28 = 2;
+	// 32
+	uint(size=8) PAR32  = 32;
+	uint(size=8) XDIV32 = 4;
+	uint(size=8) YDIV32 = 4;
+	uint(size=8) ZDIV32 = 2;
+	// 36
+	uint(size=8) PAR36  = 36;
+	uint(size=8) XDIV36 = 3;
+	uint(size=8) YDIV36 = 3;
+	uint(size=8) ZDIV36 = 4;
+	// 40
+	uint(size=8) PAR40  = 40;
+	uint(size=8) XDIV40 = 5;
+	uint(size=8) YDIV40 = 4;
+	uint(size=8) ZDIV40 = 2;
+	// 44
+	uint(size=8) PAR44  = 44;
+	uint(size=8) XDIV44 = 11;
+	uint(size=8) YDIV44 = 1;
+	uint(size=8) ZDIV44 = 4;
+	// 48
+	uint(size=8) PAR48  = 48;
+	uint(size=8) XDIV48 = 3;
+	uint(size=8) YDIV48 = 4;
+	uint(size=8) ZDIV48 = 4;
+	// 52
+	uint(size=8) PAR52  = 52;
+	uint(size=8) XDIV52 = 13;
+	uint(size=8) YDIV52 = 1;
+	uint(size=8) ZDIV52 = 4;
+	// 56
+	uint(size=8) PAR56  = 56;
+	uint(size=8) XDIV56 = 7;
+	uint(size=8) YDIV56 = 2;
+	uint(size=8) ZDIV56 = 4;
+	// 60
+	uint(size=8) PAR60  = 60;
+	uint(size=8) XDIV60 = 5;
+	uint(size=8) YDIV60 = 4;
+	uint(size=8) ZDIV60 = 3;
+	// 64
+	uint(size=8) PAR64  = 64;
+	uint(size=8) XDIV64 = 4;
+	uint(size=8) YDIV64 = 4;
+	uint(size=8) ZDIV64 = 4;
+end

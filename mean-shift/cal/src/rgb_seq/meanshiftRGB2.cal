@@ -1,0 +1,264 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+package rgb_seq;
+ 
+import std.stdio;
+ 
+actor meanshiftRGB2() uint(size=8) R, uint(size=8) G, uint(size=8) B ==> uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+
+     function clip(int x) --> int :
+	 if x > 255 then 255 else
+	 if x < 0 then 0 else x
+	 end
+	 end
+	end
+
+    function maxPixel(int x) --> int :
+    if x > 255 then 255 else x end
+    end
+    
+     function minPixel(int x) --> int :
+    if x < 0 then 0 else x end
+    end
+
+	/* constants */
+	uint(size=16) imageWidth = 512;
+	uint(size=16) imageHeight = 512;
+	uint(size=8) windowSize = 4; // 42;
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	/* output row and buffer windows */
+	uint(size=8) image [imageWidth][imageHeight][3];
+	uint(size=8) outputR [imageWidth*imageHeight];
+	uint(size=8) outputG [imageWidth*imageHeight];
+	uint(size=8) outputB [imageWidth*imageHeight];
+	uint(size=8) featureSpace [256+windowSize+windowSize][256+windowSize+windowSize][256+windowSize+windowSize];
+	
+	int(size=16) rVal;
+	int(size=16) gVal;
+    int(size=16) bVal;
+	int(size=16) rMove;
+	int(size=16) gMove;
+	int(size=16) bMove;
+	int(size=8) sign;
+	uint(size=16) norm;
+	
+	uint(size=8) count := 0;
+	bool peakFound;
+	uint(size=1) numPeaks := 0;
+	uint(size=32) counter := 0;
+	/*  */
+	int(size=16) movements[256][256][256][3];
+	int(size=16) peaks[256][256][256][3];
+	
+	
+	
+	//bufferRows: 
+	action R:[ imgR ] repeat imageWidth*imageHeight, G:[ imgG ] repeat imageWidth*imageHeight, B:[ imgB ] repeat imageWidth*imageHeight ==> Rout:[outputR] repeat imageWidth*imageHeight, Gout:[outputG] repeat imageWidth*imageHeight, Bout:[outputB] repeat imageWidth*imageHeight
+	do
+	    //println("in body");
+		xCount := 0;
+		yCount := 0;
+		foreach uint(size=8) i in 0 .. (windowSize-1) do
+			foreach uint(size=8) j in 0 .. (windowSize-1) do
+				foreach uint(size=8) k in 0 .. (windowSize-1) do
+					featureSpace[i][j][k] := 0;
+					featureSpace[i+windowSize+255][j+windowSize+255][k+windowSize+255]:= 0;
+				end
+			end
+		end
+		//println("white space done");
+		while (yCount < imageHeight) do
+			/* populate image RGB values */
+			image[xCount][yCount][0] := imgR[xCount + (yCount*imageWidth)];
+			image[xCount][yCount][1] := imgG[xCount + (yCount*imageWidth)];
+			image[xCount][yCount][2] := imgB[xCount + (yCount*imageWidth)];
+			/* populate feature space values */
+			featureSpace[image[xCount][yCount][0]+windowSize][image[xCount][yCount][1]+windowSize][image[xCount][yCount][2]+windowSize] := featureSpace[image[xCount][yCount][0]+windowSize][image[xCount][yCount][1]+windowSize][image[xCount][yCount][2]+windowSize] + 1;
+			if (xCount < imageWidth - 1) then
+				xCount := xCount+1;
+			else
+				xCount := 0;
+				yCount := yCount + 1;
+			end
+		end
+	    //println("image populated");
+	    /* each value in featureSpace */
+	    foreach uint(size=16) i in 0 .. 255 do
+	    	foreach uint(size=16) j in 0 .. 255 do
+	    		foreach uint(size=16) k in 0 .. 255 do
+			    	//println(i + ":  " + featureSpace[i+windowSize]);
+			    	//counter := counter + 1;
+			    	if (featureSpace[i+windowSize][j+windowSize][k+windowSize] > 0) then
+			    		//println(counter + " ***** "+ featureSpace[i+windowSize][j+windowSize][k+windowSize]);
+			    		peakFound := false;
+			    		count := 0;
+			    		while (count < 30 && peakFound = false) do
+			    			count := count +1;
+			    			rVal := 0;
+			    			gVal := 0;
+			    			bVal := 0;
+					    	rMove := 0;
+					    	gMove := 0;
+					    	bMove := 0;
+					    	norm := 0;
+					    	foreach uint(size=16) l in 1 .. windowSize do
+					    		foreach uint(size=16) m in 1 .. windowSize do
+					    			foreach uint(size=16) n in 1 .. windowSize do
+					    				if (l*l+m*m+n*n <= windowSize*windowSize) then
+					    					if(featureSpace[i+windowSize-l][j+windowSize-m][k+windowSize-n] != 0 || featureSpace[i+windowSize+l][j+windowSize+m][k+windowSize+n] != 0) then
+									    	 	rVal := rVal - l*featureSpace[i+windowSize+movements[i][j][k][0]-l][j+windowSize+movements[i][j][k][1]-m][k+windowSize+movements[i][j][k][2]-n]
+									    					+ l*featureSpace[i+windowSize+movements[i][j][k][0]+l][j+windowSize+movements[i][j][k][1]+m][k+windowSize+movements[i][j][k][2]+n];
+									    		gVal := gVal - m*featureSpace[i+windowSize+movements[i][j][k][0]-l][j+windowSize+movements[i][j][k][1]-m][k+windowSize+movements[i][j][k][2]-n]
+									    					+ m*featureSpace[i+windowSize+movements[i][j][k][0]+l][j+windowSize+movements[i][j][k][1]+m][k+windowSize+movements[i][j][k][2]+n]; 
+									    		bVal := bVal - n*featureSpace[i+windowSize+movements[i][j][k][0]-l][j+windowSize+movements[i][j][k][1]-m][k+windowSize+movements[i][j][k][2]-n]
+									    					+ n*featureSpace[i+windowSize+movements[i][j][k][0]+l][j+windowSize+movements[i][j][k][1]+m][k+windowSize+movements[i][j][k][2]+n];
+									    		
+									    		norm := norm + featureSpace[i+windowSize+movements[i][j][k][0]-l][j+windowSize+movements[i][j][k][1]-m][k+windowSize+movements[i][j][k][2]-n] 
+								    					+ featureSpace[i+windowSize+movements[i][j][k][0]+l][j+windowSize+movements[i][j][k][1]-m][k+windowSize+movements[i][j][k][2]-n];
+					    					end
+					    				end
+					    			end
+					    		end		
+					    	end
+					    	if (norm != 0) then
+					    		//R
+					    		sign := 1;
+					    		if (rVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*rVal) > (x*2-1)*norm) then
+					    			rMove := sign*x;
+					   				end
+					   			end
+					   			//G
+					    		sign := 1;
+					    		if (gVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*gVal) > (x*2-1)*norm) then
+					    			gMove := sign*x;
+					   				end
+					   			end
+					   			//B
+								sign := 1;
+					    		if (bVal <0) then
+					    			sign := -1;
+					    		end
+				    			//if ((sign*2*bVal) > norm) then
+				    			//	bMove := 1;
+				    			//end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*bVal) > (x*2-1)*norm) then
+					    			bMove := sign*x;
+					   				end
+					   			end
+					   		end
+					   		if (rMove =0 && gMove =0 && bMove =0 ) then
+					   			peakFound := true;
+					   		end
+					   		
+					   		// println("rMove: " + rMove);
+					   		movements[i][j][k][0] := movements[i][j][k][0] + rMove;
+					   		movements[i][j][k][1] := movements[i][j][k][1] + gMove;
+					   		movements[i][j][k][2] := movements[i][j][k][2] + bMove;
+		   					
+		   				end // end of while
+		   				
+		   				// println(i + " .... " + movements[i][j][k][0]);
+		   				
+//		   				peaks[i][j][k][0] := maxPixel(i + movements[i][j][k][0]);
+//		   				peaks[i][j][k][1] := maxPixel(j + movements[i][j][k][1]);
+//		   				peaks[i][j][k][2] := maxPixel(k + movements[i][j][k][2]);
+
+						// println(i + " " +  movements[i][j][k][0]);
+		   				peaks[i][j][k][0] := i + movements[i][j][k][0];
+		   				peaks[i][j][k][1] := j + movements[i][j][k][1];
+		   				peaks[i][j][k][2] := k + movements[i][j][k][2];
+		   				
+		   				if (peaks[i][j][k][0] = 0) then
+		   				//println("RESULT: " + peaks[i][j][k][0] + "; " + i + "," + j+","+k+","+0);
+		   				end
+		   			end
+	   			end
+	   		end
+	   	end
+	   	//***************************************************************************************************
+	   	//println("peaks populated");
+	   	
+	   	
+	   	/* each value in featureSpace, merge similar peaks*/ 
+/*	    foreach uint(size=16) i in 0 .. 255 do
+	    	foreach uint(size=16) j in 0 .. 255 do
+	    		foreach uint(size=16) k in 0 .. 255 do
+			    	rMove := movements[i][j][k][0];
+			    	gMove := movements[i][j][j][1];
+			    	bMove := movements[i][j][k][2];
+			    	xCount := 0;
+			    	while (xCount < 40) do
+			    	//println(xMove);
+			    		rMove := movements[i + movements[i][j][k][0]][j + movements[i][j][k][1]][k + movements[i][j][k][2]][0];
+			    		gMove := movements[i + movements[i][j][k][0]][j + movements[i][j][k][1]][k + movements[i][j][k][2]][1];
+			    		bMove := movements[i + movements[i][j][k][0]][j + movements[i][j][k][1]][k + movements[i][j][k][2]][2];
+			    		movements[i][j][k][0] := movements[i][j][k][0] + rMove;
+			    		movements[i][j][k][1] := movements[i][j][k][1] + gMove;
+			    		movements[i][j][k][2] := movements[i][j][k][2] + bMove;
+			    		xCount := xCount + 1;
+			    	end
+			    	peaks[i][j][k][0] := i + movements[i][j][k][0];
+			    	peaks[i][j][k][1] := j + movements[i][j][k][1];
+			    	peaks[i][j][k][2] := k + movements[i][j][k][2];
+			    	//println("move " + i + " by: " + movements[i]);
+			    end
+			end
+	    end
+	    println("final peaks populated");*/
+	    
+	    	    
+	    foreach uint(size=16) i in 0 .. (imageWidth-1) do
+	    	foreach uint(size=16) j in 0 .. (imageHeight-1) do
+	    	    //println("outputted R: " + peaks[image[i][j][0]][image[i][j][1]][image[i][j][2]][0]);
+	    	    
+	    	    //println("R out: " + peaks[ image[i][j][0]] [image[i][j][1]] [image[i][j][2]] [0]);
+	    		outputR[j*imageHeight + i] := clip(peaks[image[i][j][0]][image[i][j][1]][image[i][j][2]][0]);
+	    		outputG[j*imageHeight + i] := clip(peaks[image[i][j][0]][image[i][j][1]][image[i][j][2]][1]);
+	    		outputB[j*imageHeight + i] := clip(peaks[image[i][j][0]][image[i][j][1]][image[i][j][2]][2]);
+	    	end
+	    end
+	   
+		//println("exited the outer for loop");	
+	end
+	
+end

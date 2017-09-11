@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="rgb_to_rgb_par02">
+    <Port kind="Input" name="R">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="G">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="B">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Rout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Gout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Bout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="createOutput2">
+        <Class name="Vivado.createOutput2"/>
+    </Instance>
+    <Instance id="findPeaks2_1">
+        <Class name="Vivado.findPeaks2"/>
+    </Instance>
+    <Instance id="buildFS2">
+        <Class name="Vivado.buildFS2"/>
+    </Instance>
+    <Instance id="findPeaks2_2">
+        <Class name="Vivado.findPeaks2"/>
+    </Instance>
+    <Connection dst="createOutput2" dst-port="R" src="buildFS2" src-port="Rout"/>
+    <Connection dst="createOutput2" dst-port="G" src="buildFS2" src-port="Gout"/>
+    <Connection dst="createOutput2" dst-port="B" src="buildFS2" src-port="Bout"/>
+    <Connection dst="buildFS2" dst-port="R" src="" src-port="R"/>
+    <Connection dst="buildFS2" dst-port="G" src="" src-port="G"/>
+    <Connection dst="buildFS2" dst-port="B" src="" src-port="B"/>
+    <Connection dst="" dst-port="Rout" src="createOutput2" src-port="Rout"/>
+    <Connection dst="" dst-port="Gout" src="createOutput2" src-port="Gout"/>
+    <Connection dst="" dst-port="Bout" src="createOutput2" src-port="Bout"/>
+    <Connection dst="findPeaks2_1" dst-port="FS" src="buildFS2" src-port="FS1"/>
+    <Connection dst="findPeaks2_2" dst-port="FS" src="buildFS2" src-port="FS2"/>
+    <Connection dst="createOutput2" dst-port="P1" src="findPeaks2_1" src-port="Pout"/>
+    <Connection dst="createOutput2" dst-port="P2" src="findPeaks2_2" src-port="Pout"/>
+</XDF>

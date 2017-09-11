@@ -1,0 +1,378 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+
+package data_par;
+import image.constants.constants.*;
+
+ 
+actor findPeaks() uint(size=8) FS ==> uint(size=8) Pout :
+
+	/* constants */
+	uint(size=8) fsSize := FS_SIZE;
+	uint(size=8) actualWindowSize = 16; // 42;
+	uint(size=8) windowSize = actualWindowSize/4;
+	/* feature space */
+	uint(size=8) featureSpace [fsSize][fsSize][fsSize];
+	/* variables for calculations */
+	int(size=16) rVal;
+	int(size=16) gVal;
+    int(size=16) bVal;
+	int(size=16) rMove;
+	int(size=16) gMove;
+	int(size=16) bMove;
+	int(size=8) sign;
+	uint(size=16) norm;
+	uint(size=8) count := 0;
+	//uint(size=8) counter := 0;
+	bool peakFound;
+	/* peak structure and stream output */
+	int(size=16) peaks[fsSize][fsSize][fsSize][3];
+	int(size=8) output[fsSize*fsSize*fsSize*3];
+	
+	uint(size=8) first[3];
+	uint(size=8) last[3];
+	
+	
+	//bufferRows: 
+	action FS:[ fsStream ] repeat (fsSize)*(fsSize)*(fsSize)+6 ==> Pout:[output] repeat fsSize*fsSize*fsSize*3
+	do
+	
+		//get FS segment for this thread
+		first[0] := fsStream[(fsSize)*(fsSize)*(fsSize)+0];
+		first[1] := fsStream[(fsSize)*(fsSize)*(fsSize)+1];
+		first[2] := fsStream[(fsSize)*(fsSize)*(fsSize)+2];
+		
+		last[0] := fsStream[(fsSize)*(fsSize)*(fsSize)+3];
+		last[1] := fsStream[(fsSize)*(fsSize)*(fsSize)+4];
+		last[2] := fsStream[(fsSize)*(fsSize)*(fsSize)+5];
+		
+		println(first[0] +", " + first[1] + ", " +first[2] + ": " + last[0] + ", " + last[1] + ", " + last[2]);
+		
+		foreach uint(size=16) i in 0 .. (fsSize-1) do
+	    	foreach uint(size=16) j in 0 .. (fsSize-1) do
+	    		foreach uint(size=16) k in 0 .. (fsSize-1) do
+	    			featureSpace[i][j][k] := fsStream[(i*fsSize*fsSize) + (j*fsSize) + k];
+	    			//println(featureSpace[i][j][k]);
+	    		end
+	    	end
+	    end
+
+		//counter := 0;
+	    /* each value in featureSpace */
+	    foreach uint(size=16) i in first[0] .. last[0] do
+	    	foreach uint(size=16) j in first[1] ..last[1] do
+	    		foreach uint(size=16) k in first[2] .. last[2] do
+			    	//counter := counter + 1;
+			    	if (featureSpace[i][j][k] > 0) then
+			    		//println(counter + " ***** "+ featureSpace[i+windowSize][j+windowSize][k+windowSize]);
+			    		peakFound := false;
+			    		count := 0;
+					    
+					    peaks[i][j][k][0] := i;
+					    peaks[i][j][k][1] := j;
+					    peaks[i][j][k][2] := k;
+					    
+			    		while (count < 30 && peakFound = false) do
+			    			count := count +1;
+			    			rVal := 0;
+			    			gVal := 0;
+			    			bVal := 0;
+					    	rMove := 0;
+					    	gMove := 0;
+					    	bMove := 0;
+					    	norm := 0;
+					    	
+					    	foreach int(size=16) l in (-1)*windowSize .. windowSize do
+					    		foreach int(size=16) m in (-1)*windowSize .. windowSize do
+					    			foreach int(size=16) n in (-1)*windowSize .. windowSize do
+					    				if (l*l+m*m+n*n <= windowSize*windowSize && peaks[i][j][k][0]+l >= 0 && peaks[i][j][k][0]+l < fsSize && peaks[i][j][k][0]+m >= 0 && peaks[i][j][k][0]+m < fsSize && peaks[i][j][k][0]+n >= 0 && peaks[i][j][k][0]+n < fsSize) then
+									    	 	rVal := rVal + l*featureSpace[peaks[i][j][k][0]+l][peaks[i][j][k][1]+m][peaks[i][j][k][2]+n];
+									    		gVal := gVal + m*featureSpace[peaks[i][j][k][0]+l][peaks[i][j][k][1]+m][peaks[i][j][k][2]+n]; 
+									    		bVal := bVal + n*featureSpace[peaks[i][j][k][0]+l][peaks[i][j][k][1]+m][peaks[i][j][k][2]+n];
+									    		
+									    		norm := norm + featureSpace[peaks[i][j][k][0]+l][peaks[i][j][k][1]+m][peaks[i][j][k][2]+n];
+					    				end
+					    			end
+					    		end		
+					    	end
+					    	if (norm != 0) then
+					    		//R
+					    		sign := 1;
+					    		if (rVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*rVal) > (x*2-1)*norm) then
+					    			rMove := sign*x;
+					   				end
+					   			end
+					   			//G
+					    		sign := 1;
+					    		if (gVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*gVal) > (x*2-1)*norm) then
+					    			gMove := sign*x;
+					   				end
+					   			end
+					   			//B
+								sign := 1;
+					    		if (bVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*bVal) > (x*2-1)*norm) then
+					    			bMove := sign*x;
+					   				end
+					   			end
+					   		end
+					   		if (rMove =0 && gMove =0 && bMove =0 ) then
+					   			peakFound := true;
+					   		end
+					   		
+					   		// println("rMove: " + rMove);
+					   		peaks[i][j][k][0] := peaks[i][j][k][0] + rMove;
+					   		peaks[i][j][k][1] := peaks[i][j][k][1] + gMove;
+					   		peaks[i][j][k][2] := peaks[i][j][k][2] + bMove;
+
+		   				end // end of while
+		   			end
+	   			end
+	   		end
+	   	end
+	   	//***************************************************************************************************
+	   	
+	   	foreach uint(size=16) i in 0 .. last[0]-first[0] do
+	    	foreach uint(size=16) j in 0 .. last[1]-first[1] do
+	    		foreach uint(size=16) k in 0 .. last[2]-first[2] do
+	    			foreach uint(size=8) l in 0 .. 2 do
+	    				output[i*((last[1]+1-first[1])*(last[2]+1-first[2])*3) + j*((last[2]+1-first[2])*3) + k*(3) + l] := peaks[i+first[0]][j+first[1]][k+first[2]][l];
+	    			end
+	    		end
+	    	end
+	    end
+		
+	end
+	
+end
+
+///*
+// * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+// * All rights reserved.
+// * 
+// * Redistribution and use in source and binary forms, with or without
+// * modification, are permitted provided that the following conditions are met:
+// * 
+// *   * Redistributions of source code must retain the above copyright notice,
+// *     this list of conditions and the following disclaimer.
+// *   * Redistributions in binary form must reproduce the above copyright notice,
+// *     this list of conditions and the following disclaimer in the documentation
+// *     and/or other materials provided with the distribution.
+// *   * Neither the name of the Heriot-Watt University nor the names of its
+// *     contributors may be used to endorse or promote products derived from this
+// *     software without specific prior written permission.
+// * 
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+// * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+// * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// * SUCH DAMAGE.
+// */
+//  
+//// Author: 
+//
+//
+//package data_par;
+//import image.constants.constants.*;
+//
+// 
+//actor findPeaks() uint(size=8) FS ==> uint(size=8) Pout :
+//
+//	/* constants */
+//	uint(size=8) fsSize := FS_SIZE;
+//	uint(size=8) actualWindowSize = 16; // 42;
+//	uint(size=8) windowSize = actualWindowSize/4;
+//	uint(size=8) fsWidth = fsSize+windowSize+windowSize;
+//	/* feature space */
+//	uint(size=8) featureSpace [fsWidth][fsWidth][fsWidth];
+//	/* variables for calculations */
+//	int(size=16) rVal;
+//	int(size=16) gVal;
+//    int(size=16) bVal;
+//	int(size=16) rMove;
+//	int(size=16) gMove;
+//	int(size=16) bMove;
+//	int(size=8) sign;
+//	uint(size=16) norm;
+//	uint(size=8) count := 0;
+//	//uint(size=8) counter := 0;
+//	bool peakFound;
+//	/* peak structure and stream output */
+//	int(size=16) peaks[fsSize][fsSize][fsSize][3];
+//	int(size=8) output[fsSize*fsSize*fsSize*3];
+//	
+//	uint(size=8) first[3];
+//	uint(size=8) last[3];
+//	
+//	
+//	//bufferRows: 
+//	action FS:[ fsStream ] repeat (fsWidth)*(fsWidth)*(fsWidth)+6 ==> Pout:[output] repeat fsSize*fsSize*fsSize*3
+//	do
+//	
+//		//get FS segment for this thread
+//		first[0] := fsStream[(fsWidth)*(fsWidth)*(fsWidth)+0];
+//		first[1] := fsStream[(fsWidth)*(fsWidth)*(fsWidth)+1];
+//		first[2] := fsStream[(fsWidth)*(fsWidth)*(fsWidth)+2];
+//		
+//		last[0] := fsStream[(fsWidth)*(fsWidth)*(fsWidth)+3];
+//		last[1] := fsStream[(fsWidth)*(fsWidth)*(fsWidth)+4];
+//		last[2] := fsStream[(fsWidth)*(fsWidth)*(fsWidth)+5];
+//		
+//		println(first[0] +", " + first[1] + ", " +first[2] + ": " + last[0] + ", " + last[1] + ", " + last[2]);
+//		
+//		foreach uint(size=16) i in 0 .. (fsWidth-1) do
+//	    	foreach uint(size=16) j in 0 .. (fsWidth-1) do
+//	    		foreach uint(size=16) k in 0 .. (fsWidth-1) do
+//	    			featureSpace[i][j][k] := fsStream[(i*fsWidth*fsWidth) + (j*fsWidth) + k];
+//	    			//println(featureSpace[i][j][k]);
+//	    		end
+//	    	end
+//	    end
+//
+//		//counter := 0;
+//	    /* each value in featureSpace */
+//	    foreach uint(size=16) i in first[0] .. last[0] do
+//	    	foreach uint(size=16) j in first[1] ..last[1] do
+//	    		foreach uint(size=16) k in first[2] .. last[2] do
+//			    	//counter := counter + 1;
+//			    	if (featureSpace[i+windowSize][j+windowSize][k+windowSize] > 0) then
+//			    		//println(counter + " ***** "+ featureSpace[i+windowSize][j+windowSize][k+windowSize]);
+//			    		peakFound := false;
+//			    		count := 0;
+//					    
+//					    peaks[i][j][k][0] := i;
+//					    peaks[i][j][k][1] := j;
+//					    peaks[i][j][k][2] := k;
+//					    
+//			    		while (count < 30 && peakFound = false) do
+//			    			count := count +1;
+//			    			rVal := 0;
+//			    			gVal := 0;
+//			    			bVal := 0;
+//					    	rMove := 0;
+//					    	gMove := 0;
+//					    	bMove := 0;
+//					    	norm := 0;
+//					    	
+//					    	foreach int(size=16) l in (-1)*windowSize .. windowSize do
+//					    		foreach int(size=16) m in (-1)*windowSize .. windowSize do
+//					    			foreach int(size=16) n in (-1)*windowSize .. windowSize do
+//					    				if (l*l+m*m+n*n <= windowSize*windowSize) then
+//					    					//if(featureSpace[i+windowSize-l][j+windowSize-m][k+windowSize-n] != 0 || featureSpace[i+windowSize+l][j+windowSize+m][k+windowSize+n] != 0) then
+//									    	 	rVal := rVal + l*featureSpace[windowSize+peaks[i][j][k][0]+l][windowSize+peaks[i][j][k][1]+m][windowSize+peaks[i][j][k][2]+n];
+//									    		gVal := gVal + m*featureSpace[windowSize+peaks[i][j][k][0]+l][windowSize+peaks[i][j][k][1]+m][windowSize+peaks[i][j][k][2]+n]; 
+//									    		bVal := bVal + n*featureSpace[windowSize+peaks[i][j][k][0]+l][windowSize+peaks[i][j][k][1]+m][windowSize+peaks[i][j][k][2]+n];
+//									    		
+//									    		norm := norm + featureSpace[windowSize+peaks[i][j][k][0]+l][windowSize+peaks[i][j][k][1]+m][windowSize+peaks[i][j][k][2]+n];
+//					    					//end
+//					    				end
+//					    			end
+//					    		end		
+//					    	end
+//					    	if (norm != 0) then
+//					    		//R
+//					    		sign := 1;
+//					    		if (rVal <0) then
+//					    			sign := -1;
+//					    		end
+//					    		foreach int(size=8) x in 1 .. windowSize do
+//					    			if ((sign*2*rVal) > (x*2-1)*norm) then
+//					    			rMove := sign*x;
+//					   				end
+//					   			end
+//					   			//G
+//					    		sign := 1;
+//					    		if (gVal <0) then
+//					    			sign := -1;
+//					    		end
+//					    		foreach int(size=8) x in 1 .. windowSize do
+//					    			if ((sign*2*gVal) > (x*2-1)*norm) then
+//					    			gMove := sign*x;
+//					   				end
+//					   			end
+//					   			//B
+//								sign := 1;
+//					    		if (bVal <0) then
+//					    			sign := -1;
+//					    		end
+//					    		foreach int(size=8) x in 1 .. windowSize do
+//					    			if ((sign*2*bVal) > (x*2-1)*norm) then
+//					    			bMove := sign*x;
+//					   				end
+//					   			end
+//					   		end
+//					   		if (rMove =0 && gMove =0 && bMove =0 ) then
+//					   			peakFound := true;
+//					   		end
+//					   		
+//					   		// println("rMove: " + rMove);
+//					   		peaks[i][j][k][0] := peaks[i][j][k][0] + rMove;
+//					   		peaks[i][j][k][1] := peaks[i][j][k][1] + gMove;
+//					   		peaks[i][j][k][2] := peaks[i][j][k][2] + bMove;
+//
+//		   				end // end of while
+//		   			end
+//	   			end
+//	   		end
+//	   	end
+//	   	//***************************************************************************************************
+//	   	
+//	   	foreach uint(size=16) i in 0 .. last[0]-first[0] do
+//	    	foreach uint(size=16) j in 0 .. last[1]-first[1] do
+//	    		foreach uint(size=16) k in 0 .. last[2]-first[2] do
+//	    			foreach uint(size=8) l in 0 .. 2 do
+//	    				output[i*((last[1]+1-first[1])*(last[2]+1-first[2])*3) + j*((last[2]+1-first[2])*3) + k*(3) + l] := peaks[i+first[0]][j+first[1]][k+first[2]][l];
+//	    			end
+//	    		end
+//	    	end
+//	    end
+//		
+//	end
+//	
+//end

@@ -1,0 +1,95 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+
+package data_par;
+import image.constants.constants.*;
+ 
+ 
+actor createOutput_10() uint(size=8) P1, uint(size=8) P2, uint(size=8) P3, uint(size=8) P4, uint(size=8) P5,
+uint(size=8) P6, uint(size=8) P7, uint(size=8) P8, uint(size=8) P9, uint(size=8) P10,
+uint(size=8) R, uint(size=8) G, uint(size=8) B ==> uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+
+
+	/* constants */
+	uint(size=16) imageWidth = IM_WIDTH;
+	uint(size=16) imageHeight = IM_HEIGHT;
+	uint(size=8) fsSize := FS_SIZE;
+	uint(size=8) fsHalf := fsSize/2;
+	uint(size=8) fsFifth := fsSize/5;
+	uint(size=8) FSdiv = 256/fsSize;
+	/* output row and buffer windows */
+	uint(size=8) outputR [imageWidth*imageHeight];
+	uint(size=8) outputG [imageWidth*imageHeight];
+	uint(size=8) outputB [imageWidth*imageHeight];
+
+	int(size=16) peaks[fsSize][fsSize][fsSize][3];
+	
+	
+	
+	//bufferRows: 
+	buildOutput: action R:[ imgR ] repeat imageWidth*imageHeight, G:[ imgG ] repeat imageWidth*imageHeight, B:[ imgB ] repeat imageWidth*imageHeight,
+			P1:[ peakStream1 ] repeat (fsSize)*(fsSize)*(fsSize)*3, P2:[ peakStream2 ] repeat (fsSize)*(fsSize)*(fsSize)*3, P3:[ peakStream3 ] repeat (fsSize)*(fsSize)*(fsSize)*3, P4:[ peakStream4 ] repeat (fsSize)*(fsSize)*(fsSize)*3,
+			P5:[ peakStream5 ] repeat (fsSize)*(fsSize)*(fsSize)*3, P6:[ peakStream6 ] repeat (fsSize)*(fsSize)*(fsSize)*3, P7:[ peakStream7 ] repeat (fsSize)*(fsSize)*(fsSize)*3, P8:[ peakStream8 ] repeat (fsSize)*(fsSize)*(fsSize)*3,
+			P9:[ peakStream9 ] repeat (fsSize)*(fsSize)*(fsSize)*3, P10:[ peakStream10 ] repeat (fsSize)*(fsSize)*(fsSize)*3
+			==> Rout:[outputR] repeat imageWidth*imageHeight, Gout:[outputG] repeat imageWidth*imageHeight, Bout:[outputB] repeat imageWidth*imageHeight
+	do
+		foreach uint(size=16) i in 0 .. fsFifth-1 do
+	    	foreach uint(size=16) j in 0 ..fsHalf-1 do
+	    		foreach uint(size=16) k in 0 .. fsSize-1 do
+	    			foreach uint(size=8) l in 0 .. 2 do
+	    				// build peak array out of individual peak array segments
+	    				peaks[i][j][k][l]	 							:= peakStream1[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+fsFifth][j][k][l]	 					:= peakStream2[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+2*fsFifth][j][k][l] 					:= peakStream3[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+3*fsFifth][j][k][l] 					:= peakStream4[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+4*fsFifth][j][k][l] 					:= peakStream5[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i][j+fsHalf][k][l]			 			:= peakStream6[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+fsFifth][j+fsHalf][k][l] 				:= peakStream7[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+2*fsFifth][j+fsHalf][k][l]		 		:= peakStream8[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+3*fsFifth][j+fsHalf][k][l]				:= peakStream9[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    				peaks[i+4*fsFifth][j+fsHalf][k][l] 				:= peakStream10[i*(fsHalf*fsSize*3) + j*(fsSize*3) + k*(3) + l];
+	    			end
+	    		end
+	    	end
+	    end
+	    
+	    foreach uint(size=16) i in 0 .. (imageWidth-1) do
+	    	foreach uint(size=16) j in 0 .. (imageHeight-1) do
+	    	    outputR[j*imageHeight + i] := peaks[imgR[i + (j*imageWidth)]/FSdiv][imgG[i + (j*imageWidth)]/FSdiv][imgB[i + (j*imageWidth)]/FSdiv][0]*FSdiv;
+	    	    outputG[j*imageHeight + i] := peaks[imgR[i + (j*imageWidth)]/FSdiv][imgG[i + (j*imageWidth)]/FSdiv][imgB[i + (j*imageWidth)]/FSdiv][1]*FSdiv;
+	    	    outputB[j*imageHeight + i] := peaks[imgR[i + (j*imageWidth)]/FSdiv][imgG[i + (j*imageWidth)]/FSdiv][imgB[i + (j*imageWidth)]/FSdiv][2]*FSdiv;
+	    	end
+	    end 
+	    
+	end
+	
+end

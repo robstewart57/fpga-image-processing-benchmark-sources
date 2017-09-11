@@ -1,0 +1,230 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: Kirsty Duncan
+
+package Vivado;
+import image.constants.constants.*;
+import image.constants.constants_par.*;
+
+ 
+actor findPeaks2() uint(size=8) FS ==> uint(size=8) Pout :
+	
+	uint(size=8) fsSize = FS_SIZE;
+	uint(size=8) fsDiv = 256/fsSize;
+	uint(size=8) actualWindowSize = WINDOW_SZ;
+	uint(size=8) windowSize = actualWindowSize/fsDiv;
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	uint(size=16) zCount := 0;
+	uint(size=16) aCount := 0;
+	/* feature space */
+	uint(size=8) featureSpace [fsSize][fsSize][fsSize];
+	/* variables for calculations */
+	int(size=16) rVal;
+	int(size=16) gVal;
+    int(size=16) bVal;
+	int(size=16) rMove;
+	int(size=16) gMove;
+	int(size=16) bMove;
+	int(size=8) sign;
+	uint(size=16) norm;
+	uint(size=8) count := 0;
+	bool peakFound;
+	/* peak structure and stream output */
+	int(size=16) peaks[fsSize/xDiv][fsSize/yDiv][fsSize/zDiv][3];
+	uint(size=8) out;
+	/* defines RGB values of first and last corner of segment being processed */
+	uint(size=8) bound[6];
+	uint(size=8) xDiv := XDIV2; //***
+	uint(size=8) yDiv := YDIV2; //***
+	uint(size=8) zDiv := ZDIV2; //***
+	
+	
+	
+	// store the input in an array
+	getFS: action FS:[arrayVal] ==>
+	do
+		//if feature space is full, get bounds
+		if (zCount = fsSize) then
+			bound[aCount] := arrayVal;
+			aCount := aCount+ 1;
+		else
+			//store full feature space
+			featureSpace[xCount][yCount][zCount] := arrayVal;
+			xCount := xCount + 1;
+			
+			if (xCount = fsSize) then
+				yCount := yCount + 1;
+				xCount := 0;
+			end
+			if (yCount = fsSize) then
+				zCount := zCount + 1;
+				yCount := 0;
+			end
+		end
+	end
+	
+	// find peaks
+	getPeaks: action ==>
+	guard aCount = 6
+	do
+		/* each value in featureSpace */
+	    foreach uint(size=16) i in 0 .. bound[3]-bound[0] do
+	    	foreach uint(size=16) j in 0 .. bound[4]-bound[1] do
+	    		foreach uint(size=16) k in 0 .. bound[5]-bound[2] do
+	    		// only find the peak for non-zero values
+			    	if (featureSpace[i+bound[0]][j+bound[1]][k+bound[2]] > 0) then
+			    		peakFound := false;
+			    		count := 0;
+					    
+					    peaks[i][j][k][0] := i+bound[0];
+					    peaks[i][j][k][1] := j+bound[1];
+					    peaks[i][j][k][2] := k+bound[2];
+					    // iterate until peak has been found
+			    		while (count < 30 && peakFound = false) do
+			    			count := count +1;
+			    			rVal := 0;
+			    			gVal := 0;
+			    			bVal := 0;
+					    	rMove := 0;
+					    	gMove := 0;
+					    	bMove := 0;
+					    	norm := 0;
+					    	// add up each value within window of current point
+					    	foreach int(size=16) l in (-1)*windowSize .. windowSize do
+					    		foreach int(size=16) m in (-1)*windowSize .. windowSize do
+					    			foreach int(size=16) n in (-1)*windowSize .. windowSize do
+					    				if (l*l+m*m+n*n <= windowSize*windowSize && peaks[i][j][k][0]+l >= 0 && peaks[i][j][k][0]+l < fsSize && peaks[i][j][k][0]+m >= 0 && peaks[i][j][k][0]+m < fsSize && peaks[i][j][k][0]+n >= 0 && peaks[i][j][k][0]+n < fsSize) then
+					    					rVal := rVal + l*featureSpace[peaks[i][j][k][0]+l+bound[0]][peaks[i][j][k][1]+m+bound[1]][peaks[i][j][k][2]+n+bound[2]];
+									    	gVal := gVal + m*featureSpace[peaks[i][j][k][0]+l+bound[0]][peaks[i][j][k][1]+m+bound[1]][peaks[i][j][k][2]+n+bound[2]]; 
+									    	bVal := bVal + n*featureSpace[peaks[i][j][k][0]+l+bound[0]][peaks[i][j][k][1]+m+bound[1]][peaks[i][j][k][2]+n+bound[2]];
+									    		
+									    	norm := norm + featureSpace[peaks[i][j][k][0]+l+bound[0]][peaks[i][j][k][1]+m+bound[1]][peaks[i][j][k][2]+n+bound[2]];
+					    				end
+					    			end
+					    		end		
+					    	end
+					    	if (norm != 0) then
+					    		//R
+					    		sign := 1;
+					    		if (rVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*rVal) > (x*2-1)*norm) then
+					    			rMove := sign*x;
+					   				end
+					   			end
+					   			//G
+					    		sign := 1;
+					    		if (gVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*gVal) > (x*2-1)*norm) then
+					    			gMove := sign*x;
+					   				end
+					   			end
+					   			//B
+								sign := 1;
+					    		if (bVal <0) then
+					    			sign := -1;
+					    		end
+					    		foreach int(size=8) x in 1 .. windowSize do
+					    			if ((sign*2*bVal) > (x*2-1)*norm) then
+					    			bMove := sign*x;
+					   				end
+					   			end
+					   		end
+					   		if (rMove =0 && gMove =0 && bMove =0 ) then
+					   			peakFound := true;
+					   		end
+					   		
+					   		peaks[i][j][k][0] := peaks[i][j][k][0] + rMove;
+					   		peaks[i][j][k][1] := peaks[i][j][k][1] + gMove;
+					   		peaks[i][j][k][2] := peaks[i][j][k][2] + bMove;
+
+		   				end // end of while
+		   			end
+	   			end
+	   		end
+	   	end
+	xCount := 0;
+	yCount := 0;
+	zCount := 0;
+	aCount := 0;
+		
+	end
+	
+	// output the peaks array
+	outputPeaks: action ==> Pout:[out]
+	do
+		out := peaks[xCount][yCount][zCount][aCount];
+		aCount := aCount + 1;
+		
+		if (aCount = 3) then
+			xCount := xCount + 1;
+			aCount := 0;
+		end
+		if (xCount = bound[3]+1-bound[0]) then
+			yCount := yCount + 1;
+			xCount := 0;
+		end
+		if (yCount = bound[4]+1-bound[1]) then
+			zCount := zCount + 1;
+			yCount := 0;
+		end
+	end
+	
+	
+	//when the full image has been output, stop
+	donePeaks: action ==>
+	guard zCount = bound[5]+1-bound[2]
+	do
+		xCount := 0;
+		yCount := 0;
+		zCount := 0;
+		aCount := 0;
+	end
+	
+	// schedule
+	schedule fsm s0 :
+		s0 (getFS) --> s0;
+   		s0 (getPeaks) --> s1;   
+   		s1 (outputPeaks) --> s1;
+		s1 (donePeaks) --> s0;		 					
+	end
+	
+	priority		
+		getPeaks > getFS;
+		donePeaks > outputPeaks;		
+	end
+end

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="rgb_to_rgb_par04">
+    <Port kind="Input" name="R">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="G">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="B">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Rout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Gout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Bout">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="32"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="findPeaks4_1">
+        <Class name="Vivado.findPeaks4"/>
+    </Instance>
+    <Instance id="CreateOutput4">
+        <Class name="Vivado.createOutput4"/>
+    </Instance>
+    <Instance id="findPeaks4_2">
+        <Class name="Vivado.findPeaks4"/>
+    </Instance>
+    <Instance id="findPeaks4_3">
+        <Class name="Vivado.findPeaks4"/>
+    </Instance>
+    <Instance id="findPeaks4_4">
+        <Class name="Vivado.findPeaks4"/>
+    </Instance>
+    <Instance id="buildFS4">
+        <Class name="Vivado.buildFS4"/>
+    </Instance>
+    <Connection dst="CreateOutput4" dst-port="P4" src="findPeaks4_4" src-port="Pout"/>
+    <Connection dst="CreateOutput4" dst-port="P3" src="findPeaks4_3" src-port="Pout"/>
+    <Connection dst="CreateOutput4" dst-port="P2" src="findPeaks4_2" src-port="Pout"/>
+    <Connection dst="CreateOutput4" dst-port="P1" src="findPeaks4_1" src-port="Pout"/>
+    <Connection dst="findPeaks4_1" dst-port="FS" src="buildFS4" src-port="FS1"/>
+    <Connection dst="findPeaks4_2" dst-port="FS" src="buildFS4" src-port="FS2"/>
+    <Connection dst="findPeaks4_3" dst-port="FS" src="buildFS4" src-port="FS3"/>
+    <Connection dst="findPeaks4_4" dst-port="FS" src="buildFS4" src-port="FS4"/>
+    <Connection dst="CreateOutput4" dst-port="R" src="buildFS4" src-port="Rout"/>
+    <Connection dst="CreateOutput4" dst-port="G" src="buildFS4" src-port="Gout"/>
+    <Connection dst="CreateOutput4" dst-port="B" src="buildFS4" src-port="Bout"/>
+    <Connection dst="" dst-port="Rout" src="CreateOutput4" src-port="Rout"/>
+    <Connection dst="" dst-port="Gout" src="CreateOutput4" src-port="Gout"/>
+    <Connection dst="" dst-port="Bout" src="CreateOutput4" src-port="Bout"/>
+    <Connection dst="buildFS4" dst-port="R" src="" src-port="R"/>
+    <Connection dst="buildFS4" dst-port="G" src="" src-port="G"/>
+    <Connection dst="buildFS4" dst-port="B" src="" src-port="B"/>
+</XDF>

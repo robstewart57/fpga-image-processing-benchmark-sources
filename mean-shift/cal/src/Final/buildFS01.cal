@@ -1,0 +1,216 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: Kirsty Duncan
+
+
+package Final;
+import image.constants.constants.*;
+import image.constants.constants_par.*;
+ 
+actor buildFS01() uint(size=8) R, uint(size=8) G, uint(size=8) B ==> 
+uint(size=8) FS,
+uint(size=8) Rout, uint(size=8) Gout, uint(size=8) Bout :
+
+	/* constants */
+	uint(size=16) imageWidth = IM_WIDTH;
+	uint(size=16) imageHeight = IM_HEIGHT;
+	uint(size=8) fsSize = FS_SIZE;
+	uint(size=8) fsDiv = 256/fsSize;
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	uint(size=8)  zCount := 0;
+	uint(size=8)  aCount := 0;
+	uint(size=8)  nCount := 0;
+	/* output */
+	uint(size=8) imgR;
+	uint(size=8) imgG;
+	uint(size=8) imgB;
+	uint(size=8) out[par];
+	uint(size=8) featureSpace [fsSize][fsSize][fsSize];
+	/* segment feature space */
+	uint(size=8) bound [par][6];
+	uint(size=16) startX[xDiv];
+	uint(size=16) endX[xDiv];
+	uint(size=16) startY[yDiv];
+	uint(size=16) endY[yDiv];
+	uint(size=16) startZ[zDiv];
+	uint(size=16) endZ[zDiv];
+	uint(size=8) maxWidth[3];
+	uint(size=8) par := 1; //***
+	uint(size=8) xDiv := 1; //***
+	uint(size=8) yDiv := 1; //***
+	uint(size=8) zDiv := 1; //***
+	
+	
+	
+	// store the input image in an array
+	getRGB: action R:[inValR], G:[inValG], B:[inValB] ==> Rout:[imgR], Gout:[imgG], Bout:[imgB]
+	do	
+		
+		// output RGB values
+		imgR := inValR;
+		imgG := inValG;
+		imgB := inValB;
+		//add value to feature space
+		featureSpace[(inValR/fsDiv)] [(inValG/fsDiv)] [(inValB/fsDiv)] := featureSpace[(inValR/fsDiv)] [(inValG/fsDiv)] [(inValB/fsDiv)] + 1;
+		
+		xCount := xCount + 1;
+		if (xCount = imageWidth) then
+			yCount := yCount + 1;
+			xCount := 0;
+		end
+	end
+
+	//fill feature space arrays
+	buildFS: action ==>
+	guard yCount = imageHeight
+	do
+		xCount := 0;
+		yCount := 0;
+		zCount := 0;
+		aCount := 0;
+		
+		maxWidth[0] := 0;
+		maxWidth[1] := 0;
+		maxWidth[2] := 0;
+		
+		//find the start and end points of each segment and keep track of the size of the largest segment
+		foreach uint(size=8) i in  0 .. xDiv-1 do
+			startX[i] := (i*fsSize)/xDiv;
+			endX[i]   := ((i+1)*fsSize)/xDiv-1;
+			if (endX[i]-startX[i]+1 > maxWidth[0]) then
+				maxWidth[0] := endX[i]-startX[i]+1;
+			end
+		end
+		foreach uint(size=8) j in 0 .. yDiv-1 do
+			startY[j] := (j*fsSize)/yDiv;
+			endY[j]   := ((j+1)*fsSize)/yDiv-1;
+			if (endY[j]-startY[j]+1 > maxWidth[1]) then
+				maxWidth[1] := endY[j]-startY[j]+1;
+			end
+		end
+		foreach uint(size=8) k in 0 .. zDiv-1 do
+			startZ[k] := (k*fsSize)/zDiv;
+			endZ[k]   := ((k+1)*fsSize)/zDiv-1;
+			if (endZ[k]-startZ[k]+1 > maxWidth[2]) then
+				maxWidth[2] := endZ[k]-startZ[k]+1;
+			end
+		end
+
+		//assign a start/end position to each of the threads
+		while (zCount < zDiv)
+		do
+			bound[aCount][0] := startX[xCount];
+			bound[aCount][1] := startY[yCount];
+			bound[aCount][2] := startZ[zCount];
+			bound[aCount][3] := endX[xCount];
+			bound[aCount][4] := endY[yCount];
+			bound[aCount][5] := endZ[zCount];
+			
+			xCount := xCount + 1;
+			if (xCount = xDiv) then
+				yCount := yCount + 1;
+				xCount := 0;
+			end
+			if (yCount = yDiv) then
+				zCount := zCount + 1;
+				yCount := 0;
+			end
+			
+			aCount := aCount + 1;
+		end
+		xCount := 0;
+		yCount := 0;
+		zCount := 0;
+		aCount := 0;
+		nCount := 0;
+	end
+	
+	// ********************************************
+	// output the feature space
+	outputFS: action ==> FS:[out[0]]
+	do
+		//when feature space and bounds have been output, output dimensions of biggest segment
+		if (aCount = 6) then
+			foreach uint(size=8) i in 0 .. par-1 do
+				out[i] := maxWidth[nCount];
+			end
+			nCount := nCount +1;
+		else
+			
+		//when feature space is output, output bounds of each thread
+			if (zCount = fsSize) then
+				foreach uint(size=8) i in 0 .. par-1 do
+					out[i] := bound[i] [aCount];
+				end
+				aCount := aCount+ 1;
+			else
+				foreach uint(size=8) i in 0 .. par-1 do
+					out[i]  := featureSpace[xCount][yCount][zCount];
+				end
+				xCount := xCount + 1;
+				if (xCount = fsSize) then
+					yCount := yCount + 1;
+					xCount := 0;
+				end
+				if (yCount = fsSize) then
+					zCount := zCount + 1;
+					yCount := 0;
+				end
+			end
+		end
+	end
+	
+	//when the full image has been output, stop
+	doneFS: action ==>
+	guard nCount= 3
+	do
+		xCount := 0;
+		yCount := 0;
+		zCount := 0;
+		aCount := 0;
+		nCount := 0;
+	end
+	
+	// schedule
+	schedule fsm s0 :
+		s0 (getRGB) --> s0;
+   		s0 (buildFS) --> s1;   
+   		s1 (outputFS) --> s1;
+		s1 (doneFS) --> s0;		 					
+	end
+	
+	priority		
+		buildFS > getRGB;	
+		doneFS > outputFS;		
+	end
+
+end

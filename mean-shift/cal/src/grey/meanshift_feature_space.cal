@@ -1,0 +1,160 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+package grey;
+ 
+import std.stdio;
+ 
+actor meanshift_feature_space() uint(size=8) Gin ==> uint(size=8) Gout :
+
+	/* constants */
+	uint(size=16) imageWidth = 512;
+	uint(size=16) imageHeight = 512;
+	uint(size=8) windowSize = 20;
+	/* how many row/column elements have been consumed */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	/* output row and buffer windows */
+	uint(size=8) image [imageWidth+(2*windowSize)][imageHeight+(2*windowSize)];
+	int(size=16) CoMs [imageWidth][imageHeight][2];
+	uint(size=8) output [imageWidth*imageHeight];
+	
+	int(size=16) xVal;
+	int(size=16) yVal;
+	int(size=16) norm;
+	/*  */
+	int(size=16) CoMpath[2];
+	
+	
+	//bufferRows: 
+	action Gin:[ img ] repeat imageWidth*imageHeight ==> Gout:[output] repeat imageWidth*imageHeight
+	do
+	    println("in body");
+		xCount := 0;
+		yCount := 0;
+		foreach int(size=16) i in 0 .. (imageWidth+(2*windowSize)) do
+			image[0][i] := 0;
+			image[i][0] := 0;
+			image[1][i] := 0;
+			image[i][1] := 0;
+			image[imageWidth+(2*windowSize)-1][i] := 0;
+			image[i][imageWidth+(2*windowSize)-1] := 0;
+			image[imageWidth+(2*windowSize)-2][i] := 0;
+			image[i][imageWidth+(2*windowSize)-2] := 0;
+		end
+		while (yCount < imageHeight) do
+			image[xCount+windowSize][yCount+windowSize] := img[xCount + (yCount*imageWidth)] ;
+			//println("assigned: " + img[xCount + (yCount*imageWidth)]);
+			//println("received: " + image[xCount+windowSize][yCount+windowSize]);
+			if (xCount < imageWidth - 1) then
+				xCount := xCount+1;
+			else
+				xCount := 0;
+				yCount := yCount + 1;
+			end
+		end
+	
+	    println("here");
+		/* for each pixel, get the center of mass */
+		foreach int(size=16) i in 0 .. imageWidth-1 do
+			foreach int(size=16) j in 0 .. imageHeight-1 do
+				
+				xVal := 0;
+				yVal := 0;
+				/* loop through window */
+				//-(windowsize+k) * i+0 * j+0..windowsize*2
+				//k = 0 .. windowsiz*2
+				foreach int(size=16) k in 0 .. windowSize+20 do
+					foreach int(size=16) l in 0 .. windowSize+20 do
+						xVal := xVal + (k-windowSize)*image[i+k][j+l];
+						yVal := yVal + (k-windowSize)*image[i+l][j+k];
+						
+					end
+				end
+				//println("x: " + xVal + "   y: " + yVal);
+			
+			// println(image[xCount][yCount]);
+				/* windowsize here is explicit
+				xVal := (-2)*(image[i][j] + image[i][j+1] +image[i][j+2]+ image[i][j+3] + image[i][j+4])
+						+ (-1)*(image[i+1][j] + image[i+1][j+1] +image[i+1][j+2]+ image[i+1][j+3] + image[i+1][j+4])
+						+ (image[i+3][j] + image[i+3][j+1] +image[i+3][j+2]+ image[i+3][j+3] + image[i+3][j+4])
+						+ 2*(image[i+4][j] + image[i+4][j+1] +image[i+4][j+2]+ image[i+4][j+3] + image[i+4][j+4]);
+					
+				yVal := (-2)*(image[i][j] + image[i+1][j] +image[i+2][j]+ image[i+3][j] + image[i+4][j])
+						+ (-1)*(image[i][j+1] + image[i+1][j+1] +image[i+2][j+1]+ image[i+3][j+1] + image[i+4][j+1])
+						+ (image[i][j+3] + image[i+1][j+3] +image[i+2][j+3]+ image[i+3][j+3] + image[i+4][j+3])
+						+ 2*(image[i][j+4] + image[i+1][j+4] +image[i+2][j+4]+ image[i+3][j+4] + image[i+4][j+4]);
+				*/
+				/* normalise */		
+				norm := (xVal*xVal + yVal*yVal)^(1/2);
+				// println("xVal: " + xVal + "  yVal: " + yVal + " norm: " + norm);
+				if (norm != 0) then
+				xVal := xVal / norm;
+				yVal := yVal / norm;
+				end
+				
+				CoMs[i][j][0] := xVal;
+				CoMs[i][j][1] := yVal;
+				println("[0]: " + CoMs[i][j][0] + " [1]: " + CoMs[i][j][1]);
+			end
+		end
+		
+		println("Hans Wolfgang: do not do this");
+
+		/* loop through center of mass array and get colour values for each pixel */
+
+		foreach int(size=16) i in 0 .. imageWidth-1 do
+			foreach int(size=16) j in 0 .. imageHeight-1 do
+				/* make these nonzero */
+				CoMpath[0] := 1;
+				CoMpath[1] := 1;
+				/* keep finding the next pixel's CoM until peak is reached */
+				while (CoMpath[0] != 0 || CoMpath[1] != 0) do
+				//println("CoMpath[0]: " + CoMpath[0]);
+				//println("CoMpath[1]: " + CoMpath[1]);
+				/* get the CoM coordinates of this square's CoM */
+					CoMpath[0] := CoMs[i][j][0];
+					CoMpath[1] := CoMs[i][j][1];
+					
+					/* add to this square's CoM */
+					CoMs[i][j][0] := CoMs[i][j][0] + CoMpath[0];
+					CoMs[i][j][1] := CoMs[i][j][1] + CoMpath[1];
+					//println("[0]: " + CoMs[i][j][0] + " [1]: " + CoMs[i][j][1]);
+					/* if peak has been reached stop */
+				end
+				
+				output[(j*imageWidth) + i] := image[windowSize+i+CoMs[i][j][0]][windowSize+j+CoMs[i][j][1]];
+			end
+		end
+		println("exited the outer for loop");	
+	end
+		
+end

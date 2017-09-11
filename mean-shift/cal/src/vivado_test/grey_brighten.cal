@@ -1,0 +1,106 @@
+/*
+ * Copyright (c) 2014, Project: Rathlin, Heriot-Watt University, Edinburgh, UK
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *   * Neither the name of the Heriot-Watt University nor the names of its
+ *     contributors may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+  
+// Author: 
+
+package vivado_test;
+
+ 
+actor grey_brighten() uint(size=8) Gin ==> uint(size=8) Gout :
+
+	/* constants */
+	uint(size=16) imageWidth = 512;
+	uint(size=16) imageHeight = 512;
+	uint(size=8) output [imageWidth*imageHeight];
+	/* variables to store image */
+	uint(size=16) xCount := 0;
+	uint(size=16) yCount := 0;
+	uint(size=8) image[imageWidth][imageHeight];
+	uint(size=8) out;
+	uint(size=8) finished := 0;
+	
+	// store the input image in an array
+	getArray: action Gin:[arrayVal] ==>
+	do
+		image[xCount][yCount] := arrayVal;
+		xCount := xCount + 1;
+		
+		if (xCount = imageWidth) then
+			yCount := yCount + 1;
+			xCount := 0;
+		end
+		
+	end
+	
+	//when the full image has been input, stop
+	doneArray: action ==>
+	guard yCount = imageHeight
+	do
+		xCount := 0;
+		yCount := 0;
+	end
+	
+	// 
+	brighten: action ==>
+	do
+		foreach int(size=16) i in 0 .. imageHeight-1 do
+			foreach int(size=16) j in 0 .. imageWidth-1 do
+				output[j*imageWidth + i] := image[i][j] + 1;
+			end
+		end
+		finished := imageWidth*imageHeight;
+	end
+	
+	outputArray: action ==> Gout:[out]
+	do
+		finished := finished - 1;
+		out := output[256-finished];
+	end
+	
+	//when the full image has been output, stop
+	doneOutput: action ==>
+	guard finished = 0
+	do
+		println("doneOutput");
+		finished := imageWidth*imageHeight;
+	end
+	
+	schedule fsm s0 :
+		s0 (getArray) --> s0;
+		s0 (doneArray) --> s1;
+   		s1 (brighten) --> s2;   
+   		s2 (outputArray) --> s2;
+		s2 (doneOutput) --> s0;		 					
+	end
+	
+	priority		
+		doneArray > getArray > doneOutput > outputArray;			
+	end
+		
+end
