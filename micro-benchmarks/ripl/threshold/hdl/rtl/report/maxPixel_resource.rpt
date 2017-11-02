@@ -1,18 +1,19 @@
 //
 // Design Resource Utilization Report
-// Generated on: Tue 18 Jul 2017 13:16:26 +0100
+// Generated on: Thu 2 Nov 2017 13:48:33 +0000
 //
 
 maxPixel Total: 
-17   Ands : 17x1 
+5    Nots : 5x1 
+5    Registers : 5x1 
+1    Logical And : 1x1 
 1    Greater Than : 1x16 
-1    Equal To : 1x32 
 1    Add : 1x64 
-1    Or : 1x1 
-1    Less Than : 1x32 
-4    Nots : 4x1 
+4    Ors : 4x1 
 1    Mux : 1x16 
-3    Registers : 3x1 
+1    Less Than : 1x32 
+2    Equal Tos : 2x32 
+18   Ands : 18x1 
 
 Design: maxPixel
 ----------------
@@ -20,29 +21,32 @@ Entry: maxPixel_fold_instance
 -----------------------------
     Method: maxPixel_fold
     ---------------------
-    4    Ands : 4x1 
+    1    Not : 1x1 
+    1    Register : 1x1 
     1    Greater Than : 1x16 
     1    Add : 1x64 
-    1    Not : 1x1 
+    1    Or : 1x1 
     1    Mux : 1x16 
-    1    Register : 1x1 
+    4    Ands : 4x1 
 
     Method Total:
-    4    Ands : 4x1 
+    1    Not : 1x1 
+    1    Register : 1x1 
     1    Greater Than : 1x16 
     1    Add : 1x64 
-    1    Not : 1x1 
+    1    Or : 1x1 
     1    Mux : 1x16 
-    1    Register : 1x1 
+    4    Ands : 4x1 
     -------------
 ------------------------------------
 Entry: maxPixel_fold_instance Total: 
-4    Ands : 4x1 
+1    Not : 1x1 
+1    Register : 1x1 
 1    Greater Than : 1x16 
 1    Add : 1x64 
-1    Not : 1x1 
+1    Or : 1x1 
 1    Mux : 1x16 
-1    Register : 1x1 
+4    Ands : 4x1 
 ------------------------------------
 
 Entry: maxPixel_outputState_instance
@@ -63,28 +67,31 @@ Entry: maxPixel_scheduler_instance
 ----------------------------------
     Method: maxPixel_scheduler
     --------------------------
-    13   Ands : 13x1 
-    1    Equal To : 1x32 
-    1    Or : 1x1 
+    3    Registers : 3x1 
+    4    Nots : 4x1 
+    1    Logical And : 1x1 
     1    Less Than : 1x32 
-    3    Nots : 3x1 
-    1    Register : 1x1 
+    3    Ors : 3x1 
+    2    Equal Tos : 2x32 
+    14   Ands : 14x1 
 
     Method Total:
-    13   Ands : 13x1 
-    1    Equal To : 1x32 
-    1    Or : 1x1 
+    3    Registers : 3x1 
+    4    Nots : 4x1 
+    1    Logical And : 1x1 
     1    Less Than : 1x32 
-    3    Nots : 3x1 
-    1    Register : 1x1 
+    3    Ors : 3x1 
+    2    Equal Tos : 2x32 
+    14   Ands : 14x1 
     -------------
 -----------------------------------------
 Entry: maxPixel_scheduler_instance Total: 
-13   Ands : 13x1 
-1    Equal To : 1x32 
-1    Or : 1x1 
+3    Registers : 3x1 
+4    Nots : 4x1 
+1    Logical And : 1x1 
 1    Less Than : 1x32 
-3    Nots : 3x1 
-1    Register : 1x1 
+3    Ors : 3x1 
+2    Equal Tos : 2x32 
+14   Ands : 14x1 
 -----------------------------------------
 

@@ -6,7 +6,7 @@
 ## ############################################################################
 ## Xronos synthesizer
 ## Testbench TCL Script file for Actor: image1 
-## Date: 2017/07/18 13:16:26
+## Date: 2017/11/02 13:48:33
 ## ############################################################################
 
 ## Set paths
@@ -37,7 +37,7 @@ vlog -work work_image1 ../lib/simulation/glbl.v
 # Compile sim package
 vcom -93 -reportprogress 30 -work work_image1 $LibSim/sim_package.vhd
 ## Compile network instances and add them to work library	
-vlog -work work_image1 $RtlGoDone/image1.v
+vlog -work work_image1 $Rtl/image1.v
 
 
 ## Compile the Testbench VHD
@@ -66,6 +66,3 @@ add wave -label Out1_SEND sim:/image1_tb/i_image1/Out1_ACK
 add wave -label Out1_SEND sim:/image1_tb/i_image1/Out1_SEND
 add wave -label Out1_RDY sim:/image1_tb/i_image1/Out1_RDY
 add wave -noupdate -divider -height 20 "Go & Done" 
-add wave -noupdate -divider -height 20 "Action: the_action" 
-add wave -label Go sim:/image1_tb/i_image1/the_action_go
-add wave -label Done sim:/image1_tb/i_image1/the_action_done

@@ -6,7 +6,7 @@
 -- ----------------------------------------------------------------------------
 -- Xronos synthesizer
 -- Testbench for Instance: normalisedImage 
--- Date: 2017/07/18 13:16:27
+-- Date: 2017/11/02 13:48:34
 -- ----------------------------------------------------------------------------
 
 library ieee, SystemBuilder;
@@ -27,15 +27,15 @@ architecture arch_normalisedImage_tb of normalisedImage_tb is
 	-----------------------------------------------------------------------
 	component normalisedImage
 	port(
-	    In1_data : IN std_logic_vector(15 downto 0);
+	    In1_data : IN std_logic_vector(7 downto 0);
 	    In1_send : IN std_logic;
 	    In1_ack : OUT std_logic;
 	    In1_count : IN std_logic_vector(15 downto 0);
-	    In2_data : IN std_logic_vector(15 downto 0);
+	    In2_data : IN std_logic_vector(7 downto 0);
 	    In2_send : IN std_logic;
 	    In2_ack : OUT std_logic;
 	    In2_count : IN std_logic_vector(15 downto 0);
-	    Out1_data : OUT std_logic_vector(15 downto 0);
+	    Out1_data : OUT std_logic_vector(7 downto 0);
 	    Out1_send : OUT std_logic;
 	    Out1_ack : IN std_logic;
 	    Out1_rdy : IN std_logic;
@@ -57,26 +57,26 @@ architecture arch_normalisedImage_tb of normalisedImage_tb is
 		-- Component input(s) signals
 		signal tb_FSM_In1 : tb_type;
 		file sim_file_normalisedImage_In1 : text is "fifoTraces/normalisedImage_In1.txt";
-		signal In1_data : std_logic_vector(15 downto 0) := (others => '0');
+		signal In1_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal In1_send : std_logic := '0';
 		signal In1_ack : std_logic;
 		signal In1_rdy : std_logic;
 		signal In1_count : std_logic_vector(15 downto 0) := (others => '0');
 		-- Input component queue
-		signal q_In1_data : std_logic_vector(15 downto 0) := (others => '0');
+		signal q_In1_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal q_In1_send : std_logic := '0';
 		signal q_In1_ack : std_logic;
 		signal q_In1_rdy : std_logic;
 		signal q_In1_count : std_logic_vector(15 downto 0) := (others => '0');
 		signal tb_FSM_In2 : tb_type;
 		file sim_file_normalisedImage_In2 : text is "fifoTraces/normalisedImage_In2.txt";
-		signal In2_data : std_logic_vector(15 downto 0) := (others => '0');
+		signal In2_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal In2_send : std_logic := '0';
 		signal In2_ack : std_logic;
 		signal In2_rdy : std_logic;
 		signal In2_count : std_logic_vector(15 downto 0) := (others => '0');
 		-- Input component queue
-		signal q_In2_data : std_logic_vector(15 downto 0) := (others => '0');
+		signal q_In2_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal q_In2_send : std_logic := '0';
 		signal q_In2_ack : std_logic;
 		signal q_In2_rdy : std_logic;
@@ -85,7 +85,7 @@ architecture arch_normalisedImage_tb of normalisedImage_tb is
 		-- Component Output(s) signals
 		signal tb_FSM_Out1 : tb_type;
 		file sim_file_normalisedImage_Out1 : text is "fifoTraces/normalisedImage_Out1.txt";
-		signal Out1_data : std_logic_vector(15 downto 0) := (others => '0');
+		signal Out1_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal Out1_send : std_logic;
 		signal Out1_ack : std_logic := '0';
 		signal Out1_rdy : std_logic := '0';
@@ -122,7 +122,7 @@ begin
 	
 	-- Input(s) queues
 	q_In1 : entity systemBuilder.Queue(behavioral)
-	generic map(length => 512, width => 16)
+	generic map(length => 512, width => 8)
 	port map(
 		OUT_DATA => q_In1_data,
 		OUT_SEND => q_In1_send,
@@ -139,7 +139,7 @@ begin
 		reset => reset);
 	
 	q_In2 : entity systemBuilder.Queue(behavioral)
-	generic map(length => 512, width => 16)
+	generic map(length => 512, width => 8)
 	port map(
 		OUT_DATA => q_In2_data,
 		OUT_SEND => q_In2_send,
@@ -199,7 +199,7 @@ begin
 						readline(sim_file_normalisedImage_In1, line_number);
 						if (line_number'length > 0 and line_number(1) /= '/') then
 							read(line_number, input_bit);
-							In1_data <= std_logic_vector(to_signed(input_bit, 16));
+							In1_data <= std_logic_vector(to_signed(input_bit, 8));
 							In1_send <= '1';
 							tb_FSM_In1 <= CheckRead;
 						end if;
@@ -209,7 +209,7 @@ begin
 						readline(sim_file_normalisedImage_In1, line_number);
 						if (line_number'length > 0 and line_number(1) /= '/') then
 							read(line_number, input_bit);
-							In1_data <= std_logic_vector(to_signed(input_bit, 16));
+							In1_data <= std_logic_vector(to_signed(input_bit, 8));
 							In1_send <= '1';
 						end if;
 					elsif (endfile (sim_file_normalisedImage_In1)) then
@@ -231,7 +231,7 @@ begin
 						readline(sim_file_normalisedImage_In2, line_number);
 						if (line_number'length > 0 and line_number(1) /= '/') then
 							read(line_number, input_bit);
-							In2_data <= std_logic_vector(to_signed(input_bit, 16));
+							In2_data <= std_logic_vector(to_signed(input_bit, 8));
 							In2_send <= '1';
 							tb_FSM_In2 <= CheckRead;
 						end if;
@@ -241,7 +241,7 @@ begin
 						readline(sim_file_normalisedImage_In2, line_number);
 						if (line_number'length > 0 and line_number(1) /= '/') then
 							read(line_number, input_bit);
-							In2_data <= std_logic_vector(to_signed(input_bit, 16));
+							In2_data <= std_logic_vector(to_signed(input_bit, 8));
 							In2_send <= '1';
 						end if;
 					elsif (endfile (sim_file_normalisedImage_In2)) then
@@ -267,11 +267,11 @@ begin
 				readline(sim_file_normalisedImage_Out1, line_number);
 					if (line_number'length > 0 and line_number(1) /= '/') then
 						read(line_number, input_bit);
-						assert (Out1_data  = std_logic_vector(to_signed(input_bit, 16)))
+						assert (Out1_data  = std_logic_vector(to_signed(input_bit, 8)))
 						report "on port Out1 incorrect value computed : " & str(to_integer(signed(Out1_data))) & " instead of : " & str(input_bit) & " sequence " & str(sequence_Out1)
 						severity failure;
 						
-						assert (Out1_data /= std_logic_vector(to_signed(input_bit, 16)))
+						assert (Out1_data /= std_logic_vector(to_signed(input_bit, 8)))
 						report "on port Out1 correct value computed : " & str(to_integer(signed(Out1_data))) & " equals : " & str(input_bit) & " sequence " & str(sequence_Out1)
 						severity note;
 						sequence_Out1 := sequence_Out1 + 1;

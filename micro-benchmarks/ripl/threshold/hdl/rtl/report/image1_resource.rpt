@@ -1,13 +1,14 @@
 //
 // Design Resource Utilization Report
-// Generated on: Tue 18 Jul 2017 13:16:26 +0100
+// Generated on: Thu 2 Nov 2017 13:48:33 +0000
 //
 
 image1 Total: 
-7    Ands : 7x1 
-1    Or : 1x1 
-2    Nots : 2x1 
-1    Register : 1x1 
+3    Nots : 3x1 
+3    Registers : 3x1 
+2    Ors : 2x1 
+1    Equal To : 1x32 
+10   Ands : 10x1 
 
 Design: image1
 --------------
@@ -26,22 +27,25 @@ Entry: image1_scheduler_instance
 --------------------------------
     Method: image1_scheduler
     ------------------------
-    7    Ands : 7x1 
-    1    Or : 1x1 
-    2    Nots : 2x1 
-    1    Register : 1x1 
+    3    Nots : 3x1 
+    3    Registers : 3x1 
+    2    Ors : 2x1 
+    1    Equal To : 1x32 
+    10   Ands : 10x1 
 
     Method Total:
-    7    Ands : 7x1 
-    1    Or : 1x1 
-    2    Nots : 2x1 
-    1    Register : 1x1 
+    3    Nots : 3x1 
+    3    Registers : 3x1 
+    2    Ors : 2x1 
+    1    Equal To : 1x32 
+    10   Ands : 10x1 
     -------------
 ---------------------------------------
 Entry: image1_scheduler_instance Total: 
-7    Ands : 7x1 
-1    Or : 1x1 
-2    Nots : 2x1 
-1    Register : 1x1 
+3    Nots : 3x1 
+3    Registers : 3x1 
+2    Ors : 2x1 
+1    Equal To : 1x32 
+10   Ands : 10x1 
 ---------------------------------------
 

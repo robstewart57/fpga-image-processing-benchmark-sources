@@ -6,7 +6,7 @@
 -- ----------------------------------------------------------------------------
 -- Xronos synthesizer
 -- Testbench for Network: ProgNetwork 
--- Date: 2017/07/18 13:16:27
+-- Date: 2017/11/02 13:48:34
 -- ----------------------------------------------------------------------------
 
 library ieee, SystemBuilder;
@@ -27,11 +27,11 @@ architecture arch_ProgNetwork_tb of ProgNetwork_tb is
 	-----------------------------------------------------------------------
 	component ProgNetwork
 	port(
-	    In_data : IN std_logic_vector(15 downto 0);
+	    In_data : IN std_logic_vector(7 downto 0);
 	    In_send : IN std_logic;
 	    In_ack : OUT std_logic;
 	    In_count : IN std_logic_vector(15 downto 0);
-	    Out_data : OUT std_logic_vector(15 downto 0);
+	    Out_data : OUT std_logic_vector(7 downto 0);
 	    Out_send : OUT std_logic;
 	    Out_ack : IN std_logic;
 	    Out_rdy : IN std_logic;
@@ -52,14 +52,14 @@ architecture arch_ProgNetwork_tb of ProgNetwork_tb is
 		
 		-- Component input(s) signals
 		signal tb_FSM_In : tb_type;
-		file sim_file_ProgNetwork_In : text is "fifoTraces/ProgNetwork_In.txt";
-		signal In_data : std_logic_vector(15 downto 0) := (others => '0');
+		file sim_file_ProgNetwork_In : text is "fifoTraces/In.txt";
+		signal In_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal In_send : std_logic := '0';
 		signal In_ack : std_logic;
 		signal In_rdy : std_logic;
 		signal In_count : std_logic_vector(15 downto 0) := (others => '0');
 		-- Input component queue
-		signal q_In_data : std_logic_vector(15 downto 0) := (others => '0');
+		signal q_In_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal q_In_send : std_logic := '0';
 		signal q_In_ack : std_logic;
 		signal q_In_rdy : std_logic;
@@ -67,8 +67,8 @@ architecture arch_ProgNetwork_tb of ProgNetwork_tb is
 		
 		-- Component Output(s) signals
 		signal tb_FSM_Out : tb_type;
-		file sim_file_ProgNetwork_Out : text is "fifoTraces/ProgNetwork_Out.txt";
-		signal Out_data : std_logic_vector(15 downto 0) := (others => '0');
+		file sim_file_ProgNetwork_Out : text is "fifoTraces/Out.txt";
+		signal Out_data : std_logic_vector(7 downto 0) := (others => '0');
 		signal Out_send : std_logic;
 		signal Out_ack : std_logic := '0';
 		signal Out_rdy : std_logic := '0';
@@ -100,7 +100,7 @@ begin
 	
 	-- Input(s) queues
 	q_In : entity systemBuilder.Queue(behavioral)
-	generic map(length => 512, width => 16)
+	generic map(length => 512, width => 8)
 	port map(
 		OUT_DATA => q_In_data,
 		OUT_SEND => q_In_send,
@@ -160,7 +160,7 @@ begin
 						readline(sim_file_ProgNetwork_In, line_number);
 						if (line_number'length > 0 and line_number(1) /= '/') then
 							read(line_number, input_bit);
-							In_data <= std_logic_vector(to_signed(input_bit, 16));
+							In_data <= std_logic_vector(to_signed(input_bit, 8));
 							In_send <= '1';
 							tb_FSM_In <= CheckRead;
 						end if;
@@ -170,7 +170,7 @@ begin
 						readline(sim_file_ProgNetwork_In, line_number);
 						if (line_number'length > 0 and line_number(1) /= '/') then
 							read(line_number, input_bit);
-							In_data <= std_logic_vector(to_signed(input_bit, 16));
+							In_data <= std_logic_vector(to_signed(input_bit, 8));
 							In_send <= '1';
 						end if;
 					elsif (endfile (sim_file_ProgNetwork_In)) then
@@ -196,11 +196,11 @@ begin
 				readline(sim_file_ProgNetwork_Out, line_number);
 					if (line_number'length > 0 and line_number(1) /= '/') then
 						read(line_number, input_bit);
-						assert (Out_data  = std_logic_vector(to_signed(input_bit, 16)))
+						assert (Out_data  = std_logic_vector(to_signed(input_bit, 8)))
 						report "on port Out incorrect value computed : " & str(to_integer(signed(Out_data))) & " instead of : " & str(input_bit) & " sequence " & str(sequence_Out)
 						severity failure;
 						
-						assert (Out_data /= std_logic_vector(to_signed(input_bit, 16)))
+						assert (Out_data /= std_logic_vector(to_signed(input_bit, 8)))
 						report "on port Out correct value computed : " & str(to_integer(signed(Out_data))) & " equals : " & str(input_bit) & " sequence " & str(sequence_Out)
 						severity note;
 						sequence_Out := sequence_Out + 1;

@@ -6,7 +6,7 @@
 ## ############################################################################
 ## Xronos synthesizer
 ## Testbench TCL Script file for Actor: normalisedImage 
-## Date: 2017/07/18 13:16:27
+## Date: 2017/11/02 13:48:34
 ## ############################################################################
 
 ## Set paths
@@ -37,7 +37,7 @@ vlog -work work_normalisedImage ../lib/simulation/glbl.v
 # Compile sim package
 vcom -93 -reportprogress 30 -work work_normalisedImage $LibSim/sim_package.vhd
 ## Compile network instances and add them to work library	
-vlog -work work_normalisedImage $RtlGoDone/normalisedImage.v
+vlog -work work_normalisedImage $Rtl/normalisedImage.v
 
 
 ## Compile the Testbench VHD
@@ -70,12 +70,3 @@ add wave -label Out1_SEND sim:/normalisedImage_tb/i_normalisedImage/Out1_ACK
 add wave -label Out1_SEND sim:/normalisedImage_tb/i_normalisedImage/Out1_SEND
 add wave -label Out1_RDY sim:/normalisedImage_tb/i_normalisedImage/Out1_RDY
 add wave -noupdate -divider -height 20 "Go & Done" 
-add wave -noupdate -divider -height 20 "Action: receiveScalar" 
-add wave -label Go sim:/normalisedImage_tb/i_normalisedImage/receiveScalar_go
-add wave -label Done sim:/normalisedImage_tb/i_normalisedImage/receiveScalar_done
-add wave -noupdate -divider -height 20 "Action: zipStream" 
-add wave -label Go sim:/normalisedImage_tb/i_normalisedImage/zipStream_go
-add wave -label Done sim:/normalisedImage_tb/i_normalisedImage/zipStream_done
-add wave -noupdate -divider -height 20 "Action: done" 
-add wave -label Go sim:/normalisedImage_tb/i_normalisedImage/done_go
-add wave -label Done sim:/normalisedImage_tb/i_normalisedImage/done_done

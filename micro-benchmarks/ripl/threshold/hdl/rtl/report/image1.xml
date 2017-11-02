@@ -4,7 +4,7 @@
         <Resource MaxGateDepth="0" MaxLatency="0" MinGoSpacing="0" MinLatency="0"/>
     </Task>
     <Task name="scheduler">
-        <Resource MaxGateDepth="2" MaxLatency="unknown"
-            MinGoSpacing="indeterminate" MinLatency="0"/>
+        <Resource MaxGateDepth="7" MaxLatency="unknown"
+            MinGoSpacing="indeterminate" MinLatency="2"/>
     </Task>
 </Design>
