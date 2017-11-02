@@ -39,8 +39,8 @@ int main(int argc, char** argv) {
 	int windowSize        = actualWindowSize/fsDiv;
 	//joint space and peaks of each point
 	uint8_t jointSpace[imageWidth][imageHeight][3];
-	uint8_t peaks[imageWidth][imageHeight][5];
-	
+	uint16_t peaks[imageWidth][imageHeight][5];
+
 	//phase 1: build feature space from input image
 	#pragma omp parallel for shared(inputImage, jointSpace) num_threads(threads1)
 	// for each pixel in image, add a point to the feature space
@@ -84,11 +84,11 @@ int main(int argc, char** argv) {
 							if (k+peaks[i][j][3] < imageWidth and k+peaks[i][j][3] >= 0
 							  and l+peaks[i][j][4] < imageHeight and l+peaks[i][j][4] >= 0) {
 								// if point is within RGB window
-								if ( (peaks[i][j][0] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [0]) * (peaks[i][j][0] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [0]) 
+								if ( (peaks[i][j][0] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [0]) * (peaks[i][j][0] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [0])
 									+ (peaks[i][j][1] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [1]) * (peaks[i][j][1] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [1])
 									+ (peaks[i][j][2] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [2]) * (peaks[i][j][2] - jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [2])
 									<= windowSize*windowSize ) {
-	
+
 									// update values of 5-vector
 									rVal += jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [0] - peaks[i][j][0];
 									gVal += jointSpace[peaks[i][j][3]+k] [peaks[i][j][4]+l] [1] - peaks[i][j][1];
@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
 						}
 					}
 				}
-      
+
 				// update value of each peak in
 				if (norm !=0) {
 					peaks[i][j][0] += round(rVal/norm);
