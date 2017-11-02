@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="TopNetwork">
+<Instance id="FileReader">
+  <Class name="std.stdio.FileReader"/>
+</Instance>
+
+<Instance id="StreamToYUV3Ports">
+  <Class name="std.stdio.StreamToYUV3Ports"/>
+</Instance>
+
+<Instance id="YUVToRGB">
+  <Class name="std.stdio.YUVToRGB"/>
+</Instance>
+
+<Instance id="EndOfStream">
+  <Class name="std.stdio.EndOfStream"/>
+</Instance>
+
+<Instance id="RGBToYUV">
+  <Class name="std.stdio.RGBToYUV"/>
+</Instance>
+
+<Instance id="YUVToStream">
+  <Class name="std.stdio.YUVToStream"/>
+</Instance>
+
+<Instance id="Writer">
+  <Class name="std.stdio.Writer"/>
+</Instance>
+
+<Instance id="ProgNetwork">
+  <Class name="xdf.ProgNetwork"/>
+</Instance>
+
+
+<Connection dst="Writer" dst-port="Byte" src="EndOfStream" src-port="Out"></Connection>
+<Connection dst="Writer" dst-port="pEOF" src="EndOfStream" src-port="pEOF"></Connection>
+<Connection dst="StreamToYUV3Ports" dst-port="stream" src="FileReader" src-port="O"></Connection>
+<Connection dst="YUVToRGB" dst-port="Y" src="StreamToYUV3Ports" src-port="Y"></Connection>
+<Connection dst="YUVToRGB" dst-port="U" src="StreamToYUV3Ports" src-port="U"></Connection>
+<Connection dst="YUVToRGB" dst-port="V" src="StreamToYUV3Ports" src-port="V"></Connection>
+<Connection dst="ProgNetwork" dst-port="In1" src="YUVToRGB" src-port="R"></Connection>
+<Connection dst="ProgNetwork" dst-port="In2" src="YUVToRGB" src-port="G"></Connection>
+<Connection dst="ProgNetwork" dst-port="In3" src="YUVToRGB" src-port="B"></Connection>
+<Connection dst="RGBToYUV" dst-port="R" src="ProgNetwork" src-port="Out1"></Connection>
+<Connection dst="RGBToYUV" dst-port="G" src="ProgNetwork" src-port="Out2"></Connection>
+<Connection dst="RGBToYUV" dst-port="B" src="ProgNetwork" src-port="Out3"></Connection>
+<Connection dst="YUVToStream" dst-port="Y" src="RGBToYUV" src-port="Y"></Connection>
+<Connection dst="YUVToStream" dst-port="U" src="RGBToYUV" src-port="U"></Connection>
+<Connection dst="YUVToStream" dst-port="V" src="RGBToYUV" src-port="V"></Connection>
+<Connection dst="EndOfStream" dst-port="In" src="YUVToStream" src-port="YUV"></Connection>
+
+</XDF>

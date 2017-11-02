@@ -1,0 +1,127 @@
+package cal;
+
+actor Node2 () int(size=32) peaks ==> int(size=8) img21,
+		int(size=8) img22,
+		int(size=8) img23
+:
+
+	int(size=8) image [ 512 ] [ 512 ] [ 3 ];
+
+	uint(size=32) image_d1 := 0;
+
+	uint(size=32) image_d2 := 0;
+
+	uint(size=32) image_d3 := 0;
+
+	uint(size=32) Node2_range_count := 0;
+
+	uint(size=32) image_output_count := 0;
+
+	uint(size=32) i := 0;
+
+	uint(size=32) j := 0;
+
+	uint(size=16) peaks [ 512 ] [ 512 ] [ 5 ];
+
+	uint(size=32) peaks_count;
+
+	uint(size=32) peaks_d1;
+
+	uint(size=32) peaks_d2;
+
+	uint(size=32) peaks_d3;
+
+	load_peaks: action peaks:[ token ] ==>
+	guard
+		peaks_count < 512 * 512 * 5
+	do
+		peaks_d1 := peaks_d1 + 1;
+		if peaks_d1 = 512 then
+			peaks_d1 := 0;
+			peaks_d2 := peaks_d2 + 1;
+			if peaks_d2 = 512 then
+				peaks_d2 := 0;
+				peaks_d3 := peaks_d3 + 1;
+				if peaks_d3 = 5 then
+					peaks_d3 := 0;
+				end
+			end
+		end
+		peaks[peaks_d1][peaks_d2][peaks_d3] := token;
+		peaks_count := peaks_count + 1;
+	end
+
+	fold_action: action ==>
+	guard
+		i * j < 512 * 512
+	do
+		peaks_count := 0;
+		image[i][j][0] := peaks[i][j][0];
+		image[i][j][1] := peaks[i][j][1];
+		image[i][j][2] := peaks[i][j][2];
+		j := j + 1;
+		if j = 512 and i < 511 then
+			j := 0;
+			i := i + 1;
+			if i = 512 then
+				i := 0;
+			end
+		else
+			if j = 512 and i = 511 then
+				i := i + 1;
+			end
+		end
+		Node2_range_count := Node2_range_count + 1;
+	end
+
+	output_img21_Node2_action: action ==> img21:[ image[image_d1][image_d2][0] ],
+		img22:[ image[image_d1][image_d2][1] ],
+		img23:[ image[image_d1][image_d2][2] ]
+	guard
+		image_output_count < 512 * 512
+	do
+		image_d1 := image_d1 + 1;
+		if image_d1 = 512 then
+			image_d1 := 0;
+			image_d2 := image_d2 + 1;
+			if image_d2 = 512 then
+				image_d2 := 0;
+			end
+		end
+		if image_output_count = 512 * 512 then
+//			foreach int(size=16) x0 in 0 .. 511 do
+//				foreach int(size=16) x1 in 0 .. 511 do
+//					foreach int(size=16) x2 in 0 .. 2 do
+//						image[x0][x1][x2] := 0;
+//					end
+//				end
+//			end
+			Node2_range_count := 0;
+		else
+			image_output_count := image_output_count + 1;
+		end
+	end
+
+	resetAction: action ==>
+	do
+		image_output_count := 0;
+		i := 0;
+		j := 0;
+	end
+
+	schedule fsm s0 :
+		s0 ( load_peaks ) --> s1;
+		s1 ( load_peaks ) --> s1;
+		s1 ( fold_action ) --> s2;
+		s2 ( fold_action ) --> s2;
+		s2 ( output_img21_Node2_action ) --> s3;
+		s3 ( output_img21_Node2_action ) --> s3;
+		s3 ( resetAction ) --> s0;
+		end priority
+			load_peaks > fold_action;
+			load_peaks > output_img21_Node2_action;
+			fold_action > resetAction;
+			output_img21_Node2_action > resetAction;
+		end
+
+end

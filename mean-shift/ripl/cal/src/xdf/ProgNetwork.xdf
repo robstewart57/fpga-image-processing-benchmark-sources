@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDF name="ProgNetwork">
+    <Port kind="Input" name="In1">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="In2">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Input" name="In3">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Out1">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Out2">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Port kind="Output" name="Out3">
+        <Type name="int">
+            <Entry kind="Expr" name="size">
+                <Expr kind="Literal" literal-kind="Integer" value="8"/>
+            </Entry>
+        </Type>
+    </Port>
+    <Instance id="Node1">
+        <Class name="cal.Node1"/>
+    </Instance>
+    <Instance id="Node2">
+        <Class name="cal.Node2"/>
+    </Instance>
+    <Connection dst="Node1" dst-port="img11" src="" src-port="In1"/>
+    <Connection dst="Node1" dst-port="img12" src="" src-port="In2"/>
+    <Connection dst="Node1" dst-port="img13" src="" src-port="In3"/>
+    <Connection dst="" dst-port="Out1" src="Node2" src-port="img21"/>
+    <Connection dst="" dst-port="Out2" src="Node2" src-port="img22"/>
+    <Connection dst="" dst-port="Out3" src="Node2" src-port="img23"/>
+    <Connection dst="Node2" dst-port="peaks" src="Node1" src-port="peaks"/>
+</XDF>

@@ -1,0 +1,4 @@
+package std.headers;
+unit ParametersIn : uint (size = 16) IM_WIDTH_IN = 256;
+uint (size = 16) IM_HEIGHT_IN = 256;
+end

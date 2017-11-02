@@ -1,0 +1,189 @@
+package cal;
+
+actor Node1 () int(size=8) img11,
+	int(size=8) img12,
+	int(size=8) img13
+	==> int(size=32) peaks :
+
+	uint(size=16) peaksRGB [ 512 ] [ 512 ] [ 5 ];
+
+	uint(size=32) peaksRGB_d1 := 0;
+
+	uint(size=32) peaksRGB_d2 := 0;
+
+	uint(size=32) peaksRGB_d3 := 0;
+
+	uint(size=32) Node1_range_count := 0;
+
+	uint(size=32) peaksRGB_output_count := 0;
+
+	uint(size=32) i := 0;
+
+	uint(size=32) j := 0;
+
+	int(size=8) img1 [ 512 ] [ 512 ] [ 3 ];
+
+	uint(size=32) img1_count;
+
+	uint(size=32) img1_d1;
+
+	uint(size=32) img1_d2;
+
+	uint(size=32) img1_d3;
+
+	load_img1: action img11:[ token1 ] , img12:[ token2 ] , img13:[ token3 ] ==>
+	guard
+		img1_count < 512 * 512
+	do
+		img1_d1 := img1_d1 + 1;
+		if img1_d1 = 512 then
+			img1_d1 := 0;
+			img1_d2 := img1_d2 + 1;
+			if img1_d2 = 512 then
+				img1_d2 := 0;
+				img1_d3 := img1_d3 + 1;
+				if img1_d3 = 3 then
+					img1_d3 := 0;
+				end
+			end
+		end
+		img1[img1_d1][img1_d2][0] := token1;
+		img1[img1_d1][img1_d2][1] := token2;
+		img1[img1_d1][img1_d2][2] := token3;
+		img1_count := img1_count + 1;
+	end
+
+	fold_action: action ==>
+	guard
+		i * j < 512 * 512
+	var
+		int(size=16) rVal, int(size=16) gVal, int(size=16) bVal, int(size=16) xVal,
+		int(size=16) yVal, int(size=16) norm, int(size=16) count, int(size=16) recur,
+		int(size=16) spatialWindow, int(size=16) width, int(size=16) height, bool
+		peakFound
+	do
+		img1_count := 0;
+		peaksRGB[i][j][0] := img1[i][j][0];
+		peaksRGB[i][j][1] := img1[i][j][1];
+		peaksRGB[i][j][2] := img1[i][j][2];
+		peaksRGB[i][j][3] := i;
+		peaksRGB[i][j][4] := j;
+		peakFound := false;
+		count := 0;
+		recur := 5;
+		spatialWindow := 10;
+		while count < recur and peakFound = false do
+			count := count + 1;
+			rVal := 0;
+			gVal := 0;
+			bVal := 0;
+			xVal := 0;
+			yVal := 0;
+			norm := 0;
+			height := 512;
+			width := 512;
+			foreach int(size=32) k in (-1 * spatialWindow) .. spatialWindow do
+				foreach int(size=32) l in (-1 * spatialWindow) .. spatialWindow do
+					if l * l + k * k <= spatialWindow * spatialWindow then
+						if k + peaksRGB[i][j][3] < width and k + peaksRGB[i][j][3] >= 0 and l +
+						peaksRGB[i][j][4] < height and l + peaksRGB[i][j][4] >= 0 then
+							if (peaksRGB[i][j][0] - img1[peaksRGB[i][j][3] + k][peaksRGB[i][j][4] +
+							l][0]) * (peaksRGB[i][j][0] - img1[peaksRGB[i][j][3] +
+							k][peaksRGB[i][j][4] + l][0]) + (peaksRGB[i][j][1] -
+							img1[peaksRGB[i][j][3] + k][peaksRGB[i][j][4] + l][1]) *
+							(peaksRGB[i][j][1] - img1[peaksRGB[i][j][3] + k][peaksRGB[i][j][4] +
+							l][1]) + (peaksRGB[i][j][2] - img1[peaksRGB[i][j][3] +
+							k][peaksRGB[i][j][4] + l][2]) * (peaksRGB[i][j][2] -
+							img1[peaksRGB[i][j][3] + k][peaksRGB[i][j][4] + l][2]) <= 20 * 20 then
+								rVal := rVal + (img1[peaksRGB[i][j][3] + k][peaksRGB[i][j][4] + l][0] -
+								peaksRGB[i][j][0]);
+								gVal := gVal + (img1[peaksRGB[i][j][3] + k][peaksRGB[i][j][4] + l][1] -
+								peaksRGB[i][j][1]);
+								bVal := bVal + (img1[peaksRGB[i][j][3] + k][peaksRGB[i][j][4] + l][2] -
+								peaksRGB[i][j][2]);
+								xVal := xVal + k;
+								yVal := yVal + l;
+								norm := norm + 1;
+							end
+						end
+					end
+				end
+			end
+			if norm != 0 then
+				peaksRGB[i][j][0] := peaksRGB[i][j][0] + ((rVal / norm));
+				peaksRGB[i][j][1] := peaksRGB[i][j][1] + ((gVal / norm));
+				peaksRGB[i][j][2] := peaksRGB[i][j][2] + ((bVal / norm));
+				peaksRGB[i][j][3] := peaksRGB[i][j][3] + ((xVal / norm));
+				peaksRGB[i][j][4] := peaksRGB[i][j][4] + ((yVal / norm));
+			end
+			peakFound := rVal = 0 and gVal = 0 and bVal = 0;
+		end
+		j := j + 1;
+		if j = 512 and i < 511 then
+			j := 0;
+			i := i + 1;
+			if i = 512 then
+				i := 0;
+			end
+		else
+			if j = 512 and i = 511 then
+				i := i + 1;
+			end
+		end
+		Node1_range_count := Node1_range_count + 1;
+	end
+
+	output_peaks_Node1_action: action ==> peaks:[
+		peaksRGB[peaksRGB_d1][peaksRGB_d2][peaksRGB_d3] ]
+	guard
+		peaksRGB_output_count < 512 * 512 * 5
+	do
+		peaksRGB_d1 := peaksRGB_d1 + 1;
+		if peaksRGB_d1 = 512 then
+			peaksRGB_d1 := 0;
+			peaksRGB_d2 := peaksRGB_d2 + 1;
+			if peaksRGB_d2 = 512 then
+				peaksRGB_d2 := 0;
+				peaksRGB_d3 := peaksRGB_d3 + 1;
+				if peaksRGB_d3 = 5 then
+					peaksRGB_d3 := 0;
+				end
+			end
+		end
+		if peaksRGB_output_count = 512 * 512 * 5 then
+//			foreach int(size=16) x0 in 0 .. 511 do
+//				foreach int(size=16) x1 in 0 .. 511 do
+//					foreach int(size=16) x2 in 0 .. 4 do
+//						peaksRGB[x0][x1][x2] := 0;
+//					end
+//				end
+//			end
+			Node1_range_count := 0;
+		else
+			peaksRGB_output_count := peaksRGB_output_count + 1;
+		end
+	end
+
+	resetAction: action ==>
+	do
+		peaksRGB_output_count := 0;
+		i := 0;
+		j := 0;
+	end
+
+	schedule fsm s0 :
+		s0 ( load_img1 ) --> s1;
+		s1 ( load_img1 ) --> s1;
+		s1 ( fold_action ) --> s2;
+		s2 ( fold_action ) --> s2;
+		s2 ( output_peaks_Node1_action ) --> s3;
+		s3 ( output_peaks_Node1_action ) --> s3;
+		s3 ( resetAction ) --> s0;
+		end priority
+			load_img1 > fold_action;
+			load_img1 > output_peaks_Node1_action;
+			fold_action > resetAction;
+			output_peaks_Node1_action > resetAction;
+		end
+
+end

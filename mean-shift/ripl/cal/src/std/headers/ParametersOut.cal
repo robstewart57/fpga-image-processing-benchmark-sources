@@ -1,0 +1,7 @@
+package std.headers;
+unit ParametersOut : uint (size = 16) IM_WIDTH_OUT = 256;
+uint (size = 16) IM_HEIGHT_OUT = 256;
+uint (size = 16) END_OF_FRAME = 0x100;
+uint (size = 16) END_OF_FRAMES = 0x101;
+uint (size = 16) FRAMES = 1;
+end
