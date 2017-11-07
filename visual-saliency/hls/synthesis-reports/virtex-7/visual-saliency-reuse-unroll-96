@@ -1,0 +1,356 @@
+
+
+================================================================
+== Vivado HLS Report for 'visualSaliency'
+================================================================
+* Date:           Tue Nov  7 17:17:04 2017
+
+* Version:        2017.2 (Build 1909853 on Thu Jun 15 18:55:24 MDT 2017)
+* Project:        visual-saliency-array-reuse
+* Solution:       visual-saliency-reuse
+* Product family: virtex7
+* Target device:  xc7vx485tffg1761-2
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|      8.60|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +---------+---------+---------+---------+---------+
+    |      Latency      |      Interval     | Pipeline|
+    |   min   |   max   |   min   |   max   |   Type  |
+    +---------+---------+---------+---------+---------+
+    |  4245030|  4245030|  4245031|  4245031|   none  |
+    +---------+---------+---------+---------+---------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------------+----------------------+---------+---------+---------+---------+---------+
+        |                                 |                      |      Latency      |      Interval     | Pipeline|
+        |             Instance            |        Module        |   min   |   max   |   min   |   max   |   Type  |
+        +---------------------------------+----------------------+---------+---------+---------+---------+---------+
+        |grp_fwt_512_512_s_fu_330         |fwt_512_512_s         |  1455108|  1455108|  1455108|  1455108|   none  |
+        |grp_fwt_256_256_s_fu_344         |fwt_256_256_s         |   425988|   425988|   425988|   425988|   none  |
+        |grp_fwt_128_128_s_fu_353         |fwt_128_128_s         |    71940|    71940|    71940|    71940|   none  |
+        |grp_blurFilter_256_256_s_fu_425  |blurFilter_256_256_s  |   266497|   266497|   266497|   266497|   none  |
+        |grp_blurFilter_256_256_s_fu_430  |blurFilter_256_256_s  |   266497|   266497|   266497|   266497|   none  |
+        |grp_blurFilter_256_256_s_fu_435  |blurFilter_256_256_s  |   266497|   266497|   266497|   266497|   none  |
+        |grp_blurFilter_128_128_s_fu_440  |blurFilter_128_128_s  |    66945|    66945|    66945|    66945|   none  |
+        |grp_blurFilter_128_128_s_fu_445  |blurFilter_128_128_s  |    66945|    66945|    66945|    66945|   none  |
+        |grp_blurFilter_128_128_s_fu_450  |blurFilter_128_128_s  |    66945|    66945|    66945|    66945|   none  |
+        |grp_blurFilter_64_64_s_fu_455    |blurFilter_64_64_s    |    16385|    16385|    16385|    16385|   none  |
+        |grp_blurFilter_64_64_s_fu_460    |blurFilter_64_64_s    |    16385|    16385|    16385|    16385|   none  |
+        |grp_resizeAndAdd_2_fu_465        |resizeAndAdd_2        |   262657|   262657|   262657|   262657|   none  |
+        |grp_resizeAndAdd_fu_472          |resizeAndAdd          |   262657|   262657|   262657|   262657|   none  |
+        |grp_resizeAndAdd_1_fu_479        |resizeAndAdd_1        |   262657|   262657|   262657|   262657|   none  |
+        |grp_resetImage_512_512_s_fu_486  |resetImage_512_512_s  |   131585|   131585|   131585|   131585|   none  |
+        +---------------------------------+----------------------+---------+---------+---------+---------+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+--------+--------+
+|       Name      | BRAM_18K| DSP48E|   FF   |   LUT  |
++-----------------+---------+-------+--------+--------+
+|DSP              |        -|      -|       -|       -|
+|Expression       |        -|      -|       0|       8|
+|FIFO             |        -|      -|       -|       -|
+|Instance         |       84|    704|  575011|  313427|
+|Memory           |      166|      -|    1024|     512|
+|Multiplexer      |        -|      -|       -|    1418|
+|Register         |        -|      -|      37|       -|
++-----------------+---------+-------+--------+--------+
+|Total            |      250|    704|  576072|  315365|
++-----------------+---------+-------+--------+--------+
+|Available        |     2060|   2800|  607200|  303600|
++-----------------+---------+-------+--------+--------+
+|Utilization (%)  |       12|     25|      94|     103|
++-----------------+---------+-------+--------+--------+
+
++ Detail: 
+    * Instance: 
+    +---------------------------------+----------------------+---------+-------+--------+-------+
+    |             Instance            |        Module        | BRAM_18K| DSP48E|   FF   |  LUT  |
+    +---------------------------------+----------------------+---------+-------+--------+-------+
+    |grp_blurFilter_128_128_s_fu_440  |blurFilter_128_128_s  |        0|     96|   34654|  16776|
+    |grp_blurFilter_128_128_s_fu_445  |blurFilter_128_128_s  |        0|     96|   34654|  16776|
+    |grp_blurFilter_128_128_s_fu_450  |blurFilter_128_128_s  |        0|     96|   34654|  16776|
+    |grp_blurFilter_256_256_s_fu_425  |blurFilter_256_256_s  |        0|     96|   35856|  16996|
+    |grp_blurFilter_256_256_s_fu_430  |blurFilter_256_256_s  |        0|     96|   35856|  16996|
+    |grp_blurFilter_256_256_s_fu_435  |blurFilter_256_256_s  |        0|     96|   35856|  16996|
+    |grp_blurFilter_64_64_s_fu_455    |blurFilter_64_64_s    |        0|     64|   19858|  12681|
+    |grp_blurFilter_64_64_s_fu_460    |blurFilter_64_64_s    |        0|     64|   19858|  12681|
+    |grp_fwt_128_128_s_fu_353         |fwt_128_128_s         |        4|      0|   44835|  37212|
+    |grp_fwt_256_256_s_fu_344         |fwt_256_256_s         |       16|      0|  113869|  61524|
+    |grp_fwt_512_512_s_fu_330         |fwt_512_512_s         |       64|      0|  124823|  65327|
+    |grp_resetImage_512_512_s_fu_486  |resetImage_512_512_s  |        0|      0|    5228|   3034|
+    |grp_resizeAndAdd_fu_472          |resizeAndAdd          |        0|      0|   12260|   6877|
+    |grp_resizeAndAdd_1_fu_479        |resizeAndAdd_1        |        0|      0|   10591|   5942|
+    |grp_resizeAndAdd_2_fu_465        |resizeAndAdd_2        |        0|      0|   12159|   6833|
+    +---------------------------------+----------------------+---------+-------+--------+-------+
+    |Total                            |                      |       84|    704|  575011| 313427|
+    +---------------------------------+----------------------+---------+-------+--------+-------+
+
+    * DSP48: 
+    N/A
+
+    * Memory: 
+    +----------+----------------------+---------+----+----+-------+-----+------+-------------+
+    |  Memory  |        Module        | BRAM_18K| FF | LUT| Words | Bits| Banks| W*Bits*Banks|
+    +----------+----------------------+---------+----+----+-------+-----+------+-------------+
+    |lh1_U     |visualSaliency_lh1    |       32|   0|   0|  65536|    8|     1|       524288|
+    |hl1_U     |visualSaliency_lh1    |       32|   0|   0|  65536|    8|     1|       524288|
+    |hh1_U     |visualSaliency_lh1    |       32|   0|   0|  65536|    8|     1|       524288|
+    |lh2_U     |visualSaliency_lh2    |        8|   0|   0|  16384|    8|     1|       131072|
+    |hl2_U     |visualSaliency_lh2    |        8|   0|   0|  16384|    8|     1|       131072|
+    |hh2_U     |visualSaliency_lh2    |        8|   0|   0|  16384|    8|     1|       131072|
+    |lh3_U     |visualSaliency_lh3    |        2|   0|   0|   4096|    8|     1|        32768|
+    |hl3_U     |visualSaliency_lh3    |        2|   0|   0|   4096|    8|     1|        32768|
+    |hh3_U     |visualSaliency_lh3    |        2|   0|   0|   4096|    8|     1|        32768|
+    |ll1_U     |visualSaliency_ll1    |       32|   0|   0|  65536|    8|     1|       524288|
+    |ll2_U     |visualSaliency_ll2    |        8|   0|   0|  16384|    8|     1|       131072|
+    |ll3_0_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_1_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_2_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_3_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_4_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_5_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_6_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_7_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_8_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_9_U   |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_10_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_11_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_12_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_13_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_14_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_15_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_16_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_17_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_18_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_19_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_20_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_21_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_22_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_23_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_24_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_25_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_26_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_27_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_28_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_29_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_30_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_31_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_32_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_33_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_34_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_35_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_36_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_37_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_38_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_39_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_40_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_41_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_42_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_43_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_44_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_45_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_46_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_47_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_48_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_49_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_50_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_51_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_52_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_53_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_54_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_55_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_56_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_57_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_58_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_59_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_60_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_61_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_62_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    |ll3_63_U  |visualSaliency_lldEe  |        0|  16|   8|     64|    8|     1|          512|
+    +----------+----------------------+---------+----+----+-------+-----+------+-------------+
+    |Total     |                      |      166|1024| 512| 344064|  600|    75|      2752512|
+    +----------+----------------------+---------+----+----+-------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+-------+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP48E| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+-------+---+----+------------+------------+
+    |ap_block_state10_on_subcall_done  |    or    |      0|  0|   2|           1|           1|
+    |ap_block_state4_on_subcall_done   |    or    |      0|  0|   2|           1|           1|
+    |ap_block_state6_on_subcall_done   |    or    |      0|  0|   2|           1|           1|
+    |ap_block_state8_on_subcall_done   |    or    |      0|  0|   2|           1|           1|
+    +----------------------------------+----------+-------+---+----+------------+------------+
+    |Total                             |          |      0|  0|   8|           4|           4|
+    +----------------------------------+----------+-------+---+----+------------+------------+
+
+    * Multiplexer: 
+    +------------------------------------------+-----+-----------+-----+-----------+
+    |                   Name                   | LUT | Input Size| Bits| Total Bits|
+    +------------------------------------------+-----+-----------+-----+-----------+
+    |ap_NS_fsm                                 |  115|         23|    1|         23|
+    |grp_blurFilter_64_64_s_fu_455_image_r_q0  |   13|          3|    8|         24|
+    |grp_blurFilter_64_64_s_fu_455_image_r_q1  |   13|          3|    8|         24|
+    |grp_resizeAndAdd_1_fu_479_image_r_q0      |   17|          4|    8|         32|
+    |grp_resizeAndAdd_1_fu_479_image_r_q1      |   17|          4|    8|         32|
+    |grp_resizeAndAdd_2_fu_465_image_r_q0      |   17|          4|    8|         32|
+    |grp_resizeAndAdd_2_fu_465_image_r_q1      |   17|          4|    8|         32|
+    |grp_resizeAndAdd_fu_472_image_r_q0        |   17|          4|    8|         32|
+    |grp_resizeAndAdd_fu_472_image_r_q1        |   17|          4|    8|         32|
+    |hh1_address0                              |   17|          4|   16|         64|
+    |hh1_address1                              |   13|          3|   16|         48|
+    |hh1_ce0                                   |   17|          4|    1|          4|
+    |hh1_ce1                                   |   13|          3|    1|          3|
+    |hh1_d0                                    |   13|          3|    8|         24|
+    |hh1_we0                                   |   13|          3|    1|          3|
+    |hh1_we1                                   |    9|          2|    1|          2|
+    |hh2_address0                              |   17|          4|   14|         56|
+    |hh2_address1                              |   13|          3|   14|         42|
+    |hh2_ce0                                   |   17|          4|    1|          4|
+    |hh2_ce1                                   |   13|          3|    1|          3|
+    |hh2_d0                                    |   13|          3|    8|         24|
+    |hh2_we0                                   |   13|          3|    1|          3|
+    |hh2_we1                                   |    9|          2|    1|          2|
+    |hh3_address0                              |   17|          4|   12|         48|
+    |hh3_address1                              |   13|          3|   12|         36|
+    |hh3_ce0                                   |   17|          4|    1|          4|
+    |hh3_ce1                                   |   13|          3|    1|          3|
+    |hh3_d0                                    |   13|          3|    8|         24|
+    |hh3_we0                                   |   13|          3|    1|          3|
+    |hh3_we1                                   |    9|          2|    1|          2|
+    |hl1_address0                              |   17|          4|   16|         64|
+    |hl1_address1                              |   13|          3|   16|         48|
+    |hl1_ce0                                   |   17|          4|    1|          4|
+    |hl1_ce1                                   |   13|          3|    1|          3|
+    |hl1_d0                                    |   13|          3|    8|         24|
+    |hl1_we0                                   |   13|          3|    1|          3|
+    |hl1_we1                                   |    9|          2|    1|          2|
+    |hl2_address0                              |   17|          4|   14|         56|
+    |hl2_address1                              |   13|          3|   14|         42|
+    |hl2_ce0                                   |   17|          4|    1|          4|
+    |hl2_ce1                                   |   13|          3|    1|          3|
+    |hl2_d0                                    |   13|          3|    8|         24|
+    |hl2_we0                                   |   13|          3|    1|          3|
+    |hl2_we1                                   |    9|          2|    1|          2|
+    |hl3_address0                              |   17|          4|   12|         48|
+    |hl3_address1                              |   13|          3|   12|         36|
+    |hl3_ce0                                   |   17|          4|    1|          4|
+    |hl3_ce1                                   |   13|          3|    1|          3|
+    |hl3_d0                                    |   13|          3|    8|         24|
+    |hl3_we0                                   |   13|          3|    1|          3|
+    |hl3_we1                                   |    9|          2|    1|          2|
+    |image_r_address0                          |   33|          6|   18|        108|
+    |image_r_address1                          |   33|          6|   18|        108|
+    |image_r_ce0                               |   33|          6|    1|          6|
+    |image_r_ce1                               |   33|          6|    1|          6|
+    |image_r_d0                                |   25|          5|    8|         40|
+    |image_r_d1                                |   25|          5|    8|         40|
+    |image_r_we0                               |   25|          5|    1|          5|
+    |image_r_we1                               |   25|          5|    1|          5|
+    |lh1_address0                              |   17|          4|   16|         64|
+    |lh1_address1                              |   13|          3|   16|         48|
+    |lh1_ce0                                   |   17|          4|    1|          4|
+    |lh1_ce1                                   |   13|          3|    1|          3|
+    |lh1_d0                                    |   13|          3|    8|         24|
+    |lh1_we0                                   |   13|          3|    1|          3|
+    |lh1_we1                                   |    9|          2|    1|          2|
+    |lh2_address0                              |   17|          4|   14|         56|
+    |lh2_address1                              |   13|          3|   14|         42|
+    |lh2_ce0                                   |   17|          4|    1|          4|
+    |lh2_ce1                                   |   13|          3|    1|          3|
+    |lh2_d0                                    |   13|          3|    8|         24|
+    |lh2_we0                                   |   13|          3|    1|          3|
+    |lh2_we1                                   |    9|          2|    1|          2|
+    |lh3_address0                              |   17|          4|   12|         48|
+    |lh3_address1                              |   13|          3|   12|         36|
+    |lh3_ce0                                   |   17|          4|    1|          4|
+    |lh3_ce1                                   |   13|          3|    1|          3|
+    |lh3_d0                                    |   13|          3|    8|         24|
+    |lh3_we0                                   |   13|          3|    1|          3|
+    |lh3_we1                                   |    9|          2|    1|          2|
+    |ll1_address0                              |   13|          3|   16|         48|
+    |ll1_ce0                                   |   13|          3|    1|          3|
+    |ll1_ce1                                   |    9|          2|    1|          2|
+    |ll1_we0                                   |    9|          2|    1|          2|
+    |ll2_address0                              |   13|          3|   14|         42|
+    |ll2_ce0                                   |   13|          3|    1|          3|
+    |ll2_ce1                                   |    9|          2|    1|          2|
+    |ll2_we0                                   |    9|          2|    1|          2|
+    +------------------------------------------+-----+-----------+-----+-----------+
+    |Total                                     | 1418|        315|  517|       1891|
+    +------------------------------------------+-----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------------------------------+----+----+-----+-----------+
+    |                       Name                      | FF | LUT| Bits| Const Bits|
+    +-------------------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                        |  22|   0|   22|          0|
+    |ap_reg_grp_blurFilter_128_128_s_fu_440_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_blurFilter_128_128_s_fu_445_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_blurFilter_128_128_s_fu_450_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_blurFilter_256_256_s_fu_425_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_blurFilter_256_256_s_fu_430_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_blurFilter_256_256_s_fu_435_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_blurFilter_64_64_s_fu_455_ap_start    |   1|   0|    1|          0|
+    |ap_reg_grp_blurFilter_64_64_s_fu_460_ap_start    |   1|   0|    1|          0|
+    |ap_reg_grp_fwt_128_128_s_fu_353_ap_start         |   1|   0|    1|          0|
+    |ap_reg_grp_fwt_256_256_s_fu_344_ap_start         |   1|   0|    1|          0|
+    |ap_reg_grp_fwt_512_512_s_fu_330_ap_start         |   1|   0|    1|          0|
+    |ap_reg_grp_resetImage_512_512_s_fu_486_ap_start  |   1|   0|    1|          0|
+    |ap_reg_grp_resizeAndAdd_1_fu_479_ap_start        |   1|   0|    1|          0|
+    |ap_reg_grp_resizeAndAdd_2_fu_465_ap_start        |   1|   0|    1|          0|
+    |ap_reg_grp_resizeAndAdd_fu_472_ap_start          |   1|   0|    1|          0|
+    +-------------------------------------------------+----+----+-----+-----------+
+    |Total                                            |  37|   0|   37|          0|
+    +-------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------+-----+-----+------------+--------------------------+--------------+
+|     RTL Ports    | Dir | Bits|  Protocol  |       Source Object      |    C Type    |
++------------------+-----+-----+------------+--------------------------+--------------+
+|ap_clk            |  in |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_rst            |  in |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_start          |  in |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_done           | out |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_idle           | out |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|ap_ready          | out |    1| ap_ctrl_hs | visualSaliency<512, 512> | return value |
+|image_r_address0  | out |   18|  ap_memory |          image_r         |     array    |
+|image_r_ce0       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_we0       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_d0        | out |    8|  ap_memory |          image_r         |     array    |
+|image_r_q0        |  in |    8|  ap_memory |          image_r         |     array    |
+|image_r_address1  | out |   18|  ap_memory |          image_r         |     array    |
+|image_r_ce1       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_we1       | out |    1|  ap_memory |          image_r         |     array    |
+|image_r_d1        | out |    8|  ap_memory |          image_r         |     array    |
+|image_r_q1        |  in |    8|  ap_memory |          image_r         |     array    |
++------------------+-----+-----+------------+--------------------------+--------------+
+
