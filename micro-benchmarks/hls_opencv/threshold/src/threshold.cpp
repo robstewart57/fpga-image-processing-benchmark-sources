@@ -15,7 +15,10 @@ void maxThreshold ( AXI_STREAM& INPUT_STREAM1, AXI_STREAM& OUTPUT_STREAM)
   GRAY_IMAGE img_3(rows,cols);
 
   // explicit depth for img_2 to prevent deadlock
+  #pragma HLS stream depth=1 variable=img_0.data_stream
+  #pragma HLS stream depth=1 variable=img_1.data_stream
   #pragma HLS stream depth=262144 variable=img_2.data_stream
+  #pragma HLS stream depth=1 variable=img_3.data_stream
 
   // convert AXI4 stream data to hls::mat format
   hls::AXIvideo2Mat(INPUT_STREAM1, img_0);

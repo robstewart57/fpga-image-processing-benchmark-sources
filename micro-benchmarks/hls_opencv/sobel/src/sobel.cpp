@@ -9,6 +9,7 @@ typedef hls::Mat<512,512, HLS_8UC1> GRAY_IMAGE;
 void sobel ( AXI_STREAM& INPUT_STREAM1, AXI_STREAM& OUTPUT_STREAM)
 {
   // create AXI streaming interfaces
+  #pragma HLS dataflow
   GRAY_IMAGE img_0(rows,cols);
   GRAY_IMAGE img_1(rows,cols);
 
