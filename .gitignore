@@ -24,3 +24,7 @@ VisualSaliencyStaticReuse
 meanshift
 mean-shift/cpp/images/
 report/
+
+.apc/
+.project
+.cproject
